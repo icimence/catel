@@ -47,11 +47,7 @@ INSERT INTO `Coupon`
 (hotel_id, target_money, discount_money, multi_room_target, discount, status, type, name, description, start_time,
  end_time)
 VALUES (1, 500, 100, -1, 1, 'Available', 'Birthday', '生日', '祝你快乐', now(), now()),
-       (1, 500, 100, 2, 1, 'Available', 'MultiRoom', '多间', '2间减100', now(), now()),
-       (1, 500, 100, -1, 1, 'Available', 'Target', '满减', '一个满减', now(), now()),
-       (1, 500, 30, 2, 1, 'Available', 'Vip', '会员专享', '爽', now(), now()),
-       (1, 500, 30, 2, 1, 'Available', 'Time', '会员专享', '爽', now(), date_add(now(), interval 30 day)),
-       (-1, 500, 1500, -1, 1, 'Available', 'Target', '满减2', '另一个满减', now(), now());
+       (2, 500, 100, 100000000, 1, 'Available', 'Target', '双十一活动券', '双十一期间的满减券', now(), now());
 
 /*!40000 ALTER TABLE `Coupon`
     ENABLE KEYS */;
@@ -93,11 +89,11 @@ BEGIN;
 INSERT INTO `Hotel`
 (manager_id, credit_bound, rate, name, description, address, biz_region, hotel_star, phone_number, pic, announcement)
 values (2, 100, 4.7, '汉庭酒店', '', '', 'XiDan', 'Five', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', ''),
+        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '本酒店现在没有活动，爱住不住。'),
        (2, 100, 4.5, '儒家酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', ''),
+        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '双十一活动，满500减100。'),
        (3, 100, 5, '桂圆酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '');
+        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '本酒店现在没有优惠，白嫖怪快滚');
 /*!40000 ALTER TABLE `Hotel`
     ENABLE KEYS */;
 COMMIT;
