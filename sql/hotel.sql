@@ -88,12 +88,12 @@ BEGIN;
     DISABLE KEYS */;
 INSERT INTO `Hotel`
 (manager_id, credit_bound, rate, name, description, address, biz_region, hotel_star, phone_number, pic, announcement)
-values (2, 100, 4.7, '汉庭酒店', '', '', 'XiDan', 'Five', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '本酒店现在没有活动，爱住不住。'),
-       (2, 100, 4.5, '儒家酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '双十一活动，满500减100。'),
-       (3, 100, 5, '桂圆酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '本酒店现在没有优惠，白嫖怪快滚');
+values (2, 100, 4.7, '汉庭酒店', '这是汉庭酒店的简介描述', '这是汉庭酒店的地址', 'XiDan', 'Five', '12345678910',
+        'https://dimg04.c-ctrip.com/images/0202i120008ce99hwC65B_R_600_400_R5_D.jpg', '本酒店现在没有活动，爱住不住。'),
+       (2, 100, 4.5, '儒家酒店', '这是如家酒店的简介描述', '这是如家酒店的地址', 'XiDan', 'Four', '78910123456',
+        'https://dimg04.c-ctrip.com/images/0205n1200091bl12d03EB_R_600_400_R5_D.png', '双十一活动，满500减100。'),
+       (3, 100, 5, '桂圆酒店', '这是桂圆酒店的描述简介', '这是桂圆酒店的地址', 'XiDan', 'Four', '45678912310',
+        '	https://dimg04.c-ctrip.com/images/02005120008bxzcul2103_R_600_400_R5_D.jpg', '本酒店现在没有优惠，白嫖怪快滚');
 /*!40000 ALTER TABLE `Hotel`
     ENABLE KEYS */;
 COMMIT;
