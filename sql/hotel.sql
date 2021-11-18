@@ -217,19 +217,19 @@ BEGIN;
     DISABLE KEYS */;
 INSERT INTO `User`
 (credit, user_type, avatar, email, password, username, vip_type, vip_end)
-VALUES (100, 'Admin', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+VALUES (100, 'Admin', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'a@a.com', 'x', 'A1', 'Nil', now()),
-       (100, 'HotelManager', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'HotelManager', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'b@b.com', 'x', 'HM1', 'Nil', now()),
-       (100, 'HotelManager', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'HotelManager', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'c@c.com', 'x', 'HM2', 'Nil', now()),
-       (100, 'Marketer', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Marketer', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'd@d.com', 'x', 'M1', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'e@e.com', 'x', 'C1', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'f@f.com', 'x', 'C2', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'g@g.com', 'x', 'C3', 'Nil', now());
 /*!40000 ALTER TABLE `User`
     ENABLE KEYS */;
