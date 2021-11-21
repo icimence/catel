@@ -47,11 +47,7 @@ INSERT INTO `Coupon`
 (hotel_id, target_money, discount_money, multi_room_target, discount, status, type, name, description, start_time,
  end_time)
 VALUES (1, 500, 100, -1, 1, 'Available', 'Birthday', '生日', '祝你快乐', now(), now()),
-       (1, 500, 100, 2, 1, 'Available', 'MultiRoom', '多间', '2间减100', now(), now()),
-       (1, 500, 100, -1, 1, 'Available', 'Target', '满减', '一个满减', now(), now()),
-       (1, 500, 30, 2, 1, 'Available', 'Vip', '会员专享', '爽', now(), now()),
-       (1, 500, 30, 2, 1, 'Available', 'Time', '会员专享', '爽', now(), date_add(now(), interval 30 day)),
-       (-1, 500, 1500, -1, 1, 'Available', 'Target', '满减2', '另一个满减', now(), now());
+       (2, 500, 100, 100000000, 1, 'Available', 'Target', '双十一活动券', '双十一期间的满减券', now(), now());
 
 /*!40000 ALTER TABLE `Coupon`
     ENABLE KEYS */;
@@ -92,12 +88,12 @@ BEGIN;
     DISABLE KEYS */;
 INSERT INTO `Hotel`
 (manager_id, credit_bound, rate, name, description, address, biz_region, hotel_star, phone_number, pic, announcement)
-values (2, 100, 4.7, '汉庭酒店', '', '', 'XiDan', 'Five', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', ''),
-       (2, 100, 4.5, '儒家酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', ''),
-       (3, 100, 5, '桂圆酒店', '', '', 'XiDan', 'Four', '',
-        'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/cover.jpg', '');
+values (2, 100, 4.7, '汉庭酒店', '这是汉庭酒店的简介描述', '这是汉庭酒店的地址', 'XiDan', 'Five', '12345678910',
+        'https://dimg04.c-ctrip.com/images/0202i120008ce99hwC65B_R_600_400_R5_D.jpg', '本酒店现在没有活动，爱住不住。'),
+       (2, 100, 4.5, '儒家酒店', '这是如家酒店的简介描述', '这是如家酒店的地址', 'XiDan', 'Four', '78910123456',
+        'https://dimg04.c-ctrip.com/images/0205n1200091bl12d03EB_R_600_400_R5_D.png', '双十一活动，满500减100。'),
+       (3, 100, 5, '桂圆酒店', '这是桂圆酒店的描述简介', '这是桂圆酒店的地址', 'XiDan', 'Four', '45678912310',
+        '	https://dimg04.c-ctrip.com/images/02005120008bxzcul2103_R_600_400_R5_D.jpg', '本酒店现在没有优惠，白嫖怪快滚');
 /*!40000 ALTER TABLE `Hotel`
     ENABLE KEYS */;
 COMMIT;
@@ -221,19 +217,19 @@ BEGIN;
     DISABLE KEYS */;
 INSERT INTO `User`
 (credit, user_type, avatar, email, password, username, vip_type, vip_end)
-VALUES (100, 'Admin', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+VALUES (100, 'Admin', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'a@a.com', 'x', 'A1', 'Nil', now()),
-       (100, 'HotelManager', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'HotelManager', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'b@b.com', 'x', 'HM1', 'Nil', now()),
-       (100, 'HotelManager', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'HotelManager', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'c@c.com', 'x', 'HM2', 'Nil', now()),
-       (100, 'Marketer', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Marketer', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'd@d.com', 'x', 'M1', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'e@e.com', 'x', 'C1', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'f@f.com', 'x', 'C2', 'Nil', now()),
-       (100, 'Client', 'https://hotel-res-img-public.oss-cn-shanghai.aliyuncs.com/static/user_avatar.jpg',
+       (100, 'Client', 'https://dimg04.c-ctrip.com/images/fd/headphoto/g6/M04/58/1E/CggYtFbqT4CAGa2kAAAtt8o2rRM946_R_100_100_R5_Q70_D.jpg',
         'g@g.com', 'x', 'C3', 'Nil', now());
 /*!40000 ALTER TABLE `User`
     ENABLE KEYS */;
