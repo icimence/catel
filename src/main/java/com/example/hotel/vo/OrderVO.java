@@ -18,6 +18,7 @@ public class OrderVO {
     private Boolean haveChild;
     private Boolean breakfast;
     private String hotelName;
+    private String hotelAddress;
     private String roomType;
     private String checkInDate;
     private String checkOutDate;

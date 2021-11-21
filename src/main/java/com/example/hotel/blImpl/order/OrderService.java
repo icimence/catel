@@ -16,6 +16,7 @@ import com.example.hotel.po.Order;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.CreditTransVO;
 import com.example.hotel.vo.OrderVO;
+import com.example.hotel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +49,12 @@ public class OrderService implements OrderServiceI {
 
     @Override
     public void addOrder(OrderVO orderVO) throws OopsException {
-        if (orderVO.getPrice()<0) throw new OopsException(8);
+        if (orderVO.getPrice() < 0) throw new OopsException(8);
 
         Order order = new Order();
         BeanUtil.copyProperties(orderVO, order, CopyOptions.create().setIgnoreNullValue(true));
         order.setUserId(personMapper.getUserId(order.getPersonId()));
         order.setHotelName(hotelMapper.selectById(order.getHotelId()).getName());
-
 
         int roomId = roomMapper.getRoomId(order);
         List<Integer> numbers = roomMapper.getRoomNumber(roomId);
@@ -81,25 +81,26 @@ public class OrderService implements OrderServiceI {
         return accountMapper.getCreditFromOrder(id) + 100 + accountMapper.getCreditFromDirect(id);
     }
 
+    private OrderVO convert(Order order) {
+        OrderVO orderVO = new OrderVO();
+        BeanUtil.copyProperties(order, orderVO, CopyOptions.create().ignoreNullValue());
+        HotelVO hotel = hotelServiceI.selectById(order.getHotelId());
+        orderVO.setHotelName(hotel.getName());
+        orderVO.setHotelAddress(hotel.getAddress());
+        return orderVO;
+    }
+
     @Override
     public List<OrderVO> getAllOrders() {
         List<Order> orders = orderMapper.getAllOrders();
-        return orders.stream().map(order -> {
-            OrderVO orderVO = new OrderVO();
-            BeanUtil.copyProperties(order, orderVO, CopyOptions.create().ignoreNullValue());
-            String name = hotelServiceI.selectById(order.getHotelId()).getName();
-            orderVO.setHotelName(name);
-            return orderVO;
-        }).collect(Collectors.toList());
+        return orders.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
     public List<OrderVO> getUserOrders(int userId) {
-        return orderMapper.getUserOrders(userId).stream().map(order -> {
-            OrderVO orderVO = new OrderVO();
-            BeanUtil.copyProperties(order, orderVO, CopyOptions.create().ignoreNullValue());
-            return orderVO;
-        }).collect(Collectors.toList());
+        return orderMapper.getUserOrders(userId)
+                          .stream().map(this::convert)
+                          .collect(Collectors.toList());
     }
 
     @Override
