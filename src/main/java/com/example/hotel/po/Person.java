@@ -17,7 +17,6 @@ public class Person {
     public Person() {
         realName = "default_real_name";
         phoneNumber = "12345678910";
-        birthday = LocalDate.now();
     }
 
 }

@@ -3,7 +3,9 @@ package com.example.hotel.blImpl.user;
 import com.example.hotel.bl.user.PersonServiceI;
 import com.example.hotel.data.user.PersonMapper;
 import com.example.hotel.po.Person;
+import com.example.hotel.util.AllMapper;
 import com.example.hotel.util.OopsException;
+import com.example.hotel.dto.CreateResidentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,9 @@ public class PersonService implements PersonServiceI {
     public PersonService(PersonMapper personMapper) {this.personMapper = personMapper;}
 
     @Override
-    public void insert(Person person) {
+    public void addResident(CreateResidentDTO createResidentDTO) {
+        Person person = AllMapper.X.toPerson(createResidentDTO);
+        System.out.println(person.toString());
         personMapper.insert(person);
     }
 

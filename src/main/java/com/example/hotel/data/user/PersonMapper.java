@@ -9,14 +9,18 @@ import java.util.List;
 public interface PersonMapper {
 
     @Insert(value = "insert into hotel.Person (user_id, real_name, id_no, phone_number, birthday) values " +
-            "(#{person.userId} ,#{person.realName} ,#{person.idNo} ,#{person.phoneNumber} ,#{person.birthday} )")
+        "(#{person.userId} ,#{person.realName} ,#{person.idNo} ,#{person.phoneNumber} ,#{person.birthday} )")
     void insert(@Param("person") Person person);
+
+    @Insert(value = "insert into Person (user_id, id_no, real_name, phone_number, birthday) values " +
+        "(#{userId} ,#{idNo} ,#{realName} ,#{phoneNumber} ,#{birthday})")
+    void add(Person person);
 
     @Delete(value = "delete from hotel.Person where id=#{id} ")
     void delete(@Param("id") int id);
 
     @Update(value = "update hotel.Person set user_id=#{person.userId} ,real_name=#{person.realName} ," +
-            "id_no=#{person.idNo} ,phone_number=#{person.phoneNumber} ,birthday=#{person.birthday} where id=#{person.id}  ")
+        "id_no=#{person.idNo} ,phone_number=#{person.phoneNumber} ,birthday=#{person.birthday} where id=#{person.id}  ")
     void update(@Param("person") Person person);
 
     @Select(value = "select * from hotel.Person where user_id=#{userId}  ")

@@ -6,6 +6,7 @@ import com.example.hotel.bl.user.PersonServiceI;
 import com.example.hotel.po.Person;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.ResponseVO;
+import com.example.hotel.dto.CreateResidentDTO;
 import com.example.hotel.vo.user.PersonVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,11 @@ public class PersonController {
      * create a person
      * _in basic person info. phone number, birthday, id no., real name
      */
-    @PostMapping("/new")
-    public ResponseVO insert(@RequestBody PersonVO personVO) {
-        Person person = new Person();
-        BeanUtil.copyProperties(personVO, person, CopyOptions.create().ignoreNullValue());
-        personServiceI.insert(person);
+    @PostMapping("/")
+    public ResponseVO addResident(@RequestBody CreateResidentDTO createResidentVO) {
+//        Person person = new Person();
+//        BeanUtil.copyProperties(createResidentVO, person, CopyOptions.create().ignoreNullValue());
+        personServiceI.addResident(createResidentVO);
         return ResponseVO.buildSuccess().setMessage(19);
     }
 

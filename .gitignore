@@ -16,6 +16,7 @@
 *.iml
 *.ipr
 .DS_Store
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -23,3 +24,5 @@
 /nbdist/
 /.nb-gradle/
 /build/
+
+application-dev.yml
