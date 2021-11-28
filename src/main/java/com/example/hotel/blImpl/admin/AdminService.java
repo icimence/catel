@@ -4,7 +4,7 @@ import com.example.hotel.bl.admin.AdminServiceI;
 import com.example.hotel.bl.user.AccountServiceI;
 import com.example.hotel.data.admin.AdminMapper;
 import com.example.hotel.data.user.AccountMapper;
-import com.example.hotel.po.User;
+import com.example.hotel.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

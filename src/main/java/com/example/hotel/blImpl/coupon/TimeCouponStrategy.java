@@ -2,8 +2,8 @@ package com.example.hotel.blImpl.coupon;
 
 import com.example.hotel.bl.coupon.CouponMatchStrategyI;
 import com.example.hotel.enums.CouponType;
-import com.example.hotel.po.Coupon;
-import com.example.hotel.po.Order;
+import com.example.hotel.model.Coupon;
+import com.example.hotel.model.Order;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

@@ -11,7 +11,7 @@ import com.example.hotel.controller.user.AccountController;
 import com.example.hotel.controller.user.PersonController;
 import com.example.hotel.data.hotel.RoomMapper;
 import com.example.hotel.enums.RoomType;
-import com.example.hotel.po.Room;
+import com.example.hotel.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

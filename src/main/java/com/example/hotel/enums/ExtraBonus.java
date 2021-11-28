@@ -1,6 +1,6 @@
 package com.example.hotel.enums;
 
-public enum HotelService {
+public enum ExtraBonus {
     WiFi,
     HotWater,
     WakeUp

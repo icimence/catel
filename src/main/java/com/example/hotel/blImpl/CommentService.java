@@ -2,13 +2,16 @@ package com.example.hotel.blImpl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.hotel.bl.CommentServiceI;
 import com.example.hotel.data.order.CommentMapper;
 import com.example.hotel.data.order.OrderMapper;
 import com.example.hotel.data.user.AccountMapper;
-import com.example.hotel.po.Comment;
-import com.example.hotel.po.Order;
-import com.example.hotel.po.User;
+import com.example.hotel.dto.DtoPublishComment;
+import com.example.hotel.model.Comment;
+import com.example.hotel.model.Order;
+import com.example.hotel.model.User;
+import com.example.hotel.util.AllMapper;
 import com.example.hotel.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CommentService implements CommentServiceI {
+public class CommentService {
 
     final private CommentMapper commentMapper;
     final private OrderMapper orderMapper;
@@ -30,19 +33,14 @@ public class CommentService implements CommentServiceI {
         this.accountMapper = accountMapper;
     }
 
-    @Override
-    public void comment(CommentVO commentVO) {
-        Comment comment = new Comment();
-        BeanUtil.copyProperties(commentVO, comment, CopyOptions.create().ignoreNullValue());
-        Order order = orderMapper.getOrderById(commentVO.getOrderId());
+    public void comment(DtoPublishComment dtoPublishComment) {
+        Comment comment = AllMapper.X.toComment(dtoPublishComment);
         commentMapper.insert(comment);
-        order.setCommentId(comment.getId());
-        orderMapper.update(order);
     }
 
-    @Override
     public List<CommentVO> getComment(int hotelId) {
-        return commentMapper.select(hotelId).stream().map(comment -> {
+        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<Comment>().eq(Comment::getHotelId, hotelId);
+        return commentMapper.selectList(queryWrapper).stream().map(comment -> {
             CommentVO commentVO = new CommentVO();
             BeanUtil.copyProperties(comment, commentVO, CopyOptions.create().ignoreNullValue());
             User user = accountMapper.select(comment.getUserId());

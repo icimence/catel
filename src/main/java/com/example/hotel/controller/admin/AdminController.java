@@ -5,7 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.hotel.bl.admin.AdminServiceI;
 import com.example.hotel.bl.user.AccountServiceI;
 import com.example.hotel.enums.UserType;
-import com.example.hotel.po.User;
+import com.example.hotel.model.User;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.ResponseVO;
 import com.example.hotel.vo.user.UserForm;

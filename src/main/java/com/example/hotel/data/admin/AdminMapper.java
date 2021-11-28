@@ -1,6 +1,6 @@
 package com.example.hotel.data.admin;
 
-import com.example.hotel.po.User;
+import com.example.hotel.model.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

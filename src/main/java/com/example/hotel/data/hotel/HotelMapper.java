@@ -1,6 +1,6 @@
 package com.example.hotel.data.hotel;
 
-import com.example.hotel.po.Hotel;
+import com.example.hotel.model.Hotel;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface HotelMapper {
     List<Hotel> selectAllHotel();
 
     @Select(value = "select * from hotel.Hotel where id=#{id} ")
-    Hotel selectById(@Param("id") Integer id);
+    Hotel selectById(@Param("id") long id);
 
     @Select(value = "select * from hotel.Hotel where manager_id=#{id} ")
     List<Hotel> selectByManager(@Param("id") Integer id);

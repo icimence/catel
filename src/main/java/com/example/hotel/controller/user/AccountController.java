@@ -3,7 +3,7 @@ package com.example.hotel.controller.user;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.hotel.bl.user.AccountServiceI;
-import com.example.hotel.po.User;
+import com.example.hotel.model.User;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.CaptchaVO;
 import com.example.hotel.vo.ResponseVO;

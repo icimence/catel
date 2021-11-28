@@ -1,7 +1,7 @@
 package com.example.hotel.data.user;
 
-import com.example.hotel.po.CreditUp;
-import com.example.hotel.po.User;
+import com.example.hotel.model.CreditUp;
+import com.example.hotel.model.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface AccountMapper {
     User getAccountByEmail(@Param("email") String email);
 
     @Select(value = "select * from hotel.User where id=#{id}")
-    User select(@Param("id") int id);
+    User select(@Param("id") long id);
 
     @Select(value = "select * from hotel.User where username=#{username}  ")
     User getAccountByUsername(@Param("username") String username);
@@ -37,12 +37,14 @@ public interface AccountMapper {
     void beforeDelete(@Param("id") int id);
 
     @Select(value = "select coalesce(sum(credit_delta), 0) from hotel.OrderList where user_id=#{id} ")
-    double getCreditFromOrder(@Param("id") int id);
+    double getCreditFromOrder(@Param("id") long id);
 
     @Select(value = "select coalesce(sum(credit_delta), 0) from hotel.CreditUp where user_id=#{id} ")
-    double getCreditFromDirect(@Param("id") int id);
+    double getCreditFromDirect(@Param("id") long id);
 
     @Select(value = "select * from hotel.CreditUp where user_id=#{id} ")
-    List<CreditUp> getDirect(@Param("id") int id);
+    List<CreditUp> getDirect(@Param("id") long id);
 
+    @Select("select credit from User where id=#{userId}")
+    double getCredit(long userId);
 }

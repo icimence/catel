@@ -1,16 +1,13 @@
 package com.example.hotel.data.user;
 
-import com.example.hotel.po.Person;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.hotel.model.Person;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface PersonMapper {
-
-    @Insert(value = "insert into hotel.Person (user_id, real_name, id_no, phone_number, birthday) values " +
-        "(#{person.userId} ,#{person.realName} ,#{person.idNo} ,#{person.phoneNumber} ,#{person.birthday} )")
-    void insert(@Param("person") Person person);
+public interface PersonMapper extends BaseMapper<Person> {
 
     @Insert(value = "insert into Person (user_id, id_no, real_name, phone_number, birthday) values " +
         "(#{userId} ,#{idNo} ,#{realName} ,#{phoneNumber} ,#{birthday})")

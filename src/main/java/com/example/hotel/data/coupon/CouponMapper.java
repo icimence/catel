@@ -1,6 +1,6 @@
 package com.example.hotel.data.coupon;
 
-import com.example.hotel.po.Coupon;
+import com.example.hotel.model.Coupon;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ public interface CouponMapper {
     void insertCoupon(@Param("coupon") Coupon coupon);
 
     @Select(value = "select * from hotel.Coupon where hotel_id=#{hotelId} ")
-    List<Coupon> selectByHotelId(@Param("hotelId") Integer hotelId);
+    List<Coupon> selectByHotelId(@Param("hotelId") long hotelId);
 
     @Select(value = "select * from hotel.Coupon where type=#{type} ")
     List<Coupon> selectByType(@Param("type") String type);
 
     @Delete(value = "delete from hotel.Coupon where id=#{id}  ")
-    void remove(@Param("id") int id);
+    void remove(@Param("id") long id);
 
     @Select(value = "select * from hotel.Coupon where hotel_id=-1")
     List<Coupon> getGlobal();

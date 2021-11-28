@@ -2,11 +2,11 @@ package com.example.hotel.controller.coupon;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.example.hotel.bl.coupon.CouponServiceI;
+import com.example.hotel.blImpl.coupon.CouponService;
 import com.example.hotel.data.hotel.HotelMapper;
 import com.example.hotel.data.user.PersonMapper;
-import com.example.hotel.po.Coupon;
-import com.example.hotel.po.Order;
+import com.example.hotel.model.Coupon;
+import com.example.hotel.model.Order;
 import com.example.hotel.vo.ResponseVO;
 import com.example.hotel.vo.coupon.CouponVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,12 @@ import java.util.List;
 @RequestMapping("/api/coupon")
 public class CouponController {
 
-    private final CouponServiceI couponService;
+    private final CouponService couponService;
     private final PersonMapper personMapper;
     private final HotelMapper hotelMapper;
 
     @Autowired
-    public CouponController(CouponServiceI couponService, PersonMapper personMapper, HotelMapper hotelMapper) {
+    public CouponController(CouponService couponService, PersonMapper personMapper, HotelMapper hotelMapper) {
         this.couponService = couponService;
         this.personMapper = personMapper;
         this.hotelMapper = hotelMapper;
@@ -62,9 +62,7 @@ public class CouponController {
      */
     @PostMapping("/get-matched")
     public ResponseVO getOrderMatchCoupons(@RequestBody Order order) {
-        order.setUserId(personMapper.getUserId(order.getPersonId()));
         order.setHotelName(hotelMapper.selectById(order.getHotelId()).getName());
-
         List<Coupon> coupons = couponService.getMatchOrderCoupon(order);
         return ResponseVO.buildSuccess(coupons);
     }
@@ -79,7 +77,6 @@ public class CouponController {
         List<Coupon> coupons = couponService.getByHotel(hotelId);
         return ResponseVO.buildSuccess(coupons);
     }
-
 
     /**
      * get all global coupons

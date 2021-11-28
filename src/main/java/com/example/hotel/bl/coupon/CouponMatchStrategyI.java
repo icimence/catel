@@ -1,7 +1,7 @@
 package com.example.hotel.bl.coupon;
 
-import com.example.hotel.po.Coupon;
-import com.example.hotel.po.Order;
+import com.example.hotel.model.Coupon;
+import com.example.hotel.model.Order;
 
 public interface CouponMatchStrategyI {
 

@@ -4,10 +4,10 @@ import com.example.hotel.bl.coupon.CouponMatchStrategyI;
 import com.example.hotel.data.user.AccountMapper;
 import com.example.hotel.data.user.PersonMapper;
 import com.example.hotel.enums.CouponType;
-import com.example.hotel.po.Coupon;
-import com.example.hotel.po.Order;
-import com.example.hotel.po.Person;
-import com.example.hotel.po.User;
+import com.example.hotel.model.Coupon;
+import com.example.hotel.model.Order;
+import com.example.hotel.model.Person;
+import com.example.hotel.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,7 @@ public class VipCouponStrategy implements CouponMatchStrategyI {
     @Override
     public boolean isMatch(Order order, Coupon coupon) {
         if (coupon.getType() != CouponType.Vip) return false;
-        Person person = personMapper.select(order.getPersonId());
-        User user = accountMapper.select(person.getUserId());
+        User user = accountMapper.select(order.getUserId());
         return user.getVipEnd().isAfter(LocalDateTime.now()) && user.getVipType().compareTo(coupon.getLevel()) >= 0;
     }
 

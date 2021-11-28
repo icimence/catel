@@ -1,6 +1,6 @@
 package com.example.hotel.bl.admin;
 
-import com.example.hotel.po.User;
+import com.example.hotel.model.User;
 
 import java.util.List;
 

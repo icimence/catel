@@ -10,7 +10,6 @@ spring:
   profiles:
     active: dev
 
-mybatis:
-  mapper-locations: classpath:dataImpl/*/*Mapper.xml
+mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

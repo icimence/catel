@@ -1,4 +1,4 @@
-package com.example.hotel.po;
+package com.example.hotel.model;
 
 import lombok.Data;
 

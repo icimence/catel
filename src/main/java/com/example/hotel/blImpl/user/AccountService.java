@@ -6,9 +6,9 @@ import com.example.hotel.bl.user.AccountServiceI;
 import com.example.hotel.data.user.AccountMapper;
 import com.example.hotel.data.user.PersonMapper;
 import com.example.hotel.enums.VipType;
-import com.example.hotel.po.CreditUp;
-import com.example.hotel.po.Order;
-import com.example.hotel.po.User;
+import com.example.hotel.model.CreditUp;
+import com.example.hotel.model.Order;
+import com.example.hotel.model.User;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.util.OssService;
 import com.example.hotel.vo.order.CreditUpVO;
@@ -78,7 +78,7 @@ public class AccountService implements AccountServiceI {
         if (exists(user)) throw new OopsException(1);
         if (newAvatar) {
             user.setAvatar(ossService.savePublic("hotel-res-img-public",
-                    "user/" + user.getId().toString() + "/avatar.png", user.getAvatar()));
+                                                 "user/" + user.getId().toString() + "/avatar.png", user.getAvatar()));
         }
         accountMapper.updateAccount(user);
     }
@@ -89,9 +89,9 @@ public class AccountService implements AccountServiceI {
         LocalDate nowPWeek = LocalDate.now();
         User user = accountMapper.select(order.getUserId());
         int aheadLimit = user.getVipType() == VipType.Big ? 2 :
-                user.getVipType() == VipType.Small ? 4 : 8;
+            user.getVipType() == VipType.Small ? 4 : 8;
         if (nowPWeek.plusDays(aheadLimit).isAfter(order.getCheckInDate())) {
-            order.setCreditDelta(-order.getPrice() / 2);
+            order.setCreditDelta(-order.getPrice().doubleValue() / 2);
         }
     }
 

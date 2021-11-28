@@ -2,12 +2,11 @@ package com.example.hotel.blImpl.hotel;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.example.hotel.bl.hotel.HotelServiceI;
 import com.example.hotel.data.hotel.HotelMapper;
 import com.example.hotel.data.hotel.RoomMapper;
 import com.example.hotel.data.order.OrderMapper;
-import com.example.hotel.po.Hotel;
-import com.example.hotel.po.Room;
+import com.example.hotel.model.Hotel;
+import com.example.hotel.model.Room;
 import com.example.hotel.util.FzyService;
 import com.example.hotel.util.OssService;
 import com.example.hotel.vo.hotel.HotelVO;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class HotelService implements HotelServiceI {
+public class HotelService {
 
     private final HotelMapper hotelMapper;
     private final RoomMapper roomMapper;
@@ -38,19 +37,16 @@ public class HotelService implements HotelServiceI {
         this.orderMapper = orderMapper;
     }
 
-    @Override
     public void addHotel(HotelVO hotelVO) {
         Hotel hotel = new Hotel();
         BeanUtil.copyProperties(hotelVO, hotel, CopyOptions.create().setIgnoreNullValue(true));
         hotelMapper.insertHotel(hotel);
     }
 
-    @Override
     public List<Hotel> getHotelByManager(Integer id) {
         return hotelMapper.selectByManager(id);
     }
 
-    @Override
     public void updateHotelInfo(HotelVO hotelVO) {
         Hotel hotel = hotelMapper.selectById(hotelVO.getId());
         boolean newPic = null != hotelVO.getPic() && !hotelVO.getPic().equals(hotel.getPic());
@@ -62,12 +58,10 @@ public class HotelService implements HotelServiceI {
         hotelMapper.updateHotel(hotel);
     }
 
-    @Override
     public List<Hotel> unboundHotel() {
         return hotelMapper.unboundHotel();
     }
 
-    @Override
     public List<Hotel> fzySearch(String keyword) {
         List<Hotel> hotels = hotelMapper.selectAllHotel();
         hotels.sort((h1, h2) -> {
@@ -79,7 +73,6 @@ public class HotelService implements HotelServiceI {
         return hotels.stream().filter(hotel -> fzyService.similarity(keyword, hotel) > 0.6).collect(Collectors.toList());
     }
 
-    @Override
     public List<HotelVO> getHot() {
         List<Hotel> all = hotelMapper.selectAllHotel();
         HashMap<Integer, Integer> hots = new HashMap<>();
@@ -94,7 +87,6 @@ public class HotelService implements HotelServiceI {
         }).collect(Collectors.toList());
     }
 
-    @Override
     public List<HotelVO> retrieveHotels() {
         return hotelMapper.selectAllHotel().stream().map(po -> {
             HotelVO vo = new HotelVO();
@@ -103,8 +95,7 @@ public class HotelService implements HotelServiceI {
         }).collect(Collectors.toList());
     }
 
-    @Override
-    public HotelVO selectById(Integer hotelId) {
+    public HotelVO selectById(long hotelId) {
         Hotel hotel = hotelMapper.selectById(hotelId);
         HotelVO hotelVO = new HotelVO();
         BeanUtil.copyProperties(hotel, hotelVO, CopyOptions.create().ignoreNullValue());

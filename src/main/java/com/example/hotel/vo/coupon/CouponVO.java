@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.hotel.enums.CouponStatus;
 import com.example.hotel.enums.CouponType;
-import com.example.hotel.po.Coupon;
+import com.example.hotel.model.Coupon;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;

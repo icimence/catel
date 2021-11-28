@@ -1,7 +1,7 @@
 package com.example.hotel.bl.user;
 
-import com.example.hotel.po.Order;
-import com.example.hotel.po.User;
+import com.example.hotel.model.Order;
+import com.example.hotel.model.User;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.order.CreditUpVO;
 import com.example.hotel.vo.user.UserForm;

@@ -1,4 +1,4 @@
-package com.example.hotel.po;
+package com.example.hotel.model;
 
 import com.example.hotel.enums.UserType;
 import com.example.hotel.enums.VipType;

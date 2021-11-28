@@ -1,6 +1,6 @@
 package com.example.hotel.controller.hotel;
 
-import com.example.hotel.bl.hotel.HotelServiceI;
+import com.example.hotel.blImpl.hotel.HotelService;
 import com.example.hotel.vo.ResponseVO;
 import com.example.hotel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/hotel")
 public class HotelController {
 
-    private final HotelServiceI hotelService;
+    private final HotelService hotelService;
 
     @Autowired
-    public HotelController(HotelServiceI hotelService) {
+    public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
     }
 

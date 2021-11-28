@@ -1,12 +1,13 @@
 package com.example.hotel.data.order;
 
-import com.example.hotel.po.Order;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.hotel.model.Order;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface OrderMapper {
+public interface OrderMapper extends BaseMapper<Order> {
 
     @Insert(value = "insert into hotel.OrderList(user_id, person_id, hotel_id, check_in_date, check_out_date, room_type," +
             " room_num, people_num, have_child, create_date, price, order_state,breakfast,comment_id,credit_delta,hotel_name) values " +
@@ -37,9 +38,6 @@ public interface OrderMapper {
 
     @Update(value = "update hotel.OrderList set order_state='Expired',credit_delta=0 where id=#{id} ")
     void expire(@Param("id") int id);
-
-    @Select(value = "select * from hotel.OrderList where id=#{orderId} ")
-    Order getOrderById(@Param("orderId") int orderId);
 
     @Select(value = "select * from hotel.OrderList where hotel_id=#{hotelId} ")
     List<Order> getOrderByHotel(@Param("hotelId") Integer hotelId);

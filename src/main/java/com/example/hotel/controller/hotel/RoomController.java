@@ -1,7 +1,7 @@
 package com.example.hotel.controller.hotel;
 
 import com.example.hotel.bl.hotel.RoomServiceI;
-import com.example.hotel.po.Room;
+import com.example.hotel.model.Room;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.ResponseVO;
 import com.example.hotel.vo.hotel.RoomVO;

@@ -1,23 +1,25 @@
 package com.example.hotel.controller.order;
 
-import com.example.hotel.bl.order.OrderServiceI;
+import com.example.hotel.blImpl.order.OrderService;
+import com.example.hotel.dto.DtoOrderDetail;
+import com.example.hotel.dto.DtoReserveGroup;
+import com.example.hotel.dto.DtoReservePersonal;
 import com.example.hotel.util.OopsException;
 import com.example.hotel.vo.CreditTransVO;
-import com.example.hotel.vo.OrderVO;
 import com.example.hotel.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
-    private final OrderServiceI orderService;
+    private final OrderService orderService;
 
     @Autowired
-    public OrderController(OrderServiceI orderService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -26,19 +28,26 @@ public class OrderController {
      * _in an order, with starting and ending date,
      * chosen room in certain hotel, room number, calculated total price, child or not
      */
-    @PostMapping("/new")
-    public ResponseVO reserveHotel(@RequestBody OrderVO orderVO) {
-        try {
-            orderService.addOrder(orderVO);
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return ResponseVO.buildFailure(e.getMessage());
-        }
+    @PostMapping("/")
+    public ResponseVO reserveHotel(@RequestBody DtoReservePersonal dtoReservePersonal) throws OopsException {
+        long id = orderService.addOrder(dtoReservePersonal);
         return ResponseVO.buildSuccess().setMessage(12);
     }
 
+    @PostMapping("/group")
+    public ResponseVO reserveHotelForGroup(@RequestBody DtoReserveGroup dtoReserveGroup) throws OopsException {
+        orderService.addGroupOrder(dtoReserveGroup);
+        return ResponseVO.buildSuccess().setMessage(12);
+    }
+
+    @GetMapping("/detail")
+    public ResponseVO orderDetail(@RequestParam long orderId) {
+        DtoOrderDetail dtoOrderDetail = orderService.orderDetail(orderId);
+        return ResponseVO.buildSuccess(dtoOrderDetail);
+    }
+
     /**
-     * mark a order as expired (paid but nobody came)
+     * mark an order as expired (paid but nobody came)
      * _in order id
      */
     @PostMapping("/expire")

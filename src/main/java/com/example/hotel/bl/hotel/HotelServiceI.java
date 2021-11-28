@@ -1,6 +1,6 @@
 package com.example.hotel.bl.hotel;
 
-import com.example.hotel.po.Hotel;
+import com.example.hotel.model.Hotel;
 import com.example.hotel.vo.hotel.HotelVO;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface HotelServiceI {
     /**
      * 获取某家酒店详细信息
      */
-    HotelVO selectById(Integer hotelId);
+    HotelVO selectById(long hotelId);
 
     /**
      * 得到某位经理所管理的酒店列表

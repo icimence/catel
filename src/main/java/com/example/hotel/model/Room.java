@@ -1,4 +1,4 @@
-package com.example.hotel.po;
+package com.example.hotel.model;
 
 import com.example.hotel.enums.RoomType;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Room {
 
-    private Integer id;
+    private Long id;
     private RoomType roomType;
     private Integer hotelId;
     private Double price;

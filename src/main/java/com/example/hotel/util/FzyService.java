@@ -1,7 +1,7 @@
 package com.example.hotel.util;
 
 import com.example.hotel.enums.HotelStar;
-import com.example.hotel.po.Hotel;
+import com.example.hotel.model.Hotel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
