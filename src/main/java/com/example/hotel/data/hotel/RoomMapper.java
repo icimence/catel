@@ -1,5 +1,6 @@
 package com.example.hotel.data.hotel;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.hotel.model.Order;
 import com.example.hotel.model.Room;
 import org.apache.ibatis.annotations.*;
@@ -8,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
-public interface RoomMapper {
+public interface RoomMapper extends BaseMapper<Room> {
 
     @Update(value = "update hotel.RoomNumber set number=number-#{order.roomNum} where " +
         "room_id=#{roomId} and date >= #{order.checkInDate} and date < #{order.checkOutDate} ")

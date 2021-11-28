@@ -21,14 +21,12 @@ public class Task {
     private final OrderMapper orderMapper;
     private final AccountMapper accountMapper;
     private final RoomMapper roomMapper;
-    private final TestInit testInit;
 
     @Autowired
-    public Task(OrderMapper orderMapper, AccountMapper accountMapper, RoomMapper roomMapper, TestInit testInit) {
+    public Task(OrderMapper orderMapper, AccountMapper accountMapper, RoomMapper roomMapper) {
         this.orderMapper = orderMapper;
         this.accountMapper = accountMapper;
         this.roomMapper = roomMapper;
-        this.testInit = testInit;
     }
 
     @Scheduled(initialDelay = 0, fixedRate = 60 * 1000)
@@ -60,7 +58,6 @@ public class Task {
 
     @PostConstruct
     public void init() {
-        testInit.testInit();
     }
 
 }

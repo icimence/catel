@@ -15,4 +15,5 @@ public class DtoOrderDetail {
     private String checkOutDate;
     private String createdTime;
     private String orderState;
+    private DtoRoomInfo roomInfo;
 }

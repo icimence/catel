@@ -13,4 +13,3 @@ public class PersonVO {
     String birthday;
 
 }
-

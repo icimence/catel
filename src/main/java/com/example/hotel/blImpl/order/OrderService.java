@@ -9,10 +9,7 @@ import com.example.hotel.data.hotel.RoomMapper;
 import com.example.hotel.data.order.OrderMapper;
 import com.example.hotel.data.user.AccountMapper;
 import com.example.hotel.data.user.PersonMapper;
-import com.example.hotel.dto.DtoOrderDetail;
-import com.example.hotel.dto.DtoReserve;
-import com.example.hotel.dto.DtoReserveGroup;
-import com.example.hotel.dto.DtoReservePersonal;
+import com.example.hotel.dto.*;
 import com.example.hotel.enums.OrderState;
 import com.example.hotel.model.Hotel;
 import com.example.hotel.model.Order;
@@ -176,6 +173,7 @@ public class OrderService {
     public DtoOrderDetail orderDetail(long orderId) {
         Order order = orderMapper.selectById(orderId);
         DtoOrderDetail dtoOrderDetail = AllMapper.X.toDetail(order);
+        dtoOrderDetail.setRoomInfo(null);
         System.out.println(dtoOrderDetail);
         return dtoOrderDetail;
     }
