@@ -1,20 +1,13 @@
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
-/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
-
---
--- Table structure for table `Coupon`
---
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+drop table if exists `RoomNumber`;
+drop table if exists `UsableRoom`;
+drop table if exists `RoomUnit`;
+drop table if exists `RoomConfig`;
+drop table if exists `Room`;
+drop table if exists `Hotel`;
+
 DROP TABLE IF EXISTS `Coupon`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -36,9 +29,6 @@ CREATE TABLE `Coupon` (
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `Coupon`
---
 BEGIN;
 /*!40000 ALTER TABLE `Coupon`
     DISABLE KEYS */;
@@ -54,51 +44,8 @@ INSERT INTO
     ENABLE KEYS */;
 COMMIT;
 
---
--- Table structure for table `Hotel`
---
 
-DROP TABLE IF EXISTS `Hotel`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Hotel` (
-    `id`           int(11)       not null auto_increment,
-    `manager_id`   int(11)       not null default 0,
-    `credit_bound` int(11)       not null default 0,
-    `rate`         double(10, 2) not null default 0,
-    `name`         varchar(255)  not null default '',
-    `description`  varchar(255)  not null default '',
-    `address`      varchar(255)  not null default '',
-    `biz_region`   varchar(255)  not null default '',
-    `hotel_star`   varchar(255)  not null default '',
-    `phone_number` varchar(255)  not null default '',
-    `pic`          varchar(255)  not null default '',
-    `announcement` varchar(2000) not null default '',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `Hotel`
---
-
-BEGIN;
-/*!40000 ALTER TABLE `Hotel`
-    DISABLE KEYS */;
-INSERT INTO
-    `Hotel`
-(manager_id, credit_bound, rate, name, description, address, biz_region, hotel_star, phone_number, pic, announcement)
-    values
-        (2, 100, 4.7, '汉庭酒店', '这是汉庭酒店的简介描述', '这是汉庭酒店的地址', 'XiDan', 'Five', '12345678910',
-         'https://dimg04.c-ctrip.com/images/0202i120008ce99hwC65B_R_600_400_R5_D.jpg', '本酒店现在没有活动，爱住不住。'),
-        (2, 100, 4.5, '儒家酒店', '这是如家酒店的简介描述', '这是如家酒店的地址', 'XiDan', 'Four', '78910123456',
-         'https://dimg04.c-ctrip.com/images/0205n1200091bl12d03EB_R_600_400_R5_D.png', '双十一活动，满500减100。'),
-        (3, 100, 5, '桂圆酒店', '这是桂圆酒店的描述简介', '这是桂圆酒店的地址', 'XiDan', 'Four', '45678912310',
-         '	https://dimg04.c-ctrip.com/images/02005120008bxzcul2103_R_600_400_R5_D.jpg', '本酒店现在没有优惠，白嫖怪快滚');
-/*!40000 ALTER TABLE `Hotel`
-    ENABLE KEYS */;
-COMMIT;
 
 --
 -- Table structure for table `OrderList`
@@ -155,16 +102,7 @@ insert into
     ENABLE KEYS */;
 COMMIT;
 
-drop table if exists `Room`;
-create table `Room` (
-    `room_id`    varchar(8)  not null,
-    `hotel_id`   int(11)     not null,
-    `people_max` int(11)     not null,
-    `price`      double      not null,
-    `breakfast`  bool        not null,
-    `room_type`  varchar(50) not null,
-    primary key (`room_id`, `hotel_id`)
-);
+
 
 DROP TABLE IF EXISTS `User`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -219,15 +157,7 @@ INSERT INTO
 /*!40000 ALTER TABLE `User`
     ENABLE KEYS */;
 COMMIT;
-/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
 
 DROP TABLE IF EXISTS `Person`;
@@ -267,16 +197,6 @@ insert into
         (5, 1, 5, 'Good', 'very good'),
         (6, 1, 2, 'Hell', 'very bad');
 
-drop table if exists `RoomNumber`;
-create table `RoomNumber` (
-    `id`      int(11) not null auto_increment,
-    `room_id` int(11) not null,
-    `number`  int(11) not null default 0,
-    `date`    date    not null default '1970-01-01',
-    primary key (`id`)
-) engine = InnoDB
-  default charset = utf8;
-
 drop table if exists `CreditUp`;
 create table `CreditUp` (
     `id`           int(11)       not null auto_increment primary key,
@@ -286,10 +206,11 @@ create table `CreditUp` (
 
 drop table if exists `OrderRoom`;
 create table `OrderRoom` (
-    `order_id`  int(11) not null,
-    `room_id`   int(11) not null,
-    `residents` int(11) not null,
-    primary key (order_id, room_id)
+    `order_id`    int(11) not null,
+    `room_id`     int(11) not null,
+    `config_id`   int(11) not null, # REDUNDANT
+    `resident_id` int(11) not null,
+    primary key (order_id, config_id)
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
