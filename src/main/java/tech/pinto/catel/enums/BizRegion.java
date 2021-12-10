@@ -4,5 +4,5 @@ public enum BizRegion {
     XiDan,
     DongDan,
     NanDan,
-    BeiDan;
+    BeiDan,
 }

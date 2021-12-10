@@ -19,6 +19,7 @@ public class OopsException extends Exception {
         map.put(6, "用户名与邮箱不匹配！");
         map.put(7, "该类房型已存在！");
         map.put(8, "不能白嫖！");
+        map.put(9, "无效的日期参数");
     }
 
     private String message;

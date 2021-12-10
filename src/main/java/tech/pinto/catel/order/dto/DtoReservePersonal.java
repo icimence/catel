@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class DtoReservePersonal extends DtoReserve {
-    private long roomId;
-    private List<Integer> residents;
+    private long configId;
+    private List<Long> residents;
 }

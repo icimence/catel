@@ -1,6 +1,7 @@
-package tech.pinto.catel.room;
+package tech.pinto.catel.domain;
 
 import lombok.*;
+import tech.pinto.catel.domain.RoomConfig;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

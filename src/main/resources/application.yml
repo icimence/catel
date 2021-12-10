@@ -10,9 +10,15 @@ spring:
   jpa:
     properties:
       hibernate:
+#        current_session_context_class: thread
+        enable_lazy_load_no_trans: true
         jdbc:
           batch_size: 100
     open-in-view: false
+#    hibernate:
+#      naming:
+#        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+#        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
 mybatis-plus:
   global-config:

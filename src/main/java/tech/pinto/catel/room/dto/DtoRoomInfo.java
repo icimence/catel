@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DtoRoomInfo {
-    private long roomId;
+    private Long roomId;
     private long residentId;
     private double price;
     private boolean breakfast;

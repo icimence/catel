@@ -1,6 +1,6 @@
 package tech.pinto.catel.util;
 
-import tech.pinto.catel.hotel.Hotel;
+import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.enums.HotelStar;
 import org.springframework.stereotype.Service;
 

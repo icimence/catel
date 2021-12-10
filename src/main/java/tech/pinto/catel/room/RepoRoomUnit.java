@@ -1,6 +1,41 @@
 package tech.pinto.catel.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import tech.pinto.catel.domain.RoomConfig;
+import tech.pinto.catel.domain.RoomUnit;
+import tech.pinto.catel.domain.Order;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 
 public interface RepoRoomUnit extends JpaRepository<RoomUnit, Long> {
+    @Modifying
+    @Query(nativeQuery = true, value =
+        "update room_unit ru " +
+            "join (select room_id from order_room where order_id = :order.id) X " +
+            "set number = number + 1 " +
+            "where 1=1 " +
+            "and ru.date >= :order.checkInDate " +
+            "and ru.date < :order.checkOutDate"
+    )
+        // TODO wrong logic!
+    void restoreCanceledRoom(Order order);
+
+    @Query("select ru.number from RoomUnit ru " +
+        "where ru.roomConfig.id=:configId " +
+        "and ru.date >= :dateStart " +
+        "and ru.date < :dateEnd")
+    List<Integer> getRoomNumber(long configId, LocalDate dateStart, LocalDate dateEnd);
+
+    @Modifying
+    @Transactional
+    @Query("update RoomUnit ru " +
+        "set ru.number = ru.number - :number " +
+        "where ru.roomConfig = :config " +
+        "and ru.date >= :in " +
+        "and ru.date < :out ")
+    void invalidOccupied(RoomConfig config, int number, LocalDate in, LocalDate out);
 }

@@ -1,8 +1,8 @@
 package tech.pinto.catel.room;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tech.pinto.catel.model.Order;
-import tech.pinto.catel.room.Room;
+import tech.pinto.catel.domain.Room;
+import tech.pinto.catel.domain.Order;
 import org.apache.ibatis.annotations.*;
 
 import java.math.BigDecimal;

@@ -3,6 +3,7 @@ package tech.pinto.catel.hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import tech.pinto.catel.domain.Hotel;
 
 import javax.transaction.Transactional;
 

@@ -1,6 +1,6 @@
 package tech.pinto.catel.admin;
 
-import tech.pinto.catel.user.User;
+import tech.pinto.catel.domain.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

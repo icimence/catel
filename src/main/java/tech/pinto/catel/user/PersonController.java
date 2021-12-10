@@ -2,9 +2,9 @@ package tech.pinto.catel.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import tech.pinto.catel.domain.Resident;
 import tech.pinto.catel.user.dto.DtoResidentDeletion;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
-import tech.pinto.catel.model.Person;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.user.PersonVO;
@@ -53,9 +53,9 @@ public class PersonController {
      */
     @PutMapping("/")
     public Response update(@RequestBody PersonVO personVO) {
-        Person person = new Person();
-        BeanUtil.copyProperties(personVO, person, CopyOptions.create().ignoreNullValue());
-        personService.update(person);
+        Resident resident = new Resident();
+        BeanUtil.copyProperties(personVO, resident, CopyOptions.create().ignoreNullValue());
+        personService.update(resident);
         return Response.buildSuccess().setMessage(21);
     }
 
@@ -64,7 +64,7 @@ public class PersonController {
      * _in user id
      */
     @GetMapping("/by-user")
-    public Response getByUserId(@RequestParam int id) {
+    public Response getByUserId(@RequestParam long id) {
         List<PersonVO> res = personService.selectByUserId(id).stream().map((e) -> {
             PersonVO personVO = new PersonVO();
             BeanUtil.copyProperties(e, personVO);
@@ -80,8 +80,8 @@ public class PersonController {
     @GetMapping("/")
     public Response select(int id) {
         try {
-            Person person = personService.select(id);
-            return Response.buildSuccess(person);
+            Resident resident = personService.select(id);
+            return Response.buildSuccess(resident);
         } catch (OopsException e) {
             e.printStackTrace();
             return Response.buildFailure(e.getMessage());

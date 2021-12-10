@@ -2,7 +2,8 @@ package tech.pinto.catel.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.bl.AccountServiceI;
+import tech.pinto.catel.domain.User;
+import tech.pinto.catel.user.dto.DtoUserInfo;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
 import tech.pinto.catel.util.Response;
@@ -28,10 +29,10 @@ import java.io.IOException;
 public class AccountController {
 
     private final Producer kaptchaProducer;
-    private final AccountServiceI accountService;
+    private final AccountService accountService;
 
     @Autowired
-    public AccountController(Producer kaptchaProducer, AccountServiceI accountService) {
+    public AccountController(Producer kaptchaProducer, AccountService accountService) {
         this.kaptchaProducer = kaptchaProducer;
         this.accountService = accountService;
     }
@@ -43,14 +44,13 @@ public class AccountController {
      */
     @PostMapping("/login")
     public Response login(@RequestBody UserForm userForm) {
-        User user;
         try {
-            user = accountService.login(userForm);
+            var info = accountService.login(userForm);
+            return Response.buildSuccess(info).setMessage(15);
         } catch (OopsException e) {
             e.printStackTrace();
             return Response.buildFailure(e.getMessage());
         }
-        return Response.buildSuccess(user).setMessage(15);
 
     }
 

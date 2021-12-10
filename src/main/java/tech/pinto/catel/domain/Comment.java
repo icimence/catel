@@ -1,4 +1,4 @@
-package tech.pinto.catel.model;
+package tech.pinto.catel.domain;
 
 import lombok.Data;
 

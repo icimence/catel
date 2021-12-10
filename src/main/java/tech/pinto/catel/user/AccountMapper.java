@@ -1,7 +1,8 @@
 package tech.pinto.catel.user;
 
-import tech.pinto.catel.model.CreditUp;
+import tech.pinto.catel.domain.CreditUp;
 import org.apache.ibatis.annotations.*;
+import tech.pinto.catel.domain.User;
 
 import java.util.List;
 

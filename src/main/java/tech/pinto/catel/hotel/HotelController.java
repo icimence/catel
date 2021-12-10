@@ -2,6 +2,7 @@ package tech.pinto.catel.hotel;
 
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
+import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class HotelController {
     }
 
     @GetMapping("/")
-    public Response hotelQuery(DtoHotelQuery dtoHotelQuery) {
+    public Response hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
         List<DtoHotelBrief> hotels = hotelService.hotelQuery(dtoHotelQuery);
         return Response.buildSuccess(hotels);
     }

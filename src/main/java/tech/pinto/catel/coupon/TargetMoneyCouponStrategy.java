@@ -2,8 +2,8 @@ package tech.pinto.catel.coupon;
 
 import tech.pinto.catel.bl.CouponMatchStrategyI;
 import tech.pinto.catel.enums.CouponType;
-import tech.pinto.catel.model.Coupon;
-import tech.pinto.catel.model.Order;
+import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.Order;
 import org.springframework.stereotype.Service;
 
 @Service

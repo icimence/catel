@@ -4,8 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.hotel.MapperHotel;
 import tech.pinto.catel.user.PersonMapper;
-import tech.pinto.catel.model.Coupon;
-import tech.pinto.catel.model.Order;
+import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.coupon.CouponVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class CouponController {
      */
     @PostMapping("/get-matched")
     public Response getOrderMatchCoupons(@RequestBody Order order) {
-        order.setHotelName(mapperHotel.selectById(order.getHotelId()).getName());
+        order.setHotelName(order.getHotel().getName());
         List<Coupon> coupons = couponService.getMatchOrderCoupon(order);
         return Response.buildSuccess(coupons);
     }

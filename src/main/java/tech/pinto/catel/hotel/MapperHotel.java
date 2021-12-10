@@ -1,7 +1,7 @@
 package tech.pinto.catel.hotel;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tech.pinto.catel.hotel.Hotel;
+import tech.pinto.catel.domain.Hotel;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

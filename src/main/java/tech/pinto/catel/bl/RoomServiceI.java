@@ -1,7 +1,7 @@
 package tech.pinto.catel.bl;
 
-import tech.pinto.catel.model.Order;
-import tech.pinto.catel.room.Room;
+import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.domain.Room;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.hotel.RoomVO;
 

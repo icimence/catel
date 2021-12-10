@@ -1,6 +1,6 @@
 package tech.pinto.catel.bl;
 
-import tech.pinto.catel.user.User;
+import tech.pinto.catel.domain.User;
 
 import java.util.List;
 

@@ -29,13 +29,13 @@ public class OrderController {
      */
     @PostMapping("/")
     public Response reserveHotel(@RequestBody DtoReservePersonal dtoReservePersonal) throws OopsException {
-        long id = orderService.addOrder(dtoReservePersonal);
-        return Response.buildSuccess().setMessage(12);
+        var orderId = orderService.reserve(dtoReservePersonal);
+        return Response.buildSuccess(orderId).setMessage(12);
     }
 
     @PostMapping("/group")
     public Response reserveHotelForGroup(@RequestBody DtoReserveGroup dtoReserveGroup) throws OopsException {
-        orderService.addGroupOrder(dtoReserveGroup);
+        orderService.reserveForGroup(dtoReserveGroup);
         return Response.buildSuccess().setMessage(12);
     }
 
@@ -60,7 +60,7 @@ public class OrderController {
      * _in order id
      */
     @PostMapping("/rm")
-    public Response annulOrder(@RequestParam int id) {
+    public Response annulOrder(@RequestParam long id) {
         orderService.annulOrder(id);
         return Response.buildSuccess().setMessage(14);
     }
@@ -91,7 +91,7 @@ public class OrderController {
      * _out orders
      */
     @GetMapping("/by-hotel")
-    public Response retrieveHotelOrders(@RequestParam int id) {
+    public Response retrieveHotelOrders(@RequestParam long id) {
         return Response.buildSuccess(orderService.getHotelOrders(id));
     }
 

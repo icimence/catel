@@ -4,9 +4,9 @@ import tech.pinto.catel.bl.CouponMatchStrategyI;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.user.PersonMapper;
 import tech.pinto.catel.enums.CouponType;
-import tech.pinto.catel.model.Coupon;
-import tech.pinto.catel.model.Order;
-import tech.pinto.catel.user.User;
+import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class VipCouponStrategy implements CouponMatchStrategyI {
     @Override
     public boolean isMatch(Order order, Coupon coupon) {
         if (coupon.getType() != CouponType.Vip) return false;
-        User user = accountMapper.select(order.getUserId());
+        User user = order.getUser();
         return user.getVipEnd().isAfter(LocalDateTime.now()) && user.getVipType().compareTo(coupon.getLevel()) >= 0;
     }
 

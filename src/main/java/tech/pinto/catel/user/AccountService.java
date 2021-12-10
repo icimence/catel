@@ -2,10 +2,12 @@ package tech.pinto.catel.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.bl.AccountServiceI;
-import tech.pinto.catel.enums.VipType;
-import tech.pinto.catel.model.CreditUp;
-import tech.pinto.catel.model.Order;
+import tech.pinto.catel.domain.CreditEntry;
+import tech.pinto.catel.domain.CreditUp;
+import tech.pinto.catel.domain.User;
+import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.user.dto.DtoUserInfo;
+import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.OssService;
 import tech.pinto.catel.vo.order.CreditUpVO;
@@ -19,33 +21,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
-public class AccountService implements AccountServiceI {
+public class AccountService {
 
     private final AccountMapper accountMapper;
-    private final PersonMapper personMapper;
     private final OssService ossService;
+    private final RepoUser repoUser;
+    private final RepoCreditEntry repoCreditEntry;
+    private final MapX mapX;
 
     @Autowired
-    public AccountService(AccountMapper accountMapper, PersonMapper personMapper, OssService ossService) {
+    public AccountService(AccountMapper accountMapper, OssService ossService, RepoUser repoUser, RepoCreditEntry repoCreditEntry, MapX mapX) {
         this.accountMapper = accountMapper;
-        this.personMapper = personMapper;
         this.ossService = ossService;
+        this.repoUser = repoUser;
+        this.repoCreditEntry = repoCreditEntry;
+        this.mapX = mapX;
     }
 
-    @Override
     public void registerAccount(User user) throws OopsException {
         if (exists(user)) throw new OopsException(1);
         accountMapper.createNewAccount(user);
     }
 
-    @Override
-    public User login(UserForm userForm) throws OopsException {
-        User user = accountMapper.getAccountByEmail(userForm.getEmail());
-        if (user == null) user = accountMapper.getAccountByUsername(userForm.getEmail());
+    public DtoUserInfo login(UserForm userForm) throws OopsException {
+        var user = repoUser.findByEmail(userForm.getEmail());
+        if (user == null) user = repoUser.findByUsername(userForm.getEmail());
+        
         if (null == user || !user.getPassword().equals(userForm.getPassword())) {
             throw new OopsException(3);
         }
-        return user;
+        return mapX.toInfo(user);
     }
 
     public User getUserById(int id) throws OopsException {
@@ -59,7 +64,6 @@ public class AccountService implements AccountServiceI {
         return accountMapper.getCreditFromOrder(id) + 100 + accountMapper.getCreditFromDirect(id);
     }
 
-    @Override
     public UserInfo getUserInfo(int id) throws OopsException {
         User user = getUserById(id);
         UserInfo userInfo = new UserInfo();
@@ -67,7 +71,6 @@ public class AccountService implements AccountServiceI {
         return userInfo;
     }
 
-    @Override
     public void updateInfo(UserInfo userInfo) throws OopsException {
         User user = accountMapper.select(userInfo.getId());
         boolean newAvatar = null != userInfo.getAvatar() && !userInfo.getAvatar().equals(user.getAvatar());
@@ -80,15 +83,19 @@ public class AccountService implements AccountServiceI {
         accountMapper.updateAccount(user);
     }
 
-    @Override
-    public void creditDown(Order order) {
-        order.setRoomNum(-order.getRoomNum());
-        LocalDate nowPWeek = LocalDate.now();
-        User user = accountMapper.select(order.getUserId());
-        int aheadLimit = user.getVipType() == VipType.Big ? 2 :
-            user.getVipType() == VipType.Small ? 4 : 8;
-        if (nowPWeek.plusDays(aheadLimit).isAfter(order.getCheckInDate())) {
-            order.setCreditDelta(-order.getPrice().doubleValue() / 2);
+    public void creditPunish(Order order) {
+        var user = order.getUser();
+        LocalDate today = LocalDate.now();
+        var aheadLimit = user.getVipType().getAnnulLimit();
+        var tooLate = today.plusDays(aheadLimit).isAfter(order.getCheckInDate());
+
+        if (tooLate) {
+            var entry = new CreditEntry();
+            entry.setUser(user);
+            entry.setOrder(order);
+            var delta = -1.5 * order.getPrice().doubleValue();
+            entry.setDelta(delta);
+            repoCreditEntry.save(entry);
         }
     }
 
@@ -99,7 +106,6 @@ public class AccountService implements AccountServiceI {
         return u != null && !u.getId().equals(user.getId());
     }
 
-    @Override
     public void vip(VipForm vipForm) {
         User user = accountMapper.select(vipForm.getUserId());
         if (user.getVipEnd().isAfter(LocalDateTime.now())) {
@@ -111,7 +117,6 @@ public class AccountService implements AccountServiceI {
         accountMapper.updateAccount(user);
     }
 
-    @Override
     public void creditUp(CreditUpVO creditUpVO) throws OopsException {
         CreditUp creditUp = new CreditUp();
         User user = accountMapper.getAccountByUsername(creditUpVO.getUsername());

@@ -5,5 +5,5 @@ public enum OrderState {
     Finished,
     Canceled,
     Expired,
-    Direct,
+    Direct
 }

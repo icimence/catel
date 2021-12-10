@@ -1,4 +1,4 @@
-package tech.pinto.catel.hotel;
+package tech.pinto.catel.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,16 +8,14 @@ import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.BizRegion;
 import tech.pinto.catel.enums.HotelStar;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @Entity
 @NoArgsConstructor
 public class Hotel {
@@ -37,6 +35,9 @@ public class Hotel {
     private int creditBound;
     private String announcement;
     private BigDecimal minPrice = null;
+    
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    private List<RoomConfig> configs = new ArrayList<>();
 
     public Hotel(String name, String address, BizRegion bizRegion, HotelStar hotelStar, String description, String phoneNumber, String pic, int creditBound, String announcement) {
         this.name = name;

@@ -1,20 +1,18 @@
-package tech.pinto.catel.user;
+package tech.pinto.catel.domain;
 
 import lombok.*;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.UserType;
 import tech.pinto.catel.enums.VipType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class User {
@@ -30,6 +28,9 @@ public class User {
     private LocalDateTime vipEnd = LocalDateTime.now();
     private UserType userType = UserType.Client;
     private VipType vipType = VipType.Nil;
+    
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Resident> residents = new ArrayList<>();
 
     public User(String email, String password, String username) {
         this.email = email;

@@ -1,7 +1,7 @@
 package tech.pinto.catel.bl;
 
-import tech.pinto.catel.model.Coupon;
-import tech.pinto.catel.model.Order;
+import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.Order;
 
 public interface CouponMatchStrategyI {
 

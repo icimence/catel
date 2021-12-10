@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
-import tech.pinto.catel.model.Comment;
-import tech.pinto.catel.user.User;
-import tech.pinto.catel.util.AllMapper;
+import tech.pinto.catel.domain.Comment;
+import tech.pinto.catel.domain.User;
+import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,18 @@ public class CommentService {
     final private CommentMapper commentMapper;
     final private MapperOrder mapperOrder;
     final private AccountMapper accountMapper;
+    final private MapX mapX;
 
     @Autowired
-    public CommentService(CommentMapper commentMapper, MapperOrder mapperOrder, AccountMapper accountMapper) {
+    public CommentService(CommentMapper commentMapper, MapperOrder mapperOrder, AccountMapper accountMapper, MapX mapX) {
         this.commentMapper = commentMapper;
         this.mapperOrder = mapperOrder;
         this.accountMapper = accountMapper;
+        this.mapX = mapX;
     }
 
     public void comment(DtoPublishComment dtoPublishComment) {
-        Comment comment = AllMapper.X.toComment(dtoPublishComment);
+        Comment comment = mapX.toComment(dtoPublishComment);
         commentMapper.insert(comment);
     }
 

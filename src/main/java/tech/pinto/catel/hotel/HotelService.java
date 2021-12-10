@@ -3,7 +3,7 @@ package tech.pinto.catel.hotel;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import tech.pinto.catel.enums.BizRegion;
+import tech.pinto.catel.domain.*;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
@@ -29,9 +29,10 @@ public class HotelService {
     private final OssService ossService;
     private final FzyService fzyService;
     private final JPAQueryFactory queryFactory;
+    private final MapX mapX;
 
     @Autowired
-    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, MapperRoomConfig mapperRoomConfig, MapperUsableRoom mapperUsableRoom, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory) {
+    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, MapperRoomConfig mapperRoomConfig, MapperUsableRoom mapperUsableRoom, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory, MapX mapX) {
         this.mapperHotel = mapperHotel;
         this.mapperRoom = mapperRoom;
         this.mapperRoomConfig = mapperRoomConfig;
@@ -41,6 +42,7 @@ public class HotelService {
         this.mapperOrder = mapperOrder;
         this.repoRoomUnit = repoRoomUnit;
         this.queryFactory = queryFactory;
+        this.mapX = mapX;
     }
 
     public void addHotel(HotelVO hotelVO) {
@@ -115,9 +117,17 @@ public class HotelService {
         return hotelVO;
     }
 
-    public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) {
-        var inDate = UtilDate.from(dtoHotelQuery.getFilterInDate());
-        var outDate = UtilDate.from(dtoHotelQuery.getFilterOutDate());
+    public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
+        var queryParam = mapX.toQueryParam(dtoHotelQuery);
+        var filter = queryParam.getFilter();
+        System.out.println(queryParam);
+
+        var inDate = filter.getInDate();
+        var outDate = filter.getOutDate();
+        if (inDate == null || outDate == null) {
+            throw new OopsException(9);
+        }
+        var duration = outDate.toEpochDay() - inDate.toEpochDay();
 
         var rc = QRoomConfig.roomConfig;
         var h = QHotel.hotel;
@@ -125,18 +135,37 @@ public class HotelService {
 
         var query = queryFactory
             .selectFrom(h)
+            .distinct()
             .join(rc).on(rc.hotel.eq(h))
-            .join(ru).on(ru.roomConfig.eq(rc))
-            .where(h.bizRegion.eq(BizRegion.XiDan))
-            .where(ru.date.goe(inDate), ru.date.lt(outDate))
-            .where(rc.defPrice.gt(100), rc.defPrice.lt(500))
+            .join(ru).on(ru.roomConfig.eq(rc));
+        if (filter.getRegion() != null) {
+            query = query.where(h.bizRegion.eq(filter.getRegion()));
+        }
+//        if (filter.getRate() != null) {
+//            query = query.where(h.rate.goe(filter.getRate()));
+//        }
+        if (filter.getPriceLower() != null) {
+            query = query.where(rc.defPrice.gt(filter.getPriceLower()));
+        }
+        if (filter.getPriceUpper() != null) {
+            query = query.where(rc.defPrice.lt(filter.getPriceUpper()));
+        }
+        query = query
+            .where(ru.date.goe(inDate), ru.date.lt(outDate), ru.number.ne(0))
             .groupBy(h, rc)
-            .having(ru.count().gt(outDate.toEpochDay() - inDate.toEpochDay()));
+            .having(ru.count().eq(duration));
+
+        if (queryParam.getLimit() != null) {
+            var page = queryParam.getPage() == null ? 0L : queryParam.getPage();
+            query = query
+                .offset(page * queryParam.getLimit())
+                .limit(queryParam.getLimit());
+        }
+
+        query = query.orderBy(h.rate.desc());
 
         var hotels = query.fetch();
-
-        var foundHotels = hotels.stream().map(AllMapper.X::toBrief).collect(Collectors.toList());
-
+        var foundHotels = hotels.stream().map(mapX::toBrief).collect(Collectors.toList());
         foundHotels.forEach(System.out::println);
         return foundHotels;
 

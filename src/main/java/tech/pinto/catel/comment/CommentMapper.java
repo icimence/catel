@@ -1,7 +1,7 @@
 package tech.pinto.catel.comment;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import tech.pinto.catel.model.Comment;
+import tech.pinto.catel.domain.Comment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

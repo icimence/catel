@@ -1,4 +1,4 @@
-package tech.pinto.catel.model;
+package tech.pinto.catel.domain;
 
 import tech.pinto.catel.enums.CouponStatus;
 import tech.pinto.catel.enums.CouponType;

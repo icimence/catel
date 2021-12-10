@@ -1,9 +1,8 @@
-package tech.pinto.catel.room;
+package tech.pinto.catel.domain;
 
 import lombok.*;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.RoomType;
-import tech.pinto.catel.hotel.Hotel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
