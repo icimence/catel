@@ -30,10 +30,8 @@ public class PersonController {
      * _in basic person info. phone number, birthday, id no., real name
      */
     @PostMapping("/")
-    public Response addResident(@RequestBody DtoResidentAddition createResidentVO) {
-//        Person person = new Person();
-//        BeanUtil.copyProperties(createResidentVO, person, CopyOptions.create().ignoreNullValue());
-        personService.addResident(createResidentVO);
+    public Response addResident(@RequestBody DtoResidentAddition dtoResidentAddition) {
+        personService.addResident(dtoResidentAddition);
         return Response.buildSuccess().setMessage(19);
     }
 
@@ -78,14 +76,9 @@ public class PersonController {
      * _in person id
      */
     @GetMapping("/")
-    public Response select(int id) {
-        try {
-            Resident resident = personService.select(id);
-            return Response.buildSuccess(resident);
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return Response.buildFailure(e.getMessage());
-        }
+    public Response select(long id) throws OopsException {
+        Resident resident = personService.select(id);
+        return Response.buildSuccess(resident);
     }
 
 }

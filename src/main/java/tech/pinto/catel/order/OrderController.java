@@ -33,6 +33,12 @@ public class OrderController {
         return Response.buildSuccess(orderId).setMessage(12);
     }
 
+    @GetMapping("/preview")
+    public Response preview(DtoReservePersonal dtoReservePersonal) {
+        var preview = orderService.refPreview(dtoReservePersonal);
+        return Response.buildSuccess(preview);
+    }
+
     @PostMapping("/group")
     public Response reserveHotelForGroup(@RequestBody DtoReserveGroup dtoReserveGroup) throws OopsException {
         orderService.reserveForGroup(dtoReserveGroup);

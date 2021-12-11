@@ -43,12 +43,13 @@ public class RoomConfig {
         return getClass().hashCode();
     }
 
-    public RoomConfig(Hotel hotel, String name, int peopleMax, boolean breakfast, RoomType type, BigDecimal defPrice) {
+    public RoomConfig(Hotel hotel, String name, int peopleMax, boolean breakfast, RoomType type, BigDecimal defPrice, int roomNumber) {
         this.hotel = hotel;
         this.name = name;
         this.peopleMax = peopleMax;
         this.breakfast = breakfast;
         this.type = type;
         this.defPrice = defPrice;
+        this.roomNumber = roomNumber;
     }
 }

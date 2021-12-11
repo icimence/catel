@@ -156,9 +156,7 @@ public class HotelService {
         query = query.orderBy(h.rate.desc());
 
         var hotels = query.fetch();
-        var foundHotels = hotels.stream().map(mapX::toBrief).collect(Collectors.toList());
-        foundHotels.forEach(System.out::println);
-        return foundHotels;
+        return hotels.stream().map(mapX::toBrief).collect(Collectors.toList());
 
     }
 

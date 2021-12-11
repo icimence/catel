@@ -13,25 +13,23 @@ import java.util.List;
 @Service
 public class PersonService {
 
-    private final PersonMapper personMapper;
     private final RepoResident repoResident;
     private final MapX mapX;
 
     @Autowired
-    public PersonService(PersonMapper personMapper, RepoResident repoResident, MapX mapX) {
-        this.personMapper = personMapper;
+    public PersonService(RepoResident repoResident, MapX mapX) {
         this.repoResident = repoResident;
         this.mapX = mapX;
     }
 
     public void addResident(DtoResidentAddition dtoResidentAddition) {
         Resident resident = mapX.toPerson(dtoResidentAddition);
-        System.out.println(resident.toString());
-        personMapper.insert(resident);
+        System.out.println(resident);
+        repoResident.save(resident);
     }
 
     public void delete(DtoResidentDeletion dtoDeleteResident) {
-        personMapper.deleteById(dtoDeleteResident.getResidentId());
+        repoResident.deleteById(dtoDeleteResident.getResidentId());
     }
 
     public void update(Resident resident) {
@@ -42,10 +40,10 @@ public class PersonService {
         return repoResident.findByOwnerId(userId);
     }
 
-    public Resident select(int id) throws OopsException {
-        Resident resident = personMapper.select(id);
-        if (null == resident) throw new OopsException(5);
-        return resident;
+    public Resident select(long id) throws OopsException {
+        var resident = repoResident.findById(id);
+        if (resident.isEmpty()) throw new OopsException(5);
+        return resident.get();
     }
 
 }

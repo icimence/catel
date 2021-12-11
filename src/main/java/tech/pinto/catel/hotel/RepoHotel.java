@@ -16,4 +16,14 @@ public interface RepoHotel extends JpaRepository<Hotel, Long> {
             " on h.id = rc.hotel_id set h.min_price = rc.min_price where true"
     )
     void refreshMinPrice();
+
+    //    @Update(value = "update hotel.Hotel h set rate=coalesce(" +
+    //            "(select x.r from (select hotel_id,avg(score) r from hotel.Comment group by hotel_id) x " +
+    //            "where hotel_id=h.id),5) where true")
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = "update hotel h join " +
+        "(select hotel_id, avg(score) r from comment group by hotel_id) c on h.id = c.hotel_id " +
+        "set h.rate = c.r where true")
+    void freshRate();
 }

@@ -2,21 +2,15 @@ package tech.pinto.catel.order;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.domain.Order;
-import tech.pinto.catel.domain.OrderRoom;
-import tech.pinto.catel.domain.RoomConfig;
+import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.HotelService;
 import tech.pinto.catel.hotel.MapperHotel;
 import tech.pinto.catel.hotel.RepoHotel;
-import tech.pinto.catel.order.dto.DtoOrderBrief;
+import tech.pinto.catel.order.dto.*;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.room.dto.DtoRoomEntry;
 import tech.pinto.catel.user.AccountMapper;
-import tech.pinto.catel.order.dto.DtoOrderDetail;
 import tech.pinto.catel.enums.OrderState;
-import tech.pinto.catel.domain.Hotel;
-import tech.pinto.catel.order.dto.DtoReserveGroup;
-import tech.pinto.catel.order.dto.DtoReservePersonal;
 import tech.pinto.catel.user.AccountService;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.util.MapX;
@@ -29,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,9 +63,13 @@ public class OrderService {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    private boolean roomAvailable(long configId, LocalDate start, LocalDate end, int needed) {
-        var roomNumbers = repoRoomUnit.getRoomNumber(configId, start, end);
-        return roomNumbers.stream().map(n -> n >= needed).reduce((a, b) -> a && b).orElse(true);
+    public DtoRefPreview refPreview(DtoReservePersonal dtoReservePersonal) {
+        var order = mapX.toPersonOrder(dtoReservePersonal);
+        var configId = dtoReservePersonal.getConfigId();
+        var units = repoRoomUnit.relatedUnits(configId, order.getCheckInDate(), order.getCheckOutDate());
+        var pricePerRoom = units.stream().map(RoomUnit::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        var totalPrice = pricePerRoom.multiply(BigDecimal.valueOf(order.getRoomNum()));
+        return new DtoRefPreview(totalPrice);
     }
 
     public long reserve(DtoReservePersonal dtoReservePersonal) throws OopsException {
@@ -90,17 +87,15 @@ public class OrderService {
         var configId = dtoReservePersonal.getConfigId();
         var config = repoRoomConfig.getById(configId);
 
-        if (!roomAvailable(
-            configId, order.getCheckInDate(), order.getCheckOutDate(), order.getRoomNum()
-        )) throw new OopsException(2);
+        var units = repoRoomUnit.relatedUnits(configId, order.getCheckInDate(), order.getCheckOutDate());
+        var available = units.stream().map(u -> u.getNumber() >= order.getRoomNum()).reduce((a, b) -> a && b).orElse(true);
+        if (!available) throw new OopsException(2);
 
-        // TODO use unit price
-        BigDecimal unitPrice = config.getDefPrice();
-        BigDecimal price = BigDecimal.valueOf(order.getRoomNum()).multiply(unitPrice);
+        var price = refPreview(dtoReservePersonal).getTotalPrice();
         order.setPrice(price);
-        if (price.compareTo(BigDecimal.ZERO) < 0) throw new OopsException(8);
 
         // TODO: Using coupons
+        if (price.compareTo(BigDecimal.ZERO) < 0) throw new OopsException(8);
 
         // Update to create order, update room number, 
         // TODO invalid used coupons
@@ -208,7 +203,7 @@ public class OrderService {
                 roomInfo.setRoomId(orderRoom.getRoomId());
                 return roomInfo;
             }).collect(Collectors.toList());
-        
+
         dtoOrderDetail.setRoomInfos(roomInfos);
         System.out.println(dtoOrderDetail);
         return dtoOrderDetail;

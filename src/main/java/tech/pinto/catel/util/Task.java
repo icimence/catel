@@ -3,6 +3,7 @@ package tech.pinto.catel.util;
 import ch.qos.logback.classic.Level;
 import org.slf4j.LoggerFactory;
 import tech.pinto.catel.enums.OrderState;
+import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.RepoOrder;
 import tech.pinto.catel.room.RepoRoomConfig;
 import tech.pinto.catel.room.RepoRoomUnit;
@@ -17,6 +18,7 @@ import tech.pinto.catel.user.RepoCreditEntry;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @EnableScheduling
@@ -31,10 +33,11 @@ public class Task {
     private final RepoCreditEntry repoCreditEntry;
     private final RepoRoomConfig repoRoomConfig;
     private final RepoRoomUnit repoRoomUnit;
+    private final RepoHotel repoHotel;
     private final MapX mapX;
 
     @Autowired
-    public Task(MapperOrder mapperOrder, AccountMapper accountMapper, Initiator initiator, RepoOrder repoOrder, RepoCreditEntry repoCreditEntry, RepoRoomConfig repoRoomConfig, RepoRoomUnit repoRoomUnit, MapX mapX) {
+    public Task(MapperOrder mapperOrder, AccountMapper accountMapper, Initiator initiator, RepoOrder repoOrder, RepoCreditEntry repoCreditEntry, RepoRoomConfig repoRoomConfig, RepoRoomUnit repoRoomUnit, RepoHotel repoHotel, MapX mapX) {
         this.mapperOrder = mapperOrder;
         this.accountMapper = accountMapper;
         this.initiator = initiator;
@@ -42,12 +45,13 @@ public class Task {
         this.repoCreditEntry = repoCreditEntry;
         this.repoRoomConfig = repoRoomConfig;
         this.repoRoomUnit = repoRoomUnit;
+        this.repoHotel = repoHotel;
         this.mapX = mapX;
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
-    public void updateOrder() {
+    public void changeOrderState() {
         var outdated = repoOrder.outdated();
         var entries = outdated.stream().map(mapX::toEntry).collect(Collectors.toList());
         outdated.forEach(System.out::println);
@@ -59,21 +63,25 @@ public class Task {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-    public void updateVip() {
+    public void invalidVip() {
         accountMapper.vipExpire();
         log.info("[task] Expire outdated VIPs");
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-    public void updateScore() {
+    public void freshRate() {
         mapperOrder.rate();
+        repoHotel.freshRate();
         log.info("[task] Calculate rate for room");
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void updateRoom() {
+    @Scheduled(cron = "0 0 14 * * ?")
+    public void refreshRoomUnit() {
         repoRoomUnit.dailyUpdateRemove();
         var units = repoRoomConfig.findAll().stream().map(mapX::toUnit).collect(Collectors.toList());
+        var comingDay = LocalDate.now().plusDays(15);
+        units.forEach(u -> u.getId().setDate(comingDay));
+        units.forEach(System.out::println);
         repoRoomUnit.saveAll(units);
         log.info("[task] update room unit");
     }
@@ -84,6 +92,10 @@ public class Task {
         var logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(loggerName);
         logger.setLevel(Level.OFF);
         initiator.init();
+        freshRate();
+        changeOrderState();
+        invalidVip();
+        refreshRoomUnit();
         logger.setLevel(Level.DEBUG);
     }
 

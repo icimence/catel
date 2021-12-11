@@ -39,12 +39,4 @@ public class Comment {
         return getClass().hashCode();
     }
 
-    public Comment(Order order, User user, Hotel hotel, int score, String title, String content) {
-        this.order = order;
-        this.user = user;
-        this.hotel = hotel;
-        this.score = score;
-        this.title = title;
-        this.content = content;
-    }
 }

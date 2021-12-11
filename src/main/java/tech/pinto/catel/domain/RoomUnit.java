@@ -12,6 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Entity
 public class RoomUnit {
     @EmbeddedId

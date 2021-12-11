@@ -24,11 +24,11 @@ public interface RepoRoomUnit extends JpaRepository<RoomUnit, RoomUnit._Id> {
         // TODO wrong logic!
     void restoreCanceledRoom(Order order);
 
-    @Query("select ru.number from RoomUnit ru " +
+    @Query("select ru from RoomUnit ru " +
         "where ru.id.roomConfig.id=:configId " +
         "and ru.id.date >= :dateStart " +
         "and ru.id.date < :dateEnd")
-    List<Integer> getRoomNumber(long configId, LocalDate dateStart, LocalDate dateEnd);
+    List<RoomUnit> relatedUnits(long configId, LocalDate dateStart, LocalDate dateEnd);
 
     @Modifying
     @Transactional

@@ -25,6 +25,7 @@ import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
 import javax.persistence.EntityManagerFactory;
+import java.time.LocalDate;
 import java.util.function.Function;
 
 @Mapper(componentModel = "spring")
@@ -40,6 +41,7 @@ public abstract class MapX {
     protected EntityManagerFactory entityManagerFactory;
 
     @Mapping(target = "birthday", source = "birthday", dateFormat = "MM/dd/yyyy")
+    @Mapping(target = "owner", source = "userId")
     public abstract Resident toPerson(DtoResidentAddition src);
 
     @Mapping(target = "checkInDate", source = "checkInDate", dateFormat = "MM/dd/yyyy")
@@ -99,13 +101,13 @@ public abstract class MapX {
     @Mapping(target = "total", source = "roomNumber")
     public abstract DtoConfigInfo toInfo(RoomConfig src);
 
-    //    @Mapping(target = "number", source = "roomNumber")
-//    @Mapping(target = "price", source = "defPrice")
+    @Mapping(target = "number", source = "roomNumber")
+    @Mapping(target = "price", source = "defPrice")
     @Mapping(target = "id.roomConfig", source = ".")
     public abstract RoomUnit toUnit(RoomConfig config);
-    
+
     public abstract User toUser(DtoRegister dtoRegister);
-    
+
     @Mapping(target = "userId", source = "user.id")
     public abstract DtoComment toDtoComment(Comment src);
 }
