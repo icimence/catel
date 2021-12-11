@@ -64,7 +64,8 @@ public class HotelController {
      */
     @GetMapping("/detail")
     public Response retrieveHotelDetail(@RequestParam int id) {
-        return Response.buildSuccess(hotelService.selectById(id));
+        var detail = hotelService.getDetail(id);
+        return Response.buildSuccess(detail);
     }
 
     /**

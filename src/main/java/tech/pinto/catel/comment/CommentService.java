@@ -22,13 +22,15 @@ public class CommentService {
     final private CommentMapper commentMapper;
     final private MapperOrder mapperOrder;
     final private AccountMapper accountMapper;
+    final private RepoComment repoComment;
     final private MapX mapX;
 
     @Autowired
-    public CommentService(CommentMapper commentMapper, MapperOrder mapperOrder, AccountMapper accountMapper, MapX mapX) {
+    public CommentService(CommentMapper commentMapper, MapperOrder mapperOrder, AccountMapper accountMapper, RepoComment repoComment, MapX mapX) {
         this.commentMapper = commentMapper;
         this.mapperOrder = mapperOrder;
         this.accountMapper = accountMapper;
+        this.repoComment = repoComment;
         this.mapX = mapX;
     }
 
@@ -38,11 +40,12 @@ public class CommentService {
     }
 
     public List<CommentVO> getComment(int hotelId) {
-        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<Comment>().eq(Comment::getHotelId, hotelId);
-        return commentMapper.selectList(queryWrapper).stream().map(comment -> {
+
+        var comments = repoComment.findByHotelId(hotelId);
+        return comments.stream().map(comment -> {
             CommentVO commentVO = new CommentVO();
             BeanUtil.copyProperties(comment, commentVO, CopyOptions.create().ignoreNullValue());
-            User user = accountMapper.select(comment.getUserId());
+            User user = accountMapper.select(comment.getUser().getId());
             commentVO.setUsername(user.getUsername());
             commentVO.setAvatar(user.getAvatar());
             return commentVO;

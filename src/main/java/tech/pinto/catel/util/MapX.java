@@ -1,6 +1,5 @@
 package tech.pinto.catel.util;
 
-import org.hibernate.SessionFactory;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,14 +9,16 @@ import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.QueryParam;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
+import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.order.RepoOrder;
 import tech.pinto.catel.order.dto.DtoOrderBrief;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
+import tech.pinto.catel.room.dto.DtoRoomEntry;
+import tech.pinto.catel.room.dto.DtoConfigInfo;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.order.dto.DtoOrderDetail;
 import tech.pinto.catel.order.dto.DtoReserve;
-import tech.pinto.catel.room.dto.DtoRoomInfo;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
@@ -53,11 +54,13 @@ public abstract class MapX {
     @Mapping(target = "createdTime", source = "createdTime", dateFormat = "MM/dd/yyyy HH:mm:ss")
     public abstract DtoOrderDetail toDetail(Order src);
 
+    public abstract DtoHotelDetail toDetail(Hotel hotel);
+
     @Mapping(target = "headPic", source = "pic")
     public abstract DtoHotelBrief toBrief(Hotel src);
 
     @Mapping(target = "price", source = "defPrice")
-    public abstract DtoRoomInfo toRoomInfo(RoomConfig src);
+    public abstract DtoRoomEntry toRoomInfo(RoomConfig src);
 
     @Mapping(target = "filter.priceLower", source = "filterPriceLower")
     @Mapping(target = "filter.priceUpper", source = "filterPriceUpper")
@@ -88,7 +91,12 @@ public abstract class MapX {
 
     public abstract DtoUserInfo toInfo(User src);
 
-//    @Mapping(target = "number", source = "roomNumber")
+    @Mapping(target = "roomType", source = "type")
+    @Mapping(target = "price", source = "defPrice")
+    @Mapping(target = "total", source = "roomNumber")
+    public abstract DtoConfigInfo toInfo(RoomConfig src);
+
+    //    @Mapping(target = "number", source = "roomNumber")
 //    @Mapping(target = "price", source = "defPrice")
     @Mapping(target = "id.roomConfig", source = ".")
     public abstract RoomUnit toUnit(RoomConfig config);

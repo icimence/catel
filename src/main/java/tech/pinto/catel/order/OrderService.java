@@ -2,7 +2,6 @@ package tech.pinto.catel.order;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import org.hibernate.SessionFactory;
 import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.domain.OrderRoom;
 import tech.pinto.catel.domain.RoomConfig;
@@ -11,9 +10,9 @@ import tech.pinto.catel.hotel.MapperHotel;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.dto.DtoOrderBrief;
 import tech.pinto.catel.room.*;
+import tech.pinto.catel.room.dto.DtoRoomEntry;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.order.dto.DtoOrderDetail;
-import tech.pinto.catel.room.dto.DtoRoomInfo;
 import tech.pinto.catel.enums.OrderState;
 import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.order.dto.DtoReserveGroup;
@@ -22,7 +21,6 @@ import tech.pinto.catel.user.AccountService;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
-import tech.pinto.catel.util.UtilDebug;
 import tech.pinto.catel.vo.CreditTransVO;
 import tech.pinto.catel.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,12 +198,12 @@ public class OrderService {
         Order order = repoOrder.getById(orderId);
         DtoOrderDetail dtoOrderDetail = mapX.toDetail(order);
 
-        List<DtoRoomInfo> roomInfos = order
+        List<DtoRoomEntry> roomInfos = order
             .getRooms()
             .stream().map(orderRoom -> {
                 System.out.println(orderRoom);
                 RoomConfig config = orderRoom.getRoomConfig();
-                DtoRoomInfo roomInfo = mapX.toRoomInfo(config);
+                DtoRoomEntry roomInfo = mapX.toRoomInfo(config);
                 roomInfo.setResidentId(orderRoom.getResidentId());
                 roomInfo.setRoomId(orderRoom.getRoomId());
                 return roomInfo;

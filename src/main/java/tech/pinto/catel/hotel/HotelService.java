@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import tech.pinto.catel.domain.*;
+import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
@@ -23,20 +24,20 @@ public class HotelService {
     private final MapperHotel mapperHotel;
     private final MapperOrder mapperOrder;
     private final MapperRoom mapperRoom;
-    private final MapperRoomConfig mapperRoomConfig;
     private final RepoRoomUnit repoRoomUnit;
     private final RepoHotel repoHotel;
+    private final RepoRoom repoRoom;
     private final OssService ossService;
     private final FzyService fzyService;
     private final JPAQueryFactory queryFactory;
     private final MapX mapX;
 
     @Autowired
-    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, MapperRoomConfig mapperRoomConfig, RepoHotel repoHotel, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory, MapX mapX) {
+    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, RepoHotel repoHotel, RepoRoom repoRoom, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory, MapX mapX) {
         this.mapperHotel = mapperHotel;
         this.mapperRoom = mapperRoom;
-        this.mapperRoomConfig = mapperRoomConfig;
         this.repoHotel = repoHotel;
+        this.repoRoom = repoRoom;
         this.ossService = ossService;
         this.fzyService = fzyService;
         this.mapperOrder = mapperOrder;
@@ -103,18 +104,13 @@ public class HotelService {
         }).collect(Collectors.toList());
     }
 
-    public HotelVO selectById(long hotelId) {
+    public DtoHotelDetail getDetail(long hotelId) {
         var hotel = repoHotel.getById(hotelId);
-        HotelVO hotelVO = new HotelVO();
-        BeanUtil.copyProperties(hotel, hotelVO, CopyOptions.create().ignoreNullValue());
-        List<Room> rooms = mapperRoom.selectRoomsByHotelId(hotelId);
-        List<RoomVO> roomVOS = rooms.stream().map(r -> {
-            RoomVO roomVO = new RoomVO();
-            BeanUtil.copyProperties(r, roomVO, CopyOptions.create().setIgnoreNullValue(true));
-            return roomVO;
-        }).collect(Collectors.toList());
-        hotelVO.setRooms(roomVOS);
-        return hotelVO;
+        var detail = mapX.toDetail(hotel);
+        var configs = hotel.getConfigs();
+        var configInfos = configs.stream().map(mapX::toInfo).collect(Collectors.toList());
+        detail.setRooms(configInfos);
+        return detail;
     }
 
     public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {

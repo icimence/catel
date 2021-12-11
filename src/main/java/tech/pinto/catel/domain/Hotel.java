@@ -1,14 +1,13 @@
 package tech.pinto.catel.domain;
 
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.BizRegion;
 import tech.pinto.catel.enums.HotelStar;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

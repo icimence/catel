@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.domain.Room;
 import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.room.dto.DtoConfigInfo;
+import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.hotel.RoomVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,15 @@ import java.util.stream.Collectors;
 public class RoomService {
 
     private final MapperRoom mapperRoom;
+    private final RepoRoomConfig repoRoomConfig;
+    private final MapX mapX;
 
     @Autowired
-    public RoomService(MapperRoom mapperRoom) {this.mapperRoom = mapperRoom;}
+    public RoomService(MapperRoom mapperRoom, RepoRoomConfig repoRoomConfig, MapX mapX) {
+        this.mapperRoom = mapperRoom;
+        this.repoRoomConfig = repoRoomConfig;
+        this.mapX = mapX;
+    }
 
     public void insertRoomInfo(Room room) throws OopsException {
         if (exists(room)) throw new OopsException(7);
@@ -38,12 +46,9 @@ public class RoomService {
         return mapperRoom.getRoomNumber(roomId);
     }
 
-    public List<RoomVO> getByHotel(int id) {
-        return mapperRoom.selectRoomsByHotelId(id).stream().map(o -> {
-            RoomVO roomVO = new RoomVO();
-            BeanUtil.copyProperties(o, roomVO, CopyOptions.create().ignoreNullValue());
-            return roomVO;
-        }).collect(Collectors.toList());
+    public List<DtoConfigInfo> getByHotel(long id) {
+        var configs = repoRoomConfig.findByHotelId(id);
+        return configs.stream().map(mapX::toInfo).collect(Collectors.toList());
     }
 
     public void removeRoom(int id) {

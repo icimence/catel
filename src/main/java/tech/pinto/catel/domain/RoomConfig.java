@@ -5,6 +5,10 @@ import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.RoomType;
 
 import javax.persistence.*;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Objects;
 

@@ -51,8 +51,8 @@ public class RoomController {
      * _out room info list
      */
     @GetMapping("/by-hotel")
-    public Response getByHotel(@RequestParam int id) {
-        List<RoomVO> rooms = roomService.getByHotel(id);
+    public Response getByHotel(@RequestParam long id) {
+        var rooms = roomService.getByHotel(id);
         return Response.buildSuccess(rooms);
     }
 

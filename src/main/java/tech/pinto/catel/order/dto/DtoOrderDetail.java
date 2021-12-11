@@ -1,7 +1,7 @@
 package tech.pinto.catel.order.dto;
 
 import lombok.Data;
-import tech.pinto.catel.room.dto.DtoRoomInfo;
+import tech.pinto.catel.room.dto.DtoRoomEntry;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public class DtoOrderDetail {
     private String checkOutDate;
     private String createdTime;
     private String orderState;
-    private List<DtoRoomInfo> roomInfos;
+    private List<DtoRoomEntry> roomInfos;
 }
