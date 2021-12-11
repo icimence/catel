@@ -30,7 +30,8 @@ public class Hotel {
     private String description;
     private String phoneNumber;
     private Integer managerId;
-    private String pic;
+    private String landscape = "https://m.tuniucdn.com/fb2/t1/G5/M00/F3/C8/Cii-slrz4mOIZD1AAAJJlkSuRT8AAGpJAKdGcwAAkmu187_w450_h300_c1_t0.jpg";
+    private String portrait = "https://m.tuniucdn.com/fb2/t1/G6/M00/05/F7/Cii-TF2phVWIGUYVAAXiIljWMXkAAA9-wFu7b8ABeI699.jpeg";
     private int creditBound;
     private String announcement;
     private BigDecimal minPrice = null;
@@ -38,14 +39,13 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<RoomConfig> configs = new ArrayList<>();
 
-    public Hotel(String name, String address, BizRegion bizRegion, HotelStar hotelStar, String description, String phoneNumber, String pic, int creditBound, String announcement) {
+    public Hotel(String name, String address, BizRegion bizRegion, HotelStar hotelStar, String description, String phoneNumber, int creditBound, String announcement) {
         this.name = name;
         this.address = address;
         this.bizRegion = bizRegion;
         this.hotelStar = hotelStar;
         this.description = description;
         this.phoneNumber = phoneNumber;
-        this.pic = pic;
         this.creditBound = creditBound;
         this.announcement = announcement;
     }

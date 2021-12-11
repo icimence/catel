@@ -3,6 +3,7 @@ package tech.pinto.catel.comment;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
@@ -39,17 +40,9 @@ public class CommentService {
         repoComment.save(comment);
     }
 
-    public List<CommentVO> getComment(int hotelId) {
-
+    public List<DtoComment> getComment(int hotelId) {
         var comments = repoComment.findByHotelId(hotelId);
-        return comments.stream().map(comment -> {
-            CommentVO commentVO = new CommentVO();
-            BeanUtil.copyProperties(comment, commentVO, CopyOptions.create().ignoreNullValue());
-            User user = accountMapper.select(comment.getUser().getId());
-            commentVO.setUsername(user.getUsername());
-            commentVO.setAvatar(user.getAvatar());
-            return commentVO;
-        }).collect(Collectors.toList());
+        return comments.stream().map(mapX::toDtoComment).collect(Collectors.toList());
     }
 
 }

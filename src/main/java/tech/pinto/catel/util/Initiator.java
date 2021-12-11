@@ -86,7 +86,7 @@ public class Initiator {
             var desc = name + "的描述";
             var announcement = name + "的通知";
             var phone = UtilRandom.ofPhoneNumber();
-            var hotel = new Hotel(name, address, bizRegion, star, desc, phone, null, 0, announcement);
+            var hotel = new Hotel(name, address, bizRegion, star, desc, phone, 0, announcement);
             hotels.add(hotel);
 
             for (int j = 0; j < numOfConfig; j++) {

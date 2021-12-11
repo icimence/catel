@@ -9,5 +9,6 @@ public class DtoHotelBrief {
     private String address;
     private double rate;
     private double minPrice;
-    private String headPic;
+    private String landscape;
+    private String portrait;
 }

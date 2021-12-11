@@ -57,13 +57,14 @@ public class HotelService {
     }
 
     public void updateHotelInfo(HotelVO hotelVO) {
-        Hotel hotel = mapperHotel.selectById(hotelVO.getId());
-        boolean newPic = null != hotelVO.getPic() && !hotelVO.getPic().equals(hotel.getPic());
-        BeanUtil.copyProperties(hotelVO, hotel, CopyOptions.create().setIgnoreNullValue(true));
-        if (newPic) {
-            hotel.setPic(ossService.savePublic("hotel-res-img-public",
-                                               "hotel/" + hotelVO.getId().toString() + "/pic.png", hotelVO.getPic()));
-        }
+        // TODO update hotel info
+        var hotel = repoHotel.getById(0L);
+//        boolean newPic = null != hotelVO.getPic() && !hotelVO.getPic().equals(hotel.getPic());
+//        BeanUtil.copyProperties(hotelVO, hotel, CopyOptions.create().setIgnoreNullValue(true));
+//        if (newPic) {
+//            hotel.setPic(ossService.savePublic("hotel-res-img-public",
+//                                               "hotel/" + hotelVO.getId().toString() + "/pic.png", hotelVO.getPic()));
+//        }
         mapperHotel.updateHotel(hotel);
     }
 

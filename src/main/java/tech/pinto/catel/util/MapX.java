@@ -4,6 +4,7 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.QueryParam;
@@ -24,6 +25,7 @@ import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.function.Function;
 
 @Mapper(componentModel = "spring")
 @DecoratedWith(MapEx.class)
@@ -58,7 +60,6 @@ public abstract class MapX {
 
     public abstract DtoHotelDetail toDetail(Hotel hotel);
 
-    @Mapping(target = "headPic", source = "pic")
     public abstract DtoHotelBrief toBrief(Hotel src);
 
     @Mapping(target = "price", source = "defPrice")
@@ -104,5 +105,8 @@ public abstract class MapX {
     public abstract RoomUnit toUnit(RoomConfig config);
     
     public abstract User toUser(DtoRegister dtoRegister);
+    
+    @Mapping(target = "userId", source = "user.id")
+    public abstract DtoComment toDtoComment(Comment src);
 }
 

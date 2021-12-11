@@ -34,7 +34,7 @@ public class CommentController {
      */
     @GetMapping("/by-hotel")
     public Response selectByHotel(@RequestParam int id) {
-        List<CommentVO> comments = commentService.getComment(id);
+        var comments = commentService.getComment(id);
         return Response.buildSuccess(comments);
     }
 

@@ -2,6 +2,7 @@ package tech.pinto.catel.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
 import tech.pinto.catel.domain.Comment;
 import tech.pinto.catel.domain.Order;
@@ -36,5 +37,14 @@ public abstract class MapEx extends MapX {
         comment.setUser(order.getUser());
         comment.setHotel(order.getHotel());
         return comment;
+    }
+
+    @Override
+    public DtoComment toDtoComment(Comment src) {
+        var dto = mapX.toDtoComment(src);
+        var user = src.getUser();
+        dto.setAvatar(user.getAvatar());
+        dto.setUsername(user.getUsername());
+        return dto;
     }
 }
