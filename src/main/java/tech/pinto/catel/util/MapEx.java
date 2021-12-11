@@ -25,7 +25,7 @@ public abstract class MapEx extends MapX {
     @Override
     public Order toPersonOrder(DtoReservePersonal src) {
         var order = toOrder(src);
-        var roomNumber = src.getResidents().size();
+        var roomNumber = src.getResidents() != null ? src.getResidents().size() : 0;
         order.setRoomNum(roomNumber);
         return order;
     }

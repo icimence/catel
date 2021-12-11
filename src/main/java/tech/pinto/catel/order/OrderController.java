@@ -33,8 +33,8 @@ public class OrderController {
         return Response.buildSuccess(orderId).setMessage(12);
     }
 
-    @GetMapping("/preview")
-    public Response preview(DtoReservePersonal dtoReservePersonal) {
+    @PostMapping("/preview")
+    public Response preview(@RequestBody DtoReservePersonal dtoReservePersonal) {
         var preview = orderService.refPreview(dtoReservePersonal);
         return Response.buildSuccess(preview);
     }
