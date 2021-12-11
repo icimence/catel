@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "custom.reserve.ahead-limit",
+      "type": "java.lang.String",
+      "description": "Description for custom.reserve.ahead-limit."
+    }
+  ]
+}

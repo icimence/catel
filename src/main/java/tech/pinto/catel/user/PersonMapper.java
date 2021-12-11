@@ -13,13 +13,6 @@ public interface PersonMapper extends BaseMapper<Resident> {
         "(#{userId} ,#{idNo} ,#{realName} ,#{phoneNumber} ,#{birthday})")
     void add(Resident resident);
 
-    @Delete(value = "delete from hotel.Person where id=#{id} ")
-    void delete(@Param("id") int id);
-
-    @Update(value = "update hotel.Person set user_id=#{person.userId} ,real_name=#{person.realName} ," +
-        "id_no=#{person.idNo} ,phone_number=#{person.phoneNumber} ,birthday=#{person.birthday} where id=#{person.id}  ")
-    void update(@Param("resident") Resident resident);
-
     @Select(value = "select * from hotel.Person where user_id=#{userId}  ")
     List<Resident> selectByUserId(@Param("userId") int userId);
 

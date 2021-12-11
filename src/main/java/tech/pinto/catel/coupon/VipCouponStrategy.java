@@ -1,6 +1,5 @@
 package tech.pinto.catel.coupon;
 
-import tech.pinto.catel.bl.CouponMatchStrategyI;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.user.PersonMapper;
 import tech.pinto.catel.enums.CouponType;

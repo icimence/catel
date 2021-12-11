@@ -1,6 +1,5 @@
 package tech.pinto.catel.room;
 
-import tech.pinto.catel.bl.RoomServiceI;
 import tech.pinto.catel.domain.Room;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
@@ -14,10 +13,10 @@ import java.util.List;
 @RequestMapping("api/room")
 public class RoomController {
 
-    private final RoomServiceI roomService;
+    private final RoomService roomService;
 
     @Autowired
-    public RoomController(RoomServiceI roomService) {
+    public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
 

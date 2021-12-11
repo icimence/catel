@@ -14,3 +14,6 @@ room_unit.price <> room_unit.room_config.def_price
 hotel.min_price <> COMPUTED BY min(room.price)
     brief of hotel needs min price which is not frequently changed
     the field will be updated per hour
+
+room_config.room_number <> COMPUTED by count(room)
+    avoid to re-calculate room number per day when create new room unit

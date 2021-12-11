@@ -1,4 +1,4 @@
-package tech.pinto.catel.config;
+package tech.pinto.catel.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

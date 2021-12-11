@@ -11,10 +11,6 @@ import java.util.List;
 @Mapper
 public interface MapperRoom extends BaseMapper<Room> {
 
-    @Update("update RoomNumber set number=number-#{order.roomNum} where " +
-        "config_id=#{configId} and date >= #{checkInDate} and date < #{checkOutDate} ")
-    void updateRoomInfo(Order order, long configId);
-
     @Insert(value = "insert into hotel.Room (price, total, hotel_id, room_type,breakfast,people_max) values " +
         "(#{room.price},#{room.total} ,#{room.hotelId} ," +
         "#{room.roomType},#{room.breakfast} ,#{room.peopleMax}  )")
@@ -62,12 +58,6 @@ public interface MapperRoom extends BaseMapper<Room> {
     @Select(value = "select number from hotel.RoomNumber where room_id=#{id} order by date ")
     List<Integer> getRoomNumber(@Param("id") long roomId);
 
-    @Select(value = "select id from Room where room_type=#{order.roomType} and hotel_id=#{order.hotelId} and breakfast=#{order.breakfast} ")
-    int getRoomId(long hotelId, String roomName);
-
-    @Select(value = "select count(*)>0 from hotel.Room")
-    boolean ok();
-
     @Update(value = "update hotel.RoomNumber x set x.date=date_add(x.date,interval 32 day), number=#{room.total} where " +
         "x.date=curdate() and room_id=#{room.id} ")
     void updateRoomNumber(@Param("room") Room room);
@@ -84,6 +74,4 @@ public interface MapperRoom extends BaseMapper<Room> {
     @Select(value = "select count(*)>0 from hotel.Room where room_type=#{room.roomType} and breakfast=#{room.breakfast} and hotel_id=#{room.hotelId} ")
     boolean exists(@Param("room") Room room);
 
-    @Select("select price from Room where id=#{roomId}")
-    BigDecimal getPrice(long roomId);
 }

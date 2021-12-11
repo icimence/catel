@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface RepoRoomUnit extends JpaRepository<RoomUnit, Long> {
+public interface RepoRoomUnit extends JpaRepository<RoomUnit, RoomUnit._Id> {
     @Modifying
     @Query(nativeQuery = true, value =
         "update room_unit ru " +
@@ -25,17 +25,23 @@ public interface RepoRoomUnit extends JpaRepository<RoomUnit, Long> {
     void restoreCanceledRoom(Order order);
 
     @Query("select ru.number from RoomUnit ru " +
-        "where ru.roomConfig.id=:configId " +
-        "and ru.date >= :dateStart " +
-        "and ru.date < :dateEnd")
+        "where ru.id.roomConfig.id=:configId " +
+        "and ru.id.date >= :dateStart " +
+        "and ru.id.date < :dateEnd")
     List<Integer> getRoomNumber(long configId, LocalDate dateStart, LocalDate dateEnd);
 
     @Modifying
     @Transactional
     @Query("update RoomUnit ru " +
         "set ru.number = ru.number - :number " +
-        "where ru.roomConfig = :config " +
-        "and ru.date >= :in " +
-        "and ru.date < :out ")
+        "where ru.id.roomConfig = :config " +
+        "and ru.id.date >= :in " +
+        "and ru.id.date < :out ")
     void invalidOccupied(RoomConfig config, int number, LocalDate in, LocalDate out);
+
+    @Modifying
+    @Transactional
+    @Query("delete from RoomUnit ru " +
+        "where ru.id.date = current_date")
+    void dailyUpdateRemove();
 }

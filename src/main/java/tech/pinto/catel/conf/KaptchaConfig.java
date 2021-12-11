@@ -1,4 +1,4 @@
-package tech.pinto.catel.config;
+package tech.pinto.catel.conf;
 
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.util.Config;

@@ -26,3 +26,8 @@ mybatis-plus:
       table-underline: false
   configuration:
     map-underscore-to-camel-case: true
+
+
+custom:
+  reserve:
+    ahead-limit: 15

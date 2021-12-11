@@ -1,6 +1,5 @@
 package tech.pinto.catel.admin;
 
-import tech.pinto.catel.bl.AdminServiceI;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.user.AccountService;
 import tech.pinto.catel.domain.User;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdminService implements AdminServiceI {
+public class AdminService  {
 
     final AdminMapper adminMapper;
     final AccountService accountService;
@@ -23,29 +22,24 @@ public class AdminService implements AdminServiceI {
         this.accountMapper = accountMapper;
     }
 
-    @Override
     public List<User> getAllManagers() {
         return adminMapper.getAllManagers();
     }
 
-    @Override
     public void bindToManager(int hotelId, int managerId) {
         adminMapper.bind(hotelId, managerId);
     }
 
-    @Override
     public void deleteHotel(int id) {
         adminMapper.deleteHotel(id);
     }
 
-    @Override
     public void deleteUser(int id) {
         adminMapper.beforeDelete(id);
         accountMapper.beforeDelete(id);
         adminMapper.deleteUser(id);
     }
 
-    @Override
     public List<User> getAllMarketers() {
         return adminMapper.getAllMarketers();
     }

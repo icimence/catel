@@ -24,19 +24,19 @@ public class HotelService {
     private final MapperOrder mapperOrder;
     private final MapperRoom mapperRoom;
     private final MapperRoomConfig mapperRoomConfig;
-    private final MapperUsableRoom mapperUsableRoom;
     private final RepoRoomUnit repoRoomUnit;
+    private final RepoHotel repoHotel;
     private final OssService ossService;
     private final FzyService fzyService;
     private final JPAQueryFactory queryFactory;
     private final MapX mapX;
 
     @Autowired
-    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, MapperRoomConfig mapperRoomConfig, MapperUsableRoom mapperUsableRoom, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory, MapX mapX) {
+    public HotelService(MapperHotel mapperHotel, MapperRoom mapperRoom, MapperRoomConfig mapperRoomConfig, RepoHotel repoHotel, OssService ossService, FzyService fzyService, MapperOrder mapperOrder, RepoRoomUnit repoRoomUnit, JPAQueryFactory queryFactory, MapX mapX) {
         this.mapperHotel = mapperHotel;
         this.mapperRoom = mapperRoom;
         this.mapperRoomConfig = mapperRoomConfig;
-        this.mapperUsableRoom = mapperUsableRoom;
+        this.repoHotel = repoHotel;
         this.ossService = ossService;
         this.fzyService = fzyService;
         this.mapperOrder = mapperOrder;
@@ -104,7 +104,7 @@ public class HotelService {
     }
 
     public HotelVO selectById(long hotelId) {
-        Hotel hotel = mapperHotel.selectById(hotelId);
+        var hotel = repoHotel.getById(hotelId);
         HotelVO hotelVO = new HotelVO();
         BeanUtil.copyProperties(hotel, hotelVO, CopyOptions.create().ignoreNullValue());
         List<Room> rooms = mapperRoom.selectRoomsByHotelId(hotelId);
@@ -137,7 +137,7 @@ public class HotelService {
             .selectFrom(h)
             .distinct()
             .join(rc).on(rc.hotel.eq(h))
-            .join(ru).on(ru.roomConfig.eq(rc));
+            .join(ru).on(ru.id.roomConfig.eq(rc));
         if (filter.getRegion() != null) {
             query = query.where(h.bizRegion.eq(filter.getRegion()));
         }
@@ -151,7 +151,7 @@ public class HotelService {
             query = query.where(rc.defPrice.lt(filter.getPriceUpper()));
         }
         query = query
-            .where(ru.date.goe(inDate), ru.date.lt(outDate), ru.number.ne(0))
+            .where(ru.id.date.goe(inDate), ru.id.date.lt(outDate), ru.number.ne(0))
             .groupBy(h, rc)
             .having(ru.count().eq(duration));
 

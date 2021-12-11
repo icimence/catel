@@ -15,13 +15,6 @@ public interface MapperOrder extends BaseMapper<Order> {
     @Select(value = "select * from hotel.OrderList where user_id=#{userId} ")
     List<Order> getUserOrders(@Param("userId") int userId);
 
-    @Update(value = "update hotel.OrderList set order_state='Canceled' where id=#{orderId} ")
-    void annulOrder(@Param("orderId") int orderId);
-
-    @Update(value = "update hotel.OrderList set order_state=#{order.orderState} ,credit_delta=#{order.creditDelta} , comment_id=#{order.commentId} where id=#{order.id} ")
-    void update(@Param("order") Order order);
-
-
     @Update(value = "update hotel.Hotel h set rate=coalesce(" +
             "(select x.r from (select hotel_id,avg(score) r from hotel.Comment group by hotel_id) x " +
             "where hotel_id=h.id),5) where true")

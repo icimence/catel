@@ -1,4 +1,4 @@
-package tech.pinto.catel.bl;
+package tech.pinto.catel.coupon;
 
 import tech.pinto.catel.domain.Coupon;
 import tech.pinto.catel.domain.Order;

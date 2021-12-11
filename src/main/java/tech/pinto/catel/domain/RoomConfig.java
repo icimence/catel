@@ -24,6 +24,7 @@ public class RoomConfig {
     private boolean breakfast;
     private RoomType type;
     private BigDecimal defPrice;
+    private int roomNumber = 0;
 
     @Override
     public boolean equals(Object o) {

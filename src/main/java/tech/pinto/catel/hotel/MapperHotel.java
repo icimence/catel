@@ -24,9 +24,6 @@ public interface MapperHotel extends BaseMapper<Hotel> {
     @Select(value = "select * from hotel.Hotel")
     List<Hotel> selectAllHotel();
 
-    @Select(value = "select * from hotel.Hotel where id=#{id} ")
-    Hotel selectById(@Param("id") long id);
-
     @Select(value = "select * from hotel.Hotel where manager_id=#{id} ")
     List<Hotel> selectByManager(@Param("id") Integer id);
 

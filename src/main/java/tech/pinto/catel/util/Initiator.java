@@ -1,9 +1,5 @@
 package tech.pinto.catel.util;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.engine.spi.EntityEntry;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.stereotype.Service;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.enums.BizRegion;
@@ -19,7 +15,6 @@ import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class Initiator {

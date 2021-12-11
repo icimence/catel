@@ -6,24 +6,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
-import tech.pinto.catel.domain.Hotel;
+import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.QueryParam;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
-import tech.pinto.catel.domain.Comment;
-import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.order.RepoOrder;
 import tech.pinto.catel.order.dto.DtoOrderBrief;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
-import tech.pinto.catel.domain.CreditEntry;
 import tech.pinto.catel.user.RepoUser;
-import tech.pinto.catel.domain.Resident;
 import tech.pinto.catel.order.dto.DtoOrderDetail;
 import tech.pinto.catel.order.dto.DtoReserve;
-import tech.pinto.catel.domain.RoomConfig;
 import tech.pinto.catel.room.dto.DtoRoomInfo;
-import tech.pinto.catel.domain.User;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
@@ -86,10 +80,17 @@ public abstract class MapX {
         return repoUser.getById(id);
     }
 
-    public Order idToOrder(long id) {return repoOrder.getById(id);}
-    
+    public Order idToOrder(long id) {
+        return repoOrder.getById(id);
+    }
+
     public abstract DtoOrderBrief toBrief(Order order);
-    
+
     public abstract DtoUserInfo toInfo(User src);
+
+//    @Mapping(target = "number", source = "roomNumber")
+//    @Mapping(target = "price", source = "defPrice")
+    @Mapping(target = "id.roomConfig", source = ".")
+    public abstract RoomUnit toUnit(RoomConfig config);
 }
 

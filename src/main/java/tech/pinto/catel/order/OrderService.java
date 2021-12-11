@@ -45,7 +45,6 @@ public class OrderService {
     private final HotelService hotelService;
     private final AccountService accountService;
     private final AccountMapper accountMapper;
-    private final MapperOrderRoom mapperOrderRoom;
     private final MapperRoomConfig mapperRoomConfig;
     private final RepoOrder repoOrder;
     private final RepoOrderRoom repoOrderRoom;
@@ -56,14 +55,13 @@ public class OrderService {
     private final MapX mapX;
 
     @Autowired
-    public OrderService(MapperOrder mapperOrder, HotelService hotelService, MapperRoom mapperRoom, MapperHotel mapperHotel, AccountService accountService, AccountMapper accountMapper, MapperOrderRoom mapperOrderRoom, MapperRoomConfig mapperRoomConfig, RepoOrder repoOrder, RepoOrderRoom repoOrderRoom, RepoOrderRoom repoOrderRoom1, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, MapX mapX, RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, EntityManagerFactory entityManagerFactory) {
+    public OrderService(MapperOrder mapperOrder, HotelService hotelService, MapperRoom mapperRoom, MapperHotel mapperHotel, AccountService accountService, AccountMapper accountMapper, MapperRoomConfig mapperRoomConfig, RepoOrder repoOrder, RepoOrderRoom repoOrderRoom1, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, MapX mapX, RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, EntityManagerFactory entityManagerFactory) {
         this.mapperOrder = mapperOrder;
         this.hotelService = hotelService;
         this.mapperRoom = mapperRoom;
         this.mapperHotel = mapperHotel;
         this.accountService = accountService;
         this.accountMapper = accountMapper;
-        this.mapperOrderRoom = mapperOrderRoom;
         this.mapperRoomConfig = mapperRoomConfig;
         this.repoOrder = repoOrder;
         this.repoOrderRoom = repoOrderRoom1;
@@ -98,6 +96,7 @@ public class OrderService {
             configId, order.getCheckInDate(), order.getCheckOutDate(), order.getRoomNum()
         )) throw new OopsException(2);
 
+        // TODO use unit price
         BigDecimal unitPrice = config.getDefPrice();
         BigDecimal price = BigDecimal.valueOf(order.getRoomNum()).multiply(unitPrice);
         order.setPrice(price);

@@ -35,7 +35,7 @@ public class PersonService {
     }
 
     public void update(Resident resident) {
-        personMapper.update(resident);
+        repoResident.save(resident);
     }
 
     public List<Resident> selectByUserId(long userId) {
