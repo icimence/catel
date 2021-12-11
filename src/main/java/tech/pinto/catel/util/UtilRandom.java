@@ -19,6 +19,10 @@ public class UtilRandom {
         return lower + Math.abs(random.nextLong()) % (upper - lower);
     }
 
+    public static long ofLong() {
+        return random.nextLong();
+    }
+
     public static String ofPhoneNumber() {
         long number = (long) Math.floor(Math.random() * 1_000_000_000L) + 10_000_000_000L;
         return String.valueOf(number);

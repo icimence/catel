@@ -3,10 +3,7 @@ package tech.pinto.catel.domain;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +14,7 @@ import java.util.Objects;
 public class Comment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_comment_id")
     private Long id;
     @OneToOne
     private Order order;
@@ -39,5 +37,14 @@ public class Comment {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public Comment(Order order, User user, Hotel hotel, int score, String title, String content) {
+        this.order = order;
+        this.user = user;
+        this.hotel = hotel;
+        this.score = score;
+        this.title = title;
+        this.content = content;
     }
 }

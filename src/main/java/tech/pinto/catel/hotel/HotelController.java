@@ -106,5 +106,11 @@ public class HotelController {
         var hot = hotelService.getHot(limit);
         return Response.buildSuccess(hot);
     }
+    
+    @GetMapping("/lucky")
+    public Response luckyOne() {
+        var hotel = hotelService.luckyOne();
+        return Response.buildSuccess(hotel);
+    }
 
 }

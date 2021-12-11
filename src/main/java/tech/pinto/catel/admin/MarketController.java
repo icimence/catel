@@ -1,11 +1,6 @@
 package tech.pinto.catel.admin;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.enums.UserType;
 import tech.pinto.catel.user.AccountService;
-import tech.pinto.catel.domain.User;
-import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.user.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +26,7 @@ public class MarketController {
      */
     @PostMapping("/new")
     public Response createMarketer(@RequestBody UserForm userForm) {
-        User user = new User();
-        user.setUserType(UserType.Marketer);
-        BeanUtil.copyProperties(userForm, user, CopyOptions.create().ignoreNullValue());
-        try {
-            accountService.registerAccount(user);
-        } catch (OopsException e) {
-            return Response.buildFailure(e.getMessage());
-        }
+        // TODO create market man
         return Response.buildSuccess().setMessage(23);
     }
 

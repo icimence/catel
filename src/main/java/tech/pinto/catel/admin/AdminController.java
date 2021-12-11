@@ -30,15 +30,7 @@ public class AdminController {
      */
     @PostMapping("/new-manager")
     public Response addManager(@RequestBody UserForm userForm) {
-        User user = new User();
-        user.setUserType(UserType.HotelManager);
-        BeanUtil.copyProperties(userForm, user, CopyOptions.create().ignoreNullValue());
-        try {
-            accountService.registerAccount(user);
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return Response.buildFailure(e.getMessage());
-        }
+        // TODO create manager
         return Response.buildSuccess().setMessage(1);
     }
 

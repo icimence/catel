@@ -19,6 +19,7 @@ import tech.pinto.catel.room.dto.DtoConfigInfo;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.order.dto.DtoOrderDetail;
 import tech.pinto.catel.order.dto.DtoReserve;
+import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
@@ -47,6 +48,7 @@ public abstract class MapX {
 
     public abstract Order toPersonOrder(DtoReservePersonal src);
 
+    @Mapping(target = "order", source = "orderId")
     public abstract Comment toComment(DtoPublishComment src);
 
     @Mapping(target = "checkInDate", source = "checkInDate", dateFormat = "MM/dd/yyyy")
@@ -100,5 +102,7 @@ public abstract class MapX {
 //    @Mapping(target = "price", source = "defPrice")
     @Mapping(target = "id.roomConfig", source = ".")
     public abstract RoomUnit toUnit(RoomConfig config);
+    
+    public abstract User toUser(DtoRegister dtoRegister);
 }
 

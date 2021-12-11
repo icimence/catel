@@ -3,6 +3,7 @@ package tech.pinto.catel.user;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.domain.User;
+import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
@@ -58,16 +59,9 @@ public class AccountController {
      * create an account
      * _in account info, including email, username, abd password
      */
-    @PostMapping("/new-client")
-    public Response registerAccount(@RequestBody UserVO userVO) {
-        User user = new User();
-        BeanUtil.copyProperties(userVO, user, CopyOptions.create().setIgnoreNullValue(true));
-        try {
-            accountService.registerAccount(user);
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return Response.buildFailure(e.getMessage());
-        }
+    @PostMapping("/")
+    public Response registerAccount(@RequestBody DtoRegister dtoRegister) throws OopsException {
+        accountService.registerAccount(dtoRegister);
         return Response.buildSuccess().setMessage(16);
     }
 

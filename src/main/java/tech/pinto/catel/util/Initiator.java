@@ -1,6 +1,8 @@
 package tech.pinto.catel.util;
 
 import org.springframework.stereotype.Service;
+import tech.pinto.catel.comment.CommentService;
+import tech.pinto.catel.comment.dto.DtoPublishComment;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.enums.BizRegion;
 import tech.pinto.catel.enums.HotelStar;
@@ -24,25 +26,28 @@ public class Initiator {
     private final RepoRoom repoRoom;
     private final RepoRoomUnit repoRoomUnit;
     private final OrderService orderService;
+    private final CommentService commentService;
     private final EntityManagerFactory entityManagerFactory;
 
-    private final int numOfHotel = 50;
+    private final int numOfHotel = 30;
     private final int numOfConfig = 5;
-    private final int numOfRoom = 5;
+    private final int numOfRoom = 15;
     private final int numOfDay = 15;
     private final int numOfUser = 10;
     private final int numberOfResident = 3;
-    private final int numberOfOrder = 50;
+    private final int numberOfOrder = 200;
+    private final int numberOfComment = 100;
 
     private final LocalDate today = LocalDate.now();
 
-    public Initiator(RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, OrderService orderService, EntityManagerFactory entityManagerFactory) {
+    public Initiator(RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, OrderService orderService, CommentService commentService, EntityManagerFactory entityManagerFactory) {
         this.repoHotel = repoHotel;
         this.repoUser = repoUser;
         this.repoRoomConfig = repoRoomConfig;
         this.repoRoom = repoRoom;
         this.repoRoomUnit = repoRoomUnit;
         this.orderService = orderService;
+        this.commentService = commentService;
         this.entityManagerFactory = entityManagerFactory;
     }
 
@@ -50,7 +55,20 @@ public class Initiator {
         initHotelItem();
         initUserItem();
         initOrderItem();
+        initComment();
         System.out.println("[task] database init");
+    }
+
+    private void initComment() {
+
+        for (int i = 0; i < numberOfComment; i++) {
+            var dto = new DtoPublishComment();
+            dto.setScore(UtilRandom.ofInt(1, 6));
+            dto.setContent("随机的评论内容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容！");
+            dto.setTitle("随机的标题！");
+            dto.setOrderId(Math.floorDiv(numberOfOrder, numberOfComment) * i + 1);
+            commentService.comment(dto);
+        }
     }
 
     private void initHotelItem() {

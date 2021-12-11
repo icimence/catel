@@ -17,12 +17,7 @@ public interface AccountMapper {
 
     @Select(value = "select * from hotel.User where username=#{username}  ")
     User getAccountByUsername(@Param("username") String username);
-
-    @Insert(value = "insert into hotel.User(email, password, username,credit, user_type, avatar,vip_end,vip_type) values " +
-            "(#{user.email} ,#{user.password} ,#{user.username} ,#{user.credit} ," +
-            "#{user.userType} ,#{user.avatar}, #{user.vipEnd} ,#{user.vipType}  )")
-    void createNewAccount(@Param("user") User user);
-
+    
     @Insert(value = "insert into hotel.CreditUp (user_id, credit_delta) values (#{creditUp.userId} ,#{creditUp.creditDelta} )")
     void creditUp(@Param("creditUp") CreditUp creditUp);
 

@@ -35,8 +35,8 @@ public class CommentService {
     }
 
     public void comment(DtoPublishComment dtoPublishComment) {
-        Comment comment = mapX.toComment(dtoPublishComment);
-        commentMapper.insert(comment);
+        var comment = mapX.toComment(dtoPublishComment);
+        repoComment.save(comment);
     }
 
     public List<CommentVO> getComment(int hotelId) {

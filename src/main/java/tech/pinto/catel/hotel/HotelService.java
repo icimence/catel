@@ -112,10 +112,9 @@ public class HotelService {
 
         var inDate = filter.getInDate();
         var outDate = filter.getOutDate();
-        if (inDate == null || outDate == null) {
+        if ((inDate == null) != (outDate == null)) {
             throw new OopsException(9);
         }
-        var duration = outDate.toEpochDay() - inDate.toEpochDay();
 
         var rc = QRoomConfig.roomConfig;
         var h = QHotel.hotel;
@@ -138,10 +137,13 @@ public class HotelService {
         if (filter.getPriceUpper() != null) {
             query = query.where(rc.defPrice.lt(filter.getPriceUpper()));
         }
-        query = query
-            .where(ru.id.date.goe(inDate), ru.id.date.lt(outDate), ru.number.ne(0))
-            .groupBy(h, rc)
-            .having(ru.count().eq(duration));
+        if (inDate != null) {
+            var duration = outDate.toEpochDay() - inDate.toEpochDay();
+            query = query
+                .where(ru.id.date.goe(inDate), ru.id.date.lt(outDate), ru.number.ne(0))
+                .groupBy(h, rc)
+                .having(ru.count().eq(duration));
+        }
 
         if (queryParam.getLimit() != null) {
             var page = queryParam.getPage() == null ? 0L : queryParam.getPage();
@@ -159,4 +161,9 @@ public class HotelService {
 
     }
 
+    public DtoHotelDetail luckyOne() {
+        var hotels = repoHotel.findAll();
+        var id = UtilRandom.ofInt(0, hotels.size());
+        return mapX.toDetail(hotels.get(id));
+    }
 }

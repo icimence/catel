@@ -6,6 +6,7 @@ import tech.pinto.catel.domain.CreditEntry;
 import tech.pinto.catel.domain.CreditUp;
 import tech.pinto.catel.domain.User;
 import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -38,19 +40,30 @@ public class AccountService {
         this.mapX = mapX;
     }
 
-    public void registerAccount(User user) throws OopsException {
-        if (exists(user)) throw new OopsException(1);
-        accountMapper.createNewAccount(user);
+    public void registerAccount(DtoRegister dtoRegister) throws OopsException {
+        var user = mapX.toUser(dtoRegister);
+
+        Optional<User> u;
+        u = repoUser.findByEmail(dtoRegister.getEmail());
+        if (u.isPresent()) throw new OopsException(1);
+        u = repoUser.findByUsername(dtoRegister.getUsername());
+        if (u.isPresent()) throw new OopsException(1);
+
+        repoUser.save(user);
     }
 
     public DtoUserInfo login(UserForm userForm) throws OopsException {
         var user = repoUser.findByEmail(userForm.getEmail());
-        if (user == null) user = repoUser.findByUsername(userForm.getEmail());
-        
-        if (null == user || !user.getPassword().equals(userForm.getPassword())) {
+        if (user.isEmpty()) user = repoUser.findByUsername(userForm.getEmail());
+        if (user.isEmpty()) {
             throw new OopsException(3);
         }
-        return mapX.toInfo(user);
+        if (
+            userForm.getPassword().equals(user.get().getPassword())
+        ) {
+            throw new OopsException(3);
+        }
+        return mapX.toInfo(user.get());
     }
 
     public User getUserById(int id) throws OopsException {
