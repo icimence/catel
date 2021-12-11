@@ -82,18 +82,10 @@ public class HotelService {
         return hotels.stream().filter(hotel -> fzyService.similarity(keyword, hotel) > 0.6).collect(Collectors.toList());
     }
 
-    public List<HotelVO> getHot() {
-        List<Hotel> all = mapperHotel.selectAllHotel();
-        HashMap<Long, Integer> hots = new HashMap<>();
-        all.forEach(o -> {
-            hots.put(o.getId(), mapperOrder.getHot(o.getId()));
-        });
-        all.sort(Comparator.comparingInt(x -> hots.get(x.getId())));
-        return all.stream().map(o -> {
-            HotelVO hotelVO = new HotelVO();
-            BeanUtil.copyProperties(o, hotelVO, CopyOptions.create().ignoreNullValue());
-            return hotelVO;
-        }).collect(Collectors.toList());
+    public List<DtoHotelBrief> getHot(int limit) {
+        var h = QHotel.hotel;
+        var hottest = queryFactory.selectFrom(h).orderBy(h.rate.desc()).limit(limit).fetch();
+        return hottest.stream().map(mapX::toBrief).collect(Collectors.toList());
     }
 
     public List<HotelVO> retrieveHotels() {

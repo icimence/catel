@@ -102,8 +102,9 @@ public class HotelController {
      * _out ordered hotels
      */
     @GetMapping("/hot")
-    public Response getHot() {
-        return Response.buildSuccess(hotelService.getHot());
+    public Response getHot(@RequestParam int limit) {
+        var hot = hotelService.getHot(limit);
+        return Response.buildSuccess(hot);
     }
 
 }
