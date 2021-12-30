@@ -1,17 +1,12 @@
 package tech.pinto.catel.user;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.domain.User;
 import tech.pinto.catel.user.dto.DtoRegister;
-import tech.pinto.catel.user.dto.DtoUserInfo;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.order.CreditUpVO;
-import tech.pinto.catel.vo.user.UserForm;
+import tech.pinto.catel.user.dto.DtoLogin;
 import tech.pinto.catel.vo.user.UserInfo;
-import tech.pinto.catel.vo.user.UserVO;
 import tech.pinto.catel.vo.user.VipForm;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +39,9 @@ public class AccountController {
      * _out info of the account
      */
     @PostMapping("/login")
-    public Response login(@RequestBody UserForm userForm) {
+    public Response login(@RequestBody DtoLogin dtoLogin) {
         try {
-            var info = accountService.login(userForm);
+            var info = accountService.login(dtoLogin);
             return Response.buildSuccess(info).setMessage(15);
         } catch (OopsException e) {
             e.printStackTrace();

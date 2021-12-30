@@ -1,13 +1,8 @@
 package tech.pinto.catel.admin;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import tech.pinto.catel.enums.UserType;
 import tech.pinto.catel.user.AccountService;
-import tech.pinto.catel.domain.User;
-import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
-import tech.pinto.catel.vo.user.UserForm;
+import tech.pinto.catel.user.dto.DtoLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +24,7 @@ public class AdminController {
      * _in email, phone number and password
      */
     @PostMapping("/new-manager")
-    public Response addManager(@RequestBody UserForm userForm) {
+    public Response addManager(@RequestBody DtoLogin dtoLogin) {
         // TODO create manager
         return Response.buildSuccess().setMessage(1);
     }

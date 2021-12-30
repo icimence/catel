@@ -12,7 +12,7 @@ import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.OssService;
 import tech.pinto.catel.vo.order.CreditUpVO;
-import tech.pinto.catel.vo.user.UserForm;
+import tech.pinto.catel.user.dto.DtoLogin;
 import tech.pinto.catel.vo.user.UserInfo;
 import tech.pinto.catel.vo.user.VipForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +52,14 @@ public class AccountService {
         repoUser.save(user);
     }
 
-    public DtoUserInfo login(UserForm userForm) throws OopsException {
-        var user = repoUser.findByEmail(userForm.getEmail());
-        if (user.isEmpty()) user = repoUser.findByUsername(userForm.getEmail());
+    public DtoUserInfo login(DtoLogin dtoLogin) throws OopsException {
+        var user = repoUser.findByEmail(dtoLogin.getEmail());
+        if (user.isEmpty()) user = repoUser.findByUsername(dtoLogin.getEmail());
         if (user.isEmpty()) {
             throw new OopsException(3);
         }
         if (
-            userForm.getPassword().equals(user.get().getPassword())
+            !dtoLogin.getPassword().equals(user.get().getPassword())
         ) {
             throw new OopsException(3);
         }

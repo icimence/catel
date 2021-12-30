@@ -9,7 +9,6 @@ import java.util.List;
 public class DtoHotelDetail {
     private long id;
     private int creditBound;
-    private double rate;
     private String bizRegion;
     private String hotelStar;
     private String description;
@@ -20,4 +19,6 @@ public class DtoHotelDetail {
     private String portrait;
     private String announcement;
     private List<DtoConfigInfo> rooms;
+    private double rate;
+    private double[] rateDist;
 }

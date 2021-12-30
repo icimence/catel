@@ -19,5 +19,6 @@ public class QueryParam {
         private BizRegion region;
         private LocalDate inDate;
         private LocalDate outDate;
+        private int[] stars;
     }
 }

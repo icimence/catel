@@ -1,6 +1,7 @@
 package tech.pinto.catel.domain;
 
 import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +27,6 @@ public class Hotel {
     private String address;
     private BizRegion bizRegion;
     private HotelStar hotelStar;
-    private Double rate;
     private String description;
     private String phoneNumber;
     private Integer managerId;
@@ -35,7 +35,9 @@ public class Hotel {
     private int creditBound;
     private String announcement;
     private BigDecimal minPrice = null;
-    
+
+    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private CommentStat commentStat;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<RoomConfig> configs = new ArrayList<>();
 
@@ -48,6 +50,7 @@ public class Hotel {
         this.phoneNumber = phoneNumber;
         this.creditBound = creditBound;
         this.announcement = announcement;
+        this.commentStat = new CommentStat(this);
     }
 
     @Override

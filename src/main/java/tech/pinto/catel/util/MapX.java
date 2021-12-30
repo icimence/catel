@@ -24,10 +24,6 @@ import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 
-import javax.persistence.EntityManagerFactory;
-import java.time.LocalDate;
-import java.util.function.Function;
-
 @Mapper(componentModel = "spring")
 @DecoratedWith(MapEx.class)
 public abstract class MapX {
@@ -37,36 +33,34 @@ public abstract class MapX {
     protected RepoUser repoUser;
     @Autowired
     protected RepoOrder repoOrder;
-    @Autowired
-    protected EntityManagerFactory entityManagerFactory;
 
     @Mapping(target = "birthday", source = "birthday", dateFormat = "MM/dd/yyyy")
     @Mapping(target = "owner", source = "userId")
+    @Mapping(target = "id", ignore = true)
     public abstract Resident toPerson(DtoResidentAddition src);
 
     @Mapping(target = "checkInDate", source = "checkInDate", dateFormat = "MM/dd/yyyy")
     @Mapping(target = "checkOutDate", source = "checkOutDate", dateFormat = "MM/dd/yyyy")
     @Mapping(target = "hotel", source = "hotelId")
     @Mapping(target = "user", source = "userId")
+    @Mapping(target = "id", ignore = true)
     public abstract Order toOrder(DtoReserve src);
 
+    @Mapping(target = "id", ignore = true)
+    public abstract User toUser(DtoRegister dtoRegister);
+
+    @Mapping(target = "id", ignore = true)
     public abstract Order toPersonOrder(DtoReservePersonal src);
 
     @Mapping(target = "order", source = "orderId")
+    @Mapping(target = "id", ignore = true)
     public abstract Comment toComment(DtoPublishComment src);
-
-    @Mapping(target = "checkInDate", source = "checkInDate", dateFormat = "MM/dd/yyyy")
-    @Mapping(target = "checkOutDate", source = "checkOutDate", dateFormat = "MM/dd/yyyy")
-    @Mapping(target = "createdTime", source = "createdTime", dateFormat = "MM/dd/yyyy HH:mm:ss")
-    public abstract DtoOrderDetail toDetail(Order src);
-
-    public abstract DtoHotelDetail toDetail(Hotel hotel);
-
-    public abstract DtoHotelBrief toBrief(Hotel src);
-
+    
+    @Mapping(target = "number", source = "roomNumber")
     @Mapping(target = "price", source = "defPrice")
-    public abstract DtoRoomEntry toRoomInfo(RoomConfig src);
-
+    @Mapping(target = "id.roomConfig", source = ".")
+    public abstract RoomUnit toUnit(RoomConfig config);
+    
     @Mapping(target = "filter.priceLower", source = "filterPriceLower")
     @Mapping(target = "filter.priceUpper", source = "filterPriceUpper")
     @Mapping(target = "filter.rate", source = "filterRate")
@@ -80,6 +74,30 @@ public abstract class MapX {
     @Mapping(target = "order", source = "id")
     public abstract CreditEntry toEntry(Order order);
 
+    @Mapping(target = "checkInDate", source = "checkInDate", dateFormat = "MM/dd/yyyy")
+    @Mapping(target = "checkOutDate", source = "checkOutDate", dateFormat = "MM/dd/yyyy")
+    @Mapping(target = "createdTime", source = "createdTime", dateFormat = "MM/dd/yyyy HH:mm:ss")
+    public abstract DtoOrderDetail toDetail(Order src);
+
+    public abstract DtoHotelDetail toDetail(Hotel hotel);
+
+    public abstract DtoHotelBrief toBrief(Hotel src);
+
+    @Mapping(target = "price", source = "defPrice")
+    public abstract DtoRoomEntry toRoomInfo(RoomConfig src);
+
+    public abstract DtoOrderBrief toBrief(Order order);
+
+    public abstract DtoUserInfo toInfo(User src);
+
+    @Mapping(target = "roomType", source = "type")
+    @Mapping(target = "price", source = "defPrice")
+    @Mapping(target = "total", source = "roomNumber")
+    public abstract DtoConfigInfo toInfo(RoomConfig src);
+
+    @Mapping(target = "userId", source = "user.id")
+    public abstract DtoComment toDtoComment(Comment src);
+
     public Hotel idToHotel(long id) {
         return repoHotel.getById(id);
     }
@@ -92,23 +110,5 @@ public abstract class MapX {
         return repoOrder.getById(id);
     }
 
-    public abstract DtoOrderBrief toBrief(Order order);
-
-    public abstract DtoUserInfo toInfo(User src);
-
-    @Mapping(target = "roomType", source = "type")
-    @Mapping(target = "price", source = "defPrice")
-    @Mapping(target = "total", source = "roomNumber")
-    public abstract DtoConfigInfo toInfo(RoomConfig src);
-
-    @Mapping(target = "number", source = "roomNumber")
-    @Mapping(target = "price", source = "defPrice")
-    @Mapping(target = "id.roomConfig", source = ".")
-    public abstract RoomUnit toUnit(RoomConfig config);
-
-    public abstract User toUser(DtoRegister dtoRegister);
-
-    @Mapping(target = "userId", source = "user.id")
-    public abstract DtoComment toDtoComment(Comment src);
 }
 

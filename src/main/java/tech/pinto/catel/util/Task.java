@@ -69,9 +69,9 @@ public class Task {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-    public void freshRate() {
-        mapperOrder.rate();
+    public void freshCommentStat() {
         repoHotel.freshRate();
+        repoHotel.freshScoreCount();
         log.info("[task] Calculate rate for room");
     }
 
@@ -81,7 +81,6 @@ public class Task {
         var units = repoRoomConfig.findAll().stream().map(mapX::toUnit).collect(Collectors.toList());
         var comingDay = LocalDate.now().plusDays(15);
         units.forEach(u -> u.getId().setDate(comingDay));
-        units.forEach(System.out::println);
         repoRoomUnit.saveAll(units);
         log.info("[task] update room unit");
     }
@@ -92,7 +91,7 @@ public class Task {
         var logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(loggerName);
         logger.setLevel(Level.OFF);
         initiator.init();
-        freshRate();
+        freshCommentStat();
         changeOrderState();
         invalidVip();
         refreshRoomUnit();

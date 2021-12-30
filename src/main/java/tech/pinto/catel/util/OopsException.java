@@ -20,6 +20,7 @@ public class OopsException extends Exception {
         map.put(7, "该类房型已存在！");
         map.put(8, "不能白嫖！");
         map.put(9, "无效的日期参数");
+        map.put(10, "无效的星级参数");
     }
 
     private String message;

@@ -2,7 +2,7 @@ package tech.pinto.catel.admin;
 
 import tech.pinto.catel.user.AccountService;
 import tech.pinto.catel.util.Response;
-import tech.pinto.catel.vo.user.UserForm;
+import tech.pinto.catel.user.dto.DtoLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ public class MarketController {
      * _in email, phone number and password
      */
     @PostMapping("/new")
-    public Response createMarketer(@RequestBody UserForm userForm) {
+    public Response createMarketer(@RequestBody DtoLogin dtoLogin) {
         // TODO create market man
         return Response.buildSuccess().setMessage(23);
     }

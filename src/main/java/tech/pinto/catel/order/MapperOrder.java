@@ -15,10 +15,6 @@ public interface MapperOrder extends BaseMapper<Order> {
     @Select(value = "select * from hotel.OrderList where user_id=#{userId} ")
     List<Order> getUserOrders(@Param("userId") int userId);
 
-    @Update(value = "update hotel.Hotel h set rate=coalesce(" +
-            "(select x.r from (select hotel_id,avg(score) r from hotel.Comment group by hotel_id) x " +
-            "where hotel_id=h.id),5) where true")
-    void rate();
 
     @Update(value = "update hotel.OrderList set order_state='Expired',credit_delta=0 where id=#{id} ")
     void expire(@Param("id") int id);

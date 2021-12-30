@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import tech.pinto.catel.domain.*;
+import tech.pinto.catel.enums.HotelStar;
 import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.order.MapperOrder;
@@ -11,7 +12,6 @@ import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.util.*;
 import tech.pinto.catel.vo.hotel.HotelVO;
-import tech.pinto.catel.vo.hotel.RoomVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +85,16 @@ public class HotelService {
 
     public List<DtoHotelBrief> getHot(int limit) {
         var h = QHotel.hotel;
-        var hottest = queryFactory.selectFrom(h).orderBy(h.rate.desc()).limit(limit).fetch();
+        var cs = QCommentStat.commentStat;
+
+        var hottest = queryFactory
+            .selectFrom(h)
+            .join(cs)
+            .on(h.id.eq(cs.id))
+            .orderBy(cs.rate.desc())
+            .limit(limit)
+            .fetch();
+
         return hottest.stream().map(mapX::toBrief).collect(Collectors.toList());
     }
 
@@ -106,6 +115,12 @@ public class HotelService {
         return detail;
     }
 
+    public DtoHotelDetail luckyOne() {
+        var hotels = repoHotel.findAll();
+        var id = UtilRandom.ofInt(0, hotels.size());
+        return mapX.toDetail(hotels.get(id));
+    }
+
     public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
         var queryParam = mapX.toQueryParam(dtoHotelQuery);
         var filter = queryParam.getFilter();
@@ -113,6 +128,7 @@ public class HotelService {
 
         var inDate = filter.getInDate();
         var outDate = filter.getOutDate();
+
         if ((inDate == null) != (outDate == null)) {
             throw new OopsException(9);
         }
@@ -120,24 +136,43 @@ public class HotelService {
         var rc = QRoomConfig.roomConfig;
         var h = QHotel.hotel;
         var ru = QRoomUnit.roomUnit;
+        var cs = QCommentStat.commentStat;
 
         var query = queryFactory
-            .selectFrom(h)
+            .select(h, cs.rate)
+            .from(h)
             .distinct()
+            .join(cs).on(cs.hotel.eq(h))
             .join(rc).on(rc.hotel.eq(h))
             .join(ru).on(ru.id.roomConfig.eq(rc));
+
         if (filter.getRegion() != null) {
             query = query.where(h.bizRegion.eq(filter.getRegion()));
         }
-//        if (filter.getRate() != null) {
-//            query = query.where(h.rate.goe(filter.getRate()));
-//        }
+
+        if (filter.getRate() != null) {
+            query = query.where(cs.rate.goe(filter.getRate()));
+        }
+
         if (filter.getPriceLower() != null) {
             query = query.where(rc.defPrice.gt(filter.getPriceLower()));
         }
+
         if (filter.getPriceUpper() != null) {
             query = query.where(rc.defPrice.lt(filter.getPriceUpper()));
         }
+
+        if (filter.getStars() != null) {
+            var pred = h.id.ne(h.id);
+            for (var s : filter.getStars()) {
+                var hs = HotelStar.from(s);
+                if (hs != null) pred = pred.or(
+                    h.hotelStar.eq(hs)
+                );
+            }
+            query = query.where(pred);
+        }
+
         if (inDate != null) {
             var duration = outDate.toEpochDay() - inDate.toEpochDay();
             query = query
@@ -153,16 +188,18 @@ public class HotelService {
                 .limit(queryParam.getLimit());
         }
 
-        query = query.orderBy(h.rate.desc());
+        query = query.orderBy(cs.rate.desc());
 
-        var hotels = query.fetch();
-        return hotels.stream().map(mapX::toBrief).collect(Collectors.toList());
+        return query
+            .fetch().stream()
+            .map(t -> {
+                var hotel = t.get(h);
+                var rate = Objects.requireNonNull(t.get(cs.rate));
+                var dto = mapX.toBrief(hotel);
+                dto.setRate(rate);
+                return dto;
+            })
+            .collect(Collectors.toList());
 
-    }
-
-    public DtoHotelDetail luckyOne() {
-        var hotels = repoHotel.findAll();
-        var id = UtilRandom.ofInt(0, hotels.size());
-        return mapX.toDetail(hotels.get(id));
     }
 }

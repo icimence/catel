@@ -1,15 +1,11 @@
 package tech.pinto.catel.room;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tech.pinto.catel.domain.Room;
-import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.room.dto.DtoConfigInfo;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
-import tech.pinto.catel.vo.hotel.RoomVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,10 +32,6 @@ public class RoomService {
 
     private boolean exists(Room room) {
         return mapperRoom.exists(room);
-    }
-
-    public void updateRoomNumber(Order order) {
-
     }
 
     public List<Integer> getRoomNumber(int roomId) {

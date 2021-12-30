@@ -4,15 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.HotelService;
-import tech.pinto.catel.hotel.MapperHotel;
-import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.dto.*;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.room.dto.DtoRoomEntry;
 import tech.pinto.catel.user.AccountMapper;
 import tech.pinto.catel.enums.OrderState;
 import tech.pinto.catel.user.AccountService;
-import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CreditTransVO;
@@ -20,7 +17,6 @@ import tech.pinto.catel.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,37 +26,25 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private final MapperOrder mapperOrder;
-    private final MapperRoom mapperRoom;
-    private final MapperHotel mapperHotel;
     private final HotelService hotelService;
     private final AccountService accountService;
+    private final MapperOrder mapperOrder;
     private final AccountMapper accountMapper;
-    private final MapperRoomConfig mapperRoomConfig;
     private final RepoOrder repoOrder;
-    private final RepoOrderRoom repoOrderRoom;
-    private final RepoRoom repoRoom;
     private final RepoRoomUnit repoRoomUnit;
     private final RepoRoomConfig repoRoomConfig;
-    private final EntityManagerFactory entityManagerFactory;
     private final MapX mapX;
 
     @Autowired
-    public OrderService(MapperOrder mapperOrder, HotelService hotelService, MapperRoom mapperRoom, MapperHotel mapperHotel, AccountService accountService, AccountMapper accountMapper, MapperRoomConfig mapperRoomConfig, RepoOrder repoOrder, RepoOrderRoom repoOrderRoom1, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, MapX mapX, RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, EntityManagerFactory entityManagerFactory) {
+    public OrderService(MapperOrder mapperOrder, HotelService hotelService, AccountService accountService, AccountMapper accountMapper, RepoOrder repoOrder, RepoRoomUnit repoRoomUnit, MapX mapX, RepoRoomConfig repoRoomConfig) {
         this.mapperOrder = mapperOrder;
         this.hotelService = hotelService;
-        this.mapperRoom = mapperRoom;
-        this.mapperHotel = mapperHotel;
         this.accountService = accountService;
         this.accountMapper = accountMapper;
-        this.mapperRoomConfig = mapperRoomConfig;
         this.repoOrder = repoOrder;
-        this.repoOrderRoom = repoOrderRoom1;
-        this.repoRoom = repoRoom;
         this.repoRoomUnit = repoRoomUnit;
-        this.mapX = mapX;
         this.repoRoomConfig = repoRoomConfig;
-        this.entityManagerFactory = entityManagerFactory;
+        this.mapX = mapX;
     }
 
     public DtoRefPreview refPreview(DtoReservePersonal dtoReservePersonal) {
@@ -143,9 +127,10 @@ public class OrderService {
     public void annulOrder(long orderId) {
         var order = repoOrder.getById(orderId);
         order.setOrderState(OrderState.Canceled);
+        var config = order.getRooms().get(0).getRoomConfig();
 
         accountService.creditPunish(order);
-        repoRoomUnit.restoreCanceledRoom(order);
+        repoRoomUnit.restoreCanceledRoom(config, order.getRoomNum(), order.getCheckInDate(), order.getCheckOutDate());
         repoOrder.save(order);
     }
 

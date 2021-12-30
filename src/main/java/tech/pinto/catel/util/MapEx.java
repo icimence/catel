@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
 import tech.pinto.catel.domain.Comment;
+import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.hotel.QueryParam;
+import tech.pinto.catel.hotel.dto.DtoHotelDetail;
+import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.order.dto.DtoReserve;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
 
@@ -46,5 +50,37 @@ public abstract class MapEx extends MapX {
         dto.setAvatar(user.getAvatar());
         dto.setUsername(user.getUsername());
         return dto;
+    }
+
+    @Override
+    public DtoHotelDetail toDetail(Hotel hotel) {
+        var dto = mapX.toDetail(hotel);
+        var stat = hotel.getCommentStat();
+        var dist = new double[]{
+            stat.getScore1(),
+            stat.getScore2(),
+            stat.getScore3(),
+            stat.getScore4(),
+            stat.getScore5(),
+        };
+        for (int i = 0; i < dist.length; i++) {
+            dist[i] /= stat.getTotal();
+        }
+        dto.setRateDist(dist);
+        dto.setRate(stat.getRate());
+        return dto;
+    }
+
+    @Override
+    public QueryParam toQueryParam(DtoHotelQuery src) {
+        var param = mapX.toQueryParam(src);
+        var starStr = src.getFilterStars();
+        var n = starStr.length();
+        var stars = new int[n];
+        for (int i = 0; i < n; i++) {
+            stars[i] = Character.digit(starStr.charAt(i), 10);
+        }
+        param.getFilter().setStars(stars);
+        return param;
     }
 }

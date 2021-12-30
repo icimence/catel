@@ -93,7 +93,9 @@ public class Initiator {
                 var configName = j + "类房间";
                 var type = UtilRandom.ofEnum(RoomType.class);
                 var price = BigDecimal.valueOf(UtilRandom.ofInt(150, 300));
-                var roomConfig = new RoomConfig(hotel, configName, 2, true, type, price, numOfRoom);
+                var peopleLimit = UtilRandom.ofInt(1, 6);
+                var breakfast = UtilRandom.ofBool();
+                var roomConfig = new RoomConfig(hotel, configName, peopleLimit, breakfast, type, price, numOfRoom);
                 roomConfigs.add(roomConfig);
 
                 for (int k = 0; k < numOfRoom; k++) {
