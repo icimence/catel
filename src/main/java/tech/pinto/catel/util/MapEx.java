@@ -75,12 +75,14 @@ public abstract class MapEx extends MapX {
     public QueryParam toQueryParam(DtoHotelQuery src) {
         var param = mapX.toQueryParam(src);
         var starStr = src.getFilterStars();
-        var n = starStr.length();
-        var stars = new int[n];
-        for (int i = 0; i < n; i++) {
-            stars[i] = Character.digit(starStr.charAt(i), 10);
+        if (starStr !=null) {
+            var n = starStr.length();
+            var stars = new int[n];
+            for (int i = 0; i < n; i++) {
+                stars[i] = Character.digit(starStr.charAt(i), 10);
+            }
+            param.getFilter().setStars(stars);
         }
-        param.getFilter().setStars(stars);
         return param;
     }
 }
