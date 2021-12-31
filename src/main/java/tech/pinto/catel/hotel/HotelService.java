@@ -124,7 +124,6 @@ public class HotelService {
     public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
         var queryParam = mapX.toQueryParam(dtoHotelQuery);
         var filter = queryParam.getFilter();
-        System.out.println(queryParam);
 
         var inDate = filter.getInDate();
         var outDate = filter.getOutDate();

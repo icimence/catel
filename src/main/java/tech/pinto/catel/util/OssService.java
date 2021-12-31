@@ -101,7 +101,6 @@ public class OssService {
         metadata.setContentLength(f.available());
         PutObjectResult result = client.putObject(bucket, filename, f, metadata);
         String pic = "https://" + bucket + "." + OssEndpoint + "/" + filename;
-        System.err.println(pic);
         return pic;
     }
 

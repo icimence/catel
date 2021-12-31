@@ -24,7 +24,6 @@ public class PersonService {
 
     public void addResident(DtoResidentAddition dtoResidentAddition) {
         Resident resident = mapX.toPerson(dtoResidentAddition);
-        System.out.println(resident);
         repoResident.save(resident);
     }
 

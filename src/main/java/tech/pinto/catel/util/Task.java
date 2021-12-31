@@ -54,8 +54,6 @@ public class Task {
     public void changeOrderState() {
         var outdated = repoOrder.outdated();
         var entries = outdated.stream().map(mapX::toEntry).collect(Collectors.toList());
-        outdated.forEach(System.out::println);
-        entries.forEach(System.out::println);
         outdated.forEach(o -> o.setOrderState(OrderState.Finished));
         repoCreditEntry.saveAll(entries);
         repoOrder.saveAll(outdated);
@@ -95,7 +93,7 @@ public class Task {
         changeOrderState();
         invalidVip();
         refreshRoomUnit();
-        logger.setLevel(Level.DEBUG);
+//        logger.setLevel(Level.DEBUG);
     }
 
 }

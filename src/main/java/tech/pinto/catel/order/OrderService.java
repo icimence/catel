@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class OrderService {
@@ -47,11 +48,19 @@ public class OrderService {
         this.mapX = mapX;
     }
 
+    private BigDecimal pricePerRoom(List<RoomUnit> units) {
+        return units
+            .stream()
+            .map(RoomUnit::getPrice)
+            .reduce(BigDecimal::add)
+            .orElse(BigDecimal.ZERO);
+    }
+
     public DtoRefPreview refPreview(DtoReservePersonal dtoReservePersonal) {
         var order = mapX.toPersonOrder(dtoReservePersonal);
         var configId = dtoReservePersonal.getConfigId();
         var units = repoRoomUnit.relatedUnits(configId, order.getCheckInDate(), order.getCheckOutDate());
-        var pricePerRoom = units.stream().map(RoomUnit::getPrice).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+        var pricePerRoom = pricePerRoom(units);
         var totalPrice = pricePerRoom.multiply(BigDecimal.valueOf(order.getRoomNum()));
         return new DtoRefPreview(totalPrice);
     }
@@ -181,7 +190,6 @@ public class OrderService {
         List<DtoRoomEntry> roomInfos = order
             .getRooms()
             .stream().map(orderRoom -> {
-                System.out.println(orderRoom);
                 RoomConfig config = orderRoom.getRoomConfig();
                 DtoRoomEntry roomInfo = mapX.toRoomInfo(config);
                 roomInfo.setResidentId(orderRoom.getResidentId());
@@ -190,7 +198,6 @@ public class OrderService {
             }).collect(Collectors.toList());
 
         dtoOrderDetail.setRoomInfos(roomInfos);
-        System.out.println(dtoOrderDetail);
         return dtoOrderDetail;
     }
 }
