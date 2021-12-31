@@ -57,6 +57,12 @@ public class HotelController {
         return Response.buildSuccess(hotelService.retrieveHotels());
     }
 
+    @GetMapping("/brief")
+    public Response retrieveHotelBrief(@RequestParam int id) throws OopsException {
+        var brief = hotelService.getBrief(id);
+        return Response.buildSuccess(brief);
+    }
+
     @GetMapping("/detail")
     public Response retrieveHotelDetail(@RequestParam int id) {
         var detail = hotelService.getDetail(id);
@@ -101,7 +107,7 @@ public class HotelController {
         var hot = hotelService.getHot(limit);
         return Response.buildSuccess(hot);
     }
-    
+
     @GetMapping("/lucky")
     public Response luckyOne() {
         var hotel = hotelService.luckyOne();

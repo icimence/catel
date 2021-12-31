@@ -85,13 +85,13 @@ public class HotelService {
 
     public List<DtoHotelBrief> getHot(int limit) {
         var h = QHotel.hotel;
-        var cs = QCommentStat.commentStat;
+        var hs = QHotelStat.hotelStat;
 
         var hottest = queryFactory
             .selectFrom(h)
-            .join(cs)
-            .on(h.id.eq(cs.id))
-            .orderBy(cs.rate.desc())
+            .join(hs)
+            .on(h.id.eq(hs.id))
+            .orderBy(hs.rate.desc())
             .limit(limit)
             .fetch();
 
@@ -135,13 +135,13 @@ public class HotelService {
         var rc = QRoomConfig.roomConfig;
         var h = QHotel.hotel;
         var ru = QRoomUnit.roomUnit;
-        var cs = QCommentStat.commentStat;
+        var hs = QHotelStat.hotelStat;
 
         var query = queryFactory
-            .select(h, cs.rate)
+            .select(h, hs.rate)
             .from(h)
             .distinct()
-            .join(cs).on(cs.hotel.eq(h))
+            .join(hs).on(hs.hotel.eq(h))
             .join(rc).on(rc.hotel.eq(h))
             .join(ru).on(ru.id.roomConfig.eq(rc));
 
@@ -150,7 +150,7 @@ public class HotelService {
         }
 
         if (filter.getRate() != null) {
-            query = query.where(cs.rate.goe(filter.getRate()));
+            query = query.where(hs.rate.goe(filter.getRate()));
         }
 
         if (filter.getPriceLower() != null) {
@@ -164,9 +164,9 @@ public class HotelService {
         if (filter.getStars() != null) {
             var pred = h.id.ne(h.id);
             for (var s : filter.getStars()) {
-                var hs = HotelStar.from(s);
-                if (hs != null) pred = pred.or(
-                    h.hotelStar.eq(hs)
+                var hStar = HotelStar.from(s);
+                if (hStar != null) pred = pred.or(
+                    h.hotelStar.eq(hStar)
                 );
             }
             query = query.where(pred);
@@ -187,18 +187,24 @@ public class HotelService {
                 .limit(queryParam.getLimit());
         }
 
-        query = query.orderBy(cs.rate.desc());
+        query = query.orderBy(hs.rate.desc());
 
         return query
             .fetch().stream()
             .map(t -> {
                 var hotel = t.get(h);
-                var rate = Objects.requireNonNull(t.get(cs.rate));
+                var rate = Objects.requireNonNull(t.get(hs.rate));
                 var dto = mapX.toBrief(hotel);
                 dto.setRate(rate);
                 return dto;
             })
             .collect(Collectors.toList());
 
+    }
+
+    public DtoHotelBrief getBrief(long id) throws OopsException {
+        var hotel = repoHotel.findById(id);
+        if (hotel.isEmpty()) throw new OopsException(12);
+        return mapX.toBrief(hotel.get());
     }
 }

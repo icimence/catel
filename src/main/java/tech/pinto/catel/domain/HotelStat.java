@@ -1,18 +1,16 @@
 package tech.pinto.catel.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentStat {
+public class HotelStat {
 
     @Id
     private Long id;
@@ -28,7 +26,8 @@ public class CommentStat {
     private int score5;
     private int total;
 
-    public CommentStat(Hotel hotel) {
+    public HotelStat(Hotel hotel) {
         this.hotel = hotel;
     }
+
 }

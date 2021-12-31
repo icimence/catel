@@ -55,7 +55,6 @@ public class Response {
     }
 
     public static Response buildFailure(String message) {
-        System.err.println(message);
         Response response = new Response();
         response.setSuccess(false);
         response.message = message;

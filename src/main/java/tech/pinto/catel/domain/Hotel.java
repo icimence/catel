@@ -37,7 +37,7 @@ public class Hotel {
     private BigDecimal minPrice = null;
 
     @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private CommentStat commentStat;
+    private HotelStat hotelStat;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<RoomConfig> configs = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class Hotel {
         this.phoneNumber = phoneNumber;
         this.creditBound = creditBound;
         this.announcement = announcement;
-        this.commentStat = new CommentStat(this);
+        this.hotelStat = new HotelStat(this);
     }
 
     @Override

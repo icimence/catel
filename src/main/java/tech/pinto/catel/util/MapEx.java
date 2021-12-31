@@ -8,6 +8,7 @@ import tech.pinto.catel.domain.Comment;
 import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.hotel.QueryParam;
+import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.order.dto.DtoReserve;
@@ -53,9 +54,16 @@ public abstract class MapEx extends MapX {
     }
 
     @Override
+    public DtoHotelBrief toBrief(Hotel src) {
+        var dto = mapX.toBrief(src);
+        dto.setRate(src.getHotelStat().getRate());
+        return dto;
+    }
+
+    @Override
     public DtoHotelDetail toDetail(Hotel hotel) {
         var dto = mapX.toDetail(hotel);
-        var stat = hotel.getCommentStat();
+        var stat = hotel.getHotelStat();
         var dist = new double[]{
             stat.getScore1(),
             stat.getScore2(),
@@ -75,7 +83,7 @@ public abstract class MapEx extends MapX {
     public QueryParam toQueryParam(DtoHotelQuery src) {
         var param = mapX.toQueryParam(src);
         var starStr = src.getFilterStars();
-        if (starStr !=null) {
+        if (starStr != null) {
             var n = starStr.length();
             var stars = new int[n];
             for (int i = 0; i < n; i++) {

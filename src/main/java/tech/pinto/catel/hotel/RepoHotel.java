@@ -19,31 +19,31 @@ public interface RepoHotel extends JpaRepository<Hotel, Long> {
 
     @Modifying
     @Transactional
-    @Query(nativeQuery = true, value = "update comment_stat cs join " +
+    @Query(nativeQuery = true, value = "update hotel_stat hs join " +
         "(select hotel_id, avg(score) r, count(id) cnt from comment group by hotel_id) c " +
-        "on cs.hotel_id = c.hotel_id " +
+        "on hs.hotel_id = c.hotel_id " +
         "set " +
-        "cs.rate = round(c.r, 1), " +
-        "cs.total = c.cnt " +
+        "hs.rate = round(c.r, 1), " +
+        "hs.total = c.cnt " +
         "where true")
     void freshRate();
 
     @Modifying
     @Transactional
-    @Query(nativeQuery = true, value = "update comment_stat cs join " +
+    @Query(nativeQuery = true, value = "update hotel_stat hs join " +
         "(select hotel_id, " +
         "sum(if(score = 1, 1, 0)) s1, " +
         "sum(if(score = 2, 1, 0)) s2, " +
         "sum(if(score = 3, 1, 0)) s3, " +
         "sum(if(score = 4, 1, 0)) s4, " +
         "sum(if(score = 5, 1, 0)) s5 from comment group by hotel_id) scores " +
-        "on cs.hotel_id = scores.hotel_id " +
+        "on hs.hotel_id = scores.hotel_id " +
         "set " +
-        "cs.score1 = scores.s1, " +
-        "cs.score2 = scores.s2, " +
-        "cs.score3 = scores.s3, " +
-        "cs.score4 = scores.s4, " +
-        "cs.score5 = scores.s5 " +
+        "hs.score1 = scores.s1, " +
+        "hs.score2 = scores.s2, " +
+        "hs.score3 = scores.s3, " +
+        "hs.score4 = scores.s4, " +
+        "hs.score5 = scores.s5 " +
         "where true")
     void freshScoreCount();
 }
