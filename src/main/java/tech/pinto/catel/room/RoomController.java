@@ -41,7 +41,7 @@ public class RoomController {
      * _out room number list
      */
     @GetMapping("/available")
-    public Response available(@RequestParam int id) {
+    public Response available(@RequestParam long id) {
         return Response.buildSuccess(roomService.getRoomNumber(id));
     }
 
@@ -61,9 +61,15 @@ public class RoomController {
      * _in room id
      */
     @PostMapping("/rm-room")
-    public Response removeRoom(@RequestParam int id) {
+    public Response removeRoom(@RequestParam long id) {
         roomService.removeRoom(id);
         return Response.buildSuccess().setMessage(25);
+    }
+
+    @GetMapping("/")
+    public Response information(@RequestParam long id) throws OopsException {
+        var r = roomService.information(id);
+        return Response.buildSuccess(r);
     }
 
 }

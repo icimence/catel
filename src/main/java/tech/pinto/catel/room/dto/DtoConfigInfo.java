@@ -10,5 +10,4 @@ public class DtoConfigInfo {
     private Integer total;
     private Boolean breakfast;
     private Integer peopleMax;
-
 }

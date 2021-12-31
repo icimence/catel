@@ -66,10 +66,10 @@ public interface MapperRoom extends BaseMapper<Room> {
     List<Room> getAll();
 
     @Update(value = "delete from hotel.Room where id=#{id} ")
-    void removeRoom(@Param("id") int id);
+    void removeRoom(@Param("id") long id);
 
     @Update(value = "delete from hotel.RoomNumber where room_id=#{id} ")
-    void removeRoomNumber(@Param("id") int id);
+    void removeRoomNumber(@Param("id") long id);
 
     @Select(value = "select count(*)>0 from hotel.Room where room_type=#{room.roomType} and breakfast=#{room.breakfast} and hotel_id=#{room.hotelId} ")
     boolean exists(@Param("room") Room room);

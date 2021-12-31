@@ -34,7 +34,7 @@ public class RoomService {
         return mapperRoom.exists(room);
     }
 
-    public List<Integer> getRoomNumber(int roomId) {
+    public List<Integer> getRoomNumber(long roomId) {
         return mapperRoom.getRoomNumber(roomId);
     }
 
@@ -43,9 +43,16 @@ public class RoomService {
         return configs.stream().map(mapX::toInfo).collect(Collectors.toList());
     }
 
-    public void removeRoom(int id) {
+    public void removeRoom(long id) {
         mapperRoom.removeRoom(id);
         mapperRoom.removeRoomNumber(id);
     }
 
+    public DtoConfigInfo information(long id) throws OopsException {
+        var config = repoRoomConfig.findById(id);
+        if (config.isEmpty()) throw new OopsException(11);
+        var r = mapX.toInfo(config.get());
+        System.out.println(r);
+        return r;
+    }
 }
