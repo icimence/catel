@@ -81,6 +81,7 @@ public abstract class MapX {
 
     public abstract DtoHotelDetail toDetail(Hotel hotel);
 
+    @Mapping(target = "star", source = "hotelStar")
     public abstract DtoHotelBrief toBrief(Hotel src);
 
     @Mapping(target = "price", source = "defPrice")

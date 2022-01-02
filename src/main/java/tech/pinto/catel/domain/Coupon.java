@@ -1,28 +1,36 @@
 package tech.pinto.catel.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import tech.pinto.catel.enums.CouponStatus;
 import tech.pinto.catel.enums.CouponType;
 import tech.pinto.catel.enums.VipType;
-import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Data
+@Entity
+@Getter
+@Setter
 public class Coupon {
 
-    private int id;
-    private int multiRoomTarget;
+    @Id
+    private Long id;
+    private CouponStatus status;
+    private String name;
+    private String description;
     private int hotelId;
-    private double targetMoney;
+    
     private double discount;
     private double discountMoney;
-    private String description;
-    private String name;
+    private double targetMoney;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private CouponType type;
-    private CouponStatus status;
+    
     private VipType level;
+    private int multiRoomTarget;
 
     public Coupon() {
         name = "Coupon";

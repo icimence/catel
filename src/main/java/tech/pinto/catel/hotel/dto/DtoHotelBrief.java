@@ -11,4 +11,5 @@ public class DtoHotelBrief {
     private double minPrice;
     private String landscape;
     private String portrait;
+    private String star;
 }
