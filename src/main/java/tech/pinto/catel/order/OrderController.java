@@ -1,5 +1,6 @@
 package tech.pinto.catel.order;
 
+import tech.pinto.catel.order.dto.DtoAnnulOrder;
 import tech.pinto.catel.order.dto.DtoReserveGroup;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
 import tech.pinto.catel.util.OopsException;
@@ -66,8 +67,8 @@ public class OrderController {
      * _in order id
      */
     @PostMapping("/rm")
-    public Response annulOrder(@RequestParam long id) {
-        orderService.annulOrder(id);
+    public Response annulOrder(@RequestBody DtoAnnulOrder dtoAnnulOrder) {
+        orderService.annulOrder(dtoAnnulOrder);
         return Response.buildSuccess().setMessage(14);
     }
 

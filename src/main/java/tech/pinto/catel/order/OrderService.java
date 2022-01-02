@@ -148,11 +148,10 @@ public class OrderService {
     }
 
     @Transactional
-    public void annulOrder(long orderId) {
-        var order = repoOrder.getById(orderId);
+    public void annulOrder(DtoAnnulOrder dtoAnnulOrder) {
+        var order = repoOrder.getById(dtoAnnulOrder.getOrderId());
         order.setOrderState(OrderState.Canceled);
         var config = order.getRooms().get(0).getRoomConfig();
-
         accountService.creditPunish(order);
         repoRoomUnit.restoreCanceledRoom(config, order.getRoomNum(), order.getCheckInDate(), order.getCheckOutDate());
         repoOrder.save(order);
