@@ -92,9 +92,10 @@ public class UserController {
      * _in user id
      * _out info
      */
-    @GetMapping("/info")
+    @GetMapping("/")
     public Response getInfo(@RequestParam long id) throws CustomException {
         var r = accountService.info(id);
+        System.out.println(r);
         return Response.buildSuccess(r);
     }
 

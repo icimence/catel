@@ -71,10 +71,6 @@ public class AccountService {
         return mapX.toInfo(user.get());
     }
 
-    private double creditAnew(int id) {
-        return accountMapper.getCreditFromOrder(id) + 100 + accountMapper.getCreditFromDirect(id);
-    }
-
     public void updateInfo(DtoUserUpdate dtoUserUpdate) throws OopsException {
         var user = repoUser.getById(dtoUserUpdate.getId());
         if (!user.getUsername().equals(dtoUserUpdate.getName())) {
@@ -82,8 +78,14 @@ public class AccountService {
             if (other.isPresent()) throw new OopsException(1);
             user.setUsername(dtoUserUpdate.getName());
         }
-        user.setEmail(dtoUserUpdate.getEmail());
-        user.setAvatar(dtoUserUpdate.getAvatar());
+
+        if (dtoUserUpdate.getEmail() != null) {
+            user.setEmail(dtoUserUpdate.getEmail());
+        }
+
+        if (dtoUserUpdate.getAvatar() != null) {
+            user.setAvatar(dtoUserUpdate.getAvatar());
+        }
 
         repoUser.save(user);
     }
@@ -134,6 +136,8 @@ public class AccountService {
 
     public void changePassword(DtoChangePwd dtoChangePwd) throws OopsException {
         var user = repoUser.getById(dtoChangePwd.getId());
+        System.out.println(dtoChangePwd);
+        System.out.println(user);
         if (!user.getPassword().equals(dtoChangePwd.getOldPass())) {
             throw new OopsException(14);
         }
