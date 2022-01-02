@@ -32,7 +32,7 @@ public class Hotel {
     private String phoneNumber;
     private Integer managerId;
     private String landscape = UtilRandom.ofLandscape();
-    private String portrait = "https://m.tuniucdn.com/fb2/t1/G6/M00/05/F7/Cii-TF2phVWIGUYVAAXiIljWMXkAAA9-wFu7b8ABeI699.jpeg";
+    private String portrait = UtilRandom.ofPortrait();
     private int creditBound;
     private String announcement;
     private BigDecimal minPrice = null;

@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.UserType;
 import tech.pinto.catel.enums.VipLevel;
+import tech.pinto.catel.util.UtilRandom;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class User {
     private String password;
     private String username;
     private double credit = 100;
-    private String avatar = null;
+    private String avatar = UtilRandom.ofAvatar();
     private LocalDateTime vipEnd = LocalDateTime.now();
     private UserType userType = UserType.Client;
     private VipLevel vipLevel = VipLevel.Nil;

@@ -80,12 +80,52 @@ public class UtilRandom {
 
     public static String ofPortrait() {
         final var urls = new String[]{
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel1.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel2.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel3.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel4.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel5.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel6.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel7.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel8.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel9.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel10.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel11.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel12.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel13.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel14.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel15.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel16.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel17.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel18.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel19.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/hotels/hotel20.jpeg",
         };
         return urls[ofInt(0, urls.length)];
     }
 
     public static String ofAvatar() {
         final var urls = new String[]{
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar1.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar2.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar3.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar4.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar5.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar6.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar7.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar8.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar9.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar10.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar11.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar12.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar13.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar14.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar15.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar16.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar17.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar18.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar19.jpeg",
+            "https://catel.oss-cn-shanghai.aliyuncs.com/avatars/avatar20.jpeg",
         };
         return urls[ofInt(0, urls.length)];
     }

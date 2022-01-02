@@ -5,6 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.domain.Resident;
 import tech.pinto.catel.user.dto.DtoResidentDeletion;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
+import tech.pinto.catel.user.dto.DtoResidentUpdate;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.user.PersonVO;
@@ -50,10 +51,8 @@ public class PersonController {
      * _in totally same to creation
      */
     @PutMapping("/")
-    public Response update(@RequestBody PersonVO personVO) {
-        Resident resident = new Resident();
-        BeanUtil.copyProperties(personVO, resident, CopyOptions.create().ignoreNullValue());
-        personService.update(resident);
+    public Response update(@RequestBody DtoResidentUpdate dtoResidentUpdate) {
+        personService.update(dtoResidentUpdate);
         return Response.buildSuccess().setMessage(21);
     }
 

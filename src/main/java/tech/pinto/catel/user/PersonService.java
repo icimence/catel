@@ -3,6 +3,7 @@ package tech.pinto.catel.user;
 import tech.pinto.catel.domain.Resident;
 import tech.pinto.catel.user.dto.DtoResidentDeletion;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
+import tech.pinto.catel.user.dto.DtoResidentUpdate;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,10 @@ public class PersonService {
         repoResident.deleteById(dtoDeleteResident.getResidentId());
     }
 
-    public void update(Resident resident) {
+    public void update(DtoResidentUpdate dtoResidentUpdate) {
+        var resident = repoResident.getById(dtoResidentUpdate.getResidentId());
+        resident.setRealName(dtoResidentUpdate.getName());
+        resident.setPhoneNumber(dtoResidentUpdate.getPhoneNumber());
         repoResident.save(resident);
     }
 
