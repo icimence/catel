@@ -10,6 +10,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleRequest;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
+import tech.pinto.catel.util.error.Impossible;
 import tech.pinto.catel.vo.OssTokenVO;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;

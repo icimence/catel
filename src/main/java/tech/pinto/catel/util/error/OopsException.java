@@ -1,4 +1,4 @@
-package tech.pinto.catel.util;
+package tech.pinto.catel.util.error;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public class OopsException extends Exception {
 
     static {
         map.put(-1, "未分类错误");
-        map.put(1, "用户名或邮箱已存在！");
+        map.put(1, "用户名已存在！");
         map.put(2, "当前时段剩余房间数不足！");
         map.put(3, "用户名与密码不匹配！");
         map.put(4, "没有这个id！");

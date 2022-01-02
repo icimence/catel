@@ -1,12 +1,11 @@
 package tech.pinto.catel.user;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.domain.Resident;
 import tech.pinto.catel.user.dto.DtoResidentDeletion;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoResidentUpdate;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.user.PersonVO;
 import org.springframework.beans.factory.annotation.Autowired;

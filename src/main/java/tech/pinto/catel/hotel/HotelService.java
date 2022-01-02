@@ -11,6 +11,7 @@ import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.util.*;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

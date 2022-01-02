@@ -5,7 +5,7 @@ import tech.pinto.catel.user.dto.DtoResidentDeletion;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoResidentUpdate;
 import tech.pinto.catel.util.MapX;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

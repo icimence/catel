@@ -13,6 +13,7 @@ import tech.pinto.catel.order.OrderService;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.user.RepoUser;
+import tech.pinto.catel.util.error.OopsException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

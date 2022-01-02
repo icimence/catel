@@ -7,11 +7,10 @@ import tech.pinto.catel.domain.CouponBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.pinto.catel.util.MapX;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service

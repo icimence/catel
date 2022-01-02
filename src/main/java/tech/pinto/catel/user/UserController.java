@@ -2,11 +2,12 @@ package tech.pinto.catel.user;
 
 import tech.pinto.catel.user.dto.DtoGetCreditHistory;
 import tech.pinto.catel.user.dto.*;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.CustomException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.order.CreditUpVO;
-import tech.pinto.catel.vo.user.UserInfo;
+import tech.pinto.catel.user.dto.DtoUserUpdate;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -79,15 +80,11 @@ public class UserController {
      * update account info
      * _in new account info, same to account creation. in addition, avatar can be set
      */
-    @PutMapping("/info")
-    public Response updateInfo(@RequestBody UserInfo userInfo) {
-        try {
-            accountService.updateInfo(userInfo);
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return Response.buildFailure(e.getMessage());
-        }
+    @PutMapping("/")
+    public Response updateInfo(@RequestBody DtoUserUpdate dtoUserUpdate) throws OopsException {
+        accountService.updateInfo(dtoUserUpdate);
         return Response.buildSuccess().setMessage(18);
+
     }
 
     /**
@@ -96,13 +93,9 @@ public class UserController {
      * _out info
      */
     @GetMapping("/info")
-    public Response getInfo(@RequestParam int id) {
-        try {
-            return Response.buildSuccess(accountService.getUserById(id));
-        } catch (OopsException e) {
-            e.printStackTrace();
-            return Response.buildFailure(e.getMessage());
-        }
+    public Response getInfo(@RequestParam long id) throws CustomException {
+        var r = accountService.info(id);
+        return Response.buildSuccess(r);
     }
 
     /**

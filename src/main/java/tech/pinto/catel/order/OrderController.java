@@ -3,7 +3,7 @@ package tech.pinto.catel.order;
 import tech.pinto.catel.order.dto.DtoAnnulOrder;
 import tech.pinto.catel.order.dto.DtoReserveGroup;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.vo.CreditTransVO;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.order.dto.DtoOrderDetail;

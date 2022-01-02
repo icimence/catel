@@ -9,7 +9,7 @@ import tech.pinto.catel.domain.Room;
 import tech.pinto.catel.room.dto.DtoConfigInfo;
 import tech.pinto.catel.room.dto.DtoScreenRoomConfig;
 import tech.pinto.catel.util.MapX;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.util.UtilDate;
 
 import java.util.List;
@@ -69,6 +69,8 @@ public class RoomService {
         var inDate = UtilDate.from(dtoScreenRoomConfig.getInDate());
         var outDate = UtilDate.from(dtoScreenRoomConfig.getOutDate());
         var duration = outDate.toEpochDay() - inDate.toEpochDay();
+
+        System.out.println(dtoScreenRoomConfig);
         
         return queryFactory
             .select(qrc)

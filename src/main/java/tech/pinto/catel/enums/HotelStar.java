@@ -1,7 +1,5 @@
 package tech.pinto.catel.enums;
 
-import tech.pinto.catel.util.OopsException;
-
 public enum HotelStar {
     Five,
     Four,

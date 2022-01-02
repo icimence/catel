@@ -2,7 +2,7 @@ package tech.pinto.catel.hotel;
 
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,13 +2,10 @@ package tech.pinto.catel.room;
 
 import tech.pinto.catel.domain.Room;
 import tech.pinto.catel.room.dto.DtoScreenRoomConfig;
-import tech.pinto.catel.util.OopsException;
+import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.util.Response;
-import tech.pinto.catel.vo.hotel.RoomVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/room")
