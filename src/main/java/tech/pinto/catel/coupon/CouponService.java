@@ -49,9 +49,7 @@ public class CouponService {
     }
 
     public List<DtoUsableCoupon> getUsable(DtoCouponRelated related, long userId, long hotelId) {
-        System.out.println(related);
         var coupons = repoCoupon.getUsable(userId, hotelId);
-        System.out.println(coupons);
         return coupons
             .stream()
             .map(coupon -> mapX.toUsableCoupon(coupon, related))

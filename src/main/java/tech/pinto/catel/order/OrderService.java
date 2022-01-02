@@ -61,6 +61,7 @@ public class OrderService {
     }
 
     public DtoRefPreview refPreview(DtoReservePersonal reserveInfo) throws OopsException {
+        System.out.println(reserveInfo);
         var order = mapX.toPersonOrder(reserveInfo);
         
         var units = repoRoomUnit.relatedUnits(

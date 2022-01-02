@@ -17,6 +17,7 @@ public class DtoUsableCoupon implements Comparable<DtoUsableCoupon> {
     @Override
     public int compareTo(@NonNull DtoUsableCoupon o) {
         if (available && !o.available) return -1;
+        else if (!available && o.available) return 1;
         return -amount.compareTo(o.getAmount());
     }
 }
