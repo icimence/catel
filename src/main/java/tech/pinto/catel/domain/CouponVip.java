@@ -22,4 +22,9 @@ public class CouponVip extends CouponBase {
     public boolean judge(DtoCouponRelated related) {
         return related.getVipLevel().compareTo(vipLevel) >= 0;
     }
+
+    @Override
+    public String name() {
+        return "Vip";
+    }
 }

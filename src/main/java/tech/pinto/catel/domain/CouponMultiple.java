@@ -29,4 +29,10 @@ public class CouponMultiple extends CouponBase {
     public boolean judge(DtoCouponRelated related) {
         return related.getRoomNum() >= numberTarget;
     }
+
+    @Override
+    public String name() {
+        return "Multiple";
+    }
+
 }

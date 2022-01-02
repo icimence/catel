@@ -121,6 +121,12 @@ public class HotelService {
         return mapX.toDetail(hotels.get(id));
     }
 
+    public DtoHotelBrief getBrief(long id) throws OopsException {
+        var hotel = repoHotel.findById(id);
+        if (hotel.isEmpty()) throw new OopsException(12);
+        return mapX.toBrief(hotel.get());
+    }
+
     public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
         var queryParam = mapX.toQueryParam(dtoHotelQuery);
         var filter = queryParam.getFilter();
@@ -200,11 +206,5 @@ public class HotelService {
             })
             .collect(Collectors.toList());
 
-    }
-
-    public DtoHotelBrief getBrief(long id) throws OopsException {
-        var hotel = repoHotel.findById(id);
-        if (hotel.isEmpty()) throw new OopsException(12);
-        return mapX.toBrief(hotel.get());
     }
 }

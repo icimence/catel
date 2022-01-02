@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +22,8 @@ public class CreditEntry {
     private Order order;
     @ManyToOne
     private User user;
+    
+    private LocalDateTime createdWhen = LocalDateTime.now();
 
     @Override
     public boolean equals(Object o) {

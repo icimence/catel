@@ -1,14 +1,12 @@
 package tech.pinto.catel.user;
 
-import tech.pinto.catel.user.dto.DtoChangePwd;
-import tech.pinto.catel.user.dto.DtoRegister;
+import tech.pinto.catel.user.dto.DtoGetCreditHistory;
+import tech.pinto.catel.user.dto.*;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.order.CreditUpVO;
-import tech.pinto.catel.user.dto.DtoLogin;
 import tech.pinto.catel.vo.user.UserInfo;
-import tech.pinto.catel.vo.user.VipForm;
 import com.google.code.kaptcha.Producer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -72,8 +70,8 @@ public class AccountController {
      * _in who, how long and what kind of vip it wanna be
      */
     @PostMapping("/vip")
-    public Response vip(@RequestBody VipForm vipForm) {
-        accountService.vip(vipForm);
+    public Response vip(@RequestBody DtoUserVip dtoUserVip) {
+        accountService.vip(dtoUserVip);
         return Response.buildSuccess().setMessage(17);
     }
 
@@ -139,4 +137,9 @@ public class AccountController {
         return Response.buildSuccess().setMessage(24);
     }
 
+    @GetMapping("/credit-history")
+    public Response creditHistory(@RequestBody DtoGetCreditHistory dtoGetCreditHistory) {
+        var r = accountService.creditHistory(dtoGetCreditHistory);
+        return Response.buildSuccess(r);
+    }
 }

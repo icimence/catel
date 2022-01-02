@@ -1,6 +1,7 @@
 package tech.pinto.catel.room;
 
 import tech.pinto.catel.domain.Room;
+import tech.pinto.catel.room.dto.DtoScreenRoomConfig;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.hotel.RoomVO;
@@ -72,4 +73,10 @@ public class RoomController {
         return Response.buildSuccess(r);
     }
 
+    @GetMapping("/screen")
+    public Response filter(DtoScreenRoomConfig dtoScreenRoomConfig) throws OopsException {
+        var r = roomService.screen(dtoScreenRoomConfig);
+        return Response.buildSuccess(r);
+    }
+    
 }

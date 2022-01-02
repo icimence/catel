@@ -22,6 +22,7 @@ import tech.pinto.catel.room.dto.DtoConfigInfo;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.order.dto.DtoOrderDetail;
 import tech.pinto.catel.order.dto.DtoReserve;
+import tech.pinto.catel.user.dto.DtoCreditEntry;
 import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoResidentAddition;
 import tech.pinto.catel.user.dto.DtoUserInfo;
@@ -104,6 +105,11 @@ public abstract class MapX {
     @Mapping(target = "amount", source = "couponBase.discountAmount")
     @Mapping(target = "outdatedWhen", source = "couponBase.timeOutdated", dateFormat = "MM/dd/yyyy")
     public abstract DtoUsableCoupon toUsableCoupon(CouponBase couponBase, DtoCouponRelated related);
+
+    @Mapping(target = "orderId", source = "order.id")
+    @Mapping(target = "creditDelta", source = "delta")
+    @Mapping(target = "createdWhen", dateFormat = "MM/dd/yyyy HH:mm:ss")
+    public abstract DtoCreditEntry toDtoEntry(CreditEntry creditEntry);
 
     public Hotel idToHotel(long id) {
         return repoHotel.getById(id);

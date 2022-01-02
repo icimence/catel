@@ -104,6 +104,7 @@ public abstract class MapEx extends MapX {
         var available = couponBase.judge(related);
         dto.setAvailable(available);
         dto.setCondition(condition);
+        dto.setType(couponBase.name());
         return dto;
     }
 }

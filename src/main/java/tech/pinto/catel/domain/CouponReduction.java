@@ -30,4 +30,9 @@ public class CouponReduction extends CouponBase {
     public boolean judge(DtoCouponRelated related) {
         return related.getPrice().compareTo(priceTarget) >= 0;
     }
+
+    @Override
+    public String name() {
+        return "Reduction";
+    }
 }

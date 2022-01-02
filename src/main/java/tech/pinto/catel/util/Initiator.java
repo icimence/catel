@@ -31,7 +31,7 @@ public class Initiator {
 
     private final int numOfHotel = 30;
     private final int numOfConfig = 5;
-    private final int numOfRoom = 15;
+    private final int numOfRoomBase = 15;
     private final int numOfDay = 15;
     private final int numOfUser = 10;
     private final int numberOfResident = 3;
@@ -98,7 +98,8 @@ public class Initiator {
                 var peopleLimit = UtilRandom.ofInt(1, 6);
                 var breakfast = UtilRandom.ofBool();
                 var roomNumOffset = UtilRandom.ofInt(-5, 6);
-                var roomConfig = new RoomConfig(hotel, configName, peopleLimit, breakfast, type, price, numOfRoom + roomNumOffset);
+                var numOfRoom = numOfRoomBase + roomNumOffset;
+                var roomConfig = new RoomConfig(hotel, configName, peopleLimit, breakfast, type, price, numOfRoom);
                 roomConfigs.add(roomConfig);
 
                 for (int k = 0; k < numOfRoom; k++) {

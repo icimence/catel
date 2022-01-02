@@ -6,22 +6,21 @@ import tech.pinto.catel.domain.CreditEntry;
 import tech.pinto.catel.domain.CreditUp;
 import tech.pinto.catel.domain.User;
 import tech.pinto.catel.domain.Order;
-import tech.pinto.catel.user.dto.DtoChangePwd;
-import tech.pinto.catel.user.dto.DtoRegister;
-import tech.pinto.catel.user.dto.DtoUserInfo;
+import tech.pinto.catel.user.dto.DtoGetCreditHistory;
+import tech.pinto.catel.user.dto.*;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.util.OssService;
 import tech.pinto.catel.vo.order.CreditUpVO;
-import tech.pinto.catel.user.dto.DtoLogin;
 import tech.pinto.catel.vo.user.UserInfo;
-import tech.pinto.catel.vo.user.VipForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService {
@@ -113,6 +112,14 @@ public class AccountService {
         }
     }
 
+    public List<DtoCreditEntry> creditHistory(DtoGetCreditHistory dtoGetCreditHistory) {
+        var r = repoCreditEntry.findAllByUserId(dtoGetCreditHistory.getUserId());
+        return r
+            .stream()
+            .map(mapX::toDtoEntry)
+            .collect(Collectors.toList());
+    }
+
     private boolean exists(User user) {
         User u = accountMapper.getAccountByEmail(user.getEmail());
         if (u != null && !u.getId().equals(user.getId())) return true;
@@ -120,15 +127,15 @@ public class AccountService {
         return u != null && !u.getId().equals(user.getId());
     }
 
-    public void vip(VipForm vipForm) {
-        User user = accountMapper.select(vipForm.getUserId());
+    public void vip(DtoUserVip dtoUserVip) {
+        var user = repoUser.getById(dtoUserVip.getId());
         if (user.getVipEnd().isAfter(LocalDateTime.now())) {
-            user.setVipEnd(user.getVipEnd().plusDays(vipForm.getDay()));
+            user.setVipEnd(user.getVipEnd().plusDays(dtoUserVip.getDays()));
         } else {
-            user.setVipLevel(vipForm.getVipLevel());
-            user.setVipEnd(LocalDateTime.now().plusDays(vipForm.getDay()));
+            user.setVipLevel(dtoUserVip.getLevel());
+            user.setVipEnd(LocalDateTime.now().plusDays(dtoUserVip.getDays()));
         }
-        accountMapper.updateAccount(user);
+        repoUser.save(user);
     }
 
     public void creditUp(CreditUpVO creditUpVO) throws OopsException {
@@ -148,4 +155,5 @@ public class AccountService {
         user.setPassword(dtoChangePwd.getNewPass());
         repoUser.save(user);
     }
+
 }

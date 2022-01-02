@@ -13,6 +13,7 @@ public class DtoUsableCoupon implements Comparable<DtoUsableCoupon> {
     private String name;
     private String condition;
     private String outdatedWhen;
+    private String type;
 
     @Override
     public int compareTo(@NonNull DtoUsableCoupon o) {

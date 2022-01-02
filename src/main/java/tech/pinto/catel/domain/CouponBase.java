@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.pinto.catel.coupon.dto.DtoCouponRelated;
 import tech.pinto.catel.enums.CouponStatus;
+import tech.pinto.catel.enums.CouponType;
 import tech.pinto.catel.util.UtilRandom;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ abstract public class CouponBase {
     private Hotel hotel;
     @ManyToOne
     private User owner;
-
+    
     private CouponStatus status = CouponStatus.Available;
     private String name = "默认优惠券";
     private String description = "默认描述";
@@ -42,5 +43,7 @@ abstract public class CouponBase {
     public abstract String condition();
 
     public abstract boolean judge(DtoCouponRelated related);
+    
+    public abstract String name();
 
 }
