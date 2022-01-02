@@ -6,6 +6,7 @@ import tech.pinto.catel.domain.CreditEntry;
 import tech.pinto.catel.domain.CreditUp;
 import tech.pinto.catel.domain.User;
 import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.user.dto.DtoChangePwd;
 import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.user.dto.DtoUserInfo;
 import tech.pinto.catel.util.MapX;
@@ -139,4 +140,12 @@ public class AccountService {
         accountMapper.creditUp(creditUp);
     }
 
+    public void changePassword(DtoChangePwd dtoChangePwd) throws OopsException {
+        var user = repoUser.getById(dtoChangePwd.getId());
+        if (!user.getPassword().equals(dtoChangePwd.getOldPass())) {
+            throw new OopsException(14);
+        }
+        user.setPassword(dtoChangePwd.getNewPass());
+        repoUser.save(user);
+    }
 }

@@ -11,6 +11,7 @@ public class OopsException extends Exception {
     private static final Map<Integer, String> map = new HashMap<>();
 
     static {
+        map.put(-1, "未分类错误");
         map.put(1, "用户名或邮箱已存在！");
         map.put(2, "当前时段剩余房间数不足！");
         map.put(3, "用户名与密码不匹配！");
@@ -24,6 +25,7 @@ public class OopsException extends Exception {
         map.put(11, "相关房型信息不存在");
         map.put(12, "相关酒店不存在");
         map.put(13, "优惠券要求不满足");
+        map.put(14, "旧密码错误");
     }
 
     private String message;

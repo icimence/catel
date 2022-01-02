@@ -10,4 +10,5 @@ public class DtoUserInfo {
     private double credit;
     private String userType;
     private String vipType;
+    private String avatar;
 }

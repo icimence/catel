@@ -1,5 +1,6 @@
 package tech.pinto.catel.user;
 
+import tech.pinto.catel.user.dto.DtoChangePwd;
 import tech.pinto.catel.user.dto.DtoRegister;
 import tech.pinto.catel.util.OopsException;
 import tech.pinto.catel.vo.CaptchaVO;
@@ -58,6 +59,12 @@ public class AccountController {
     public Response registerAccount(@RequestBody DtoRegister dtoRegister) throws OopsException {
         accountService.registerAccount(dtoRegister);
         return Response.buildSuccess().setMessage(16);
+    }
+
+    @PostMapping("/pwd")
+    public Response changePassword(@RequestBody DtoChangePwd dtoChangePwd) throws OopsException {
+        accountService.changePassword(dtoChangePwd);
+        return Response.buildSuccess();
     }
 
     /**
