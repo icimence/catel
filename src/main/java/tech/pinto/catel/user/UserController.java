@@ -21,13 +21,13 @@ import java.io.IOException;
 @RestController()
 @RequestMapping("/api/user")
 @Slf4j
-public class AccountController {
+public class UserController {
 
     private final Producer kaptchaProducer;
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(Producer kaptchaProducer, AccountService accountService) {
+    public UserController(Producer kaptchaProducer, AccountService accountService) {
         this.kaptchaProducer = kaptchaProducer;
         this.accountService = accountService;
     }
@@ -138,7 +138,7 @@ public class AccountController {
     }
 
     @GetMapping("/credit-history")
-    public Response creditHistory(@RequestBody DtoGetCreditHistory dtoGetCreditHistory) {
+    public Response creditHistory(DtoGetCreditHistory dtoGetCreditHistory) {
         var r = accountService.creditHistory(dtoGetCreditHistory);
         return Response.buildSuccess(r);
     }

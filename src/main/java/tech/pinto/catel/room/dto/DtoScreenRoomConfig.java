@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class DtoScreenRoomConfig {
-    private long hotelId;
+    private long id;
     private String inDate;
     private String outDate;
-    private int number;
+    private int roomNumber;
 }
