@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tech.pinto.catel.user.RepoCreditEntry;
+import tech.pinto.catel.user.RepoUser;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -26,26 +27,24 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Task {
 
-    private final MapperOrder mapperOrder;
-    private final AccountMapper accountMapper;
     private final Initiator initiator;
     private final RepoOrder repoOrder;
     private final RepoCreditEntry repoCreditEntry;
     private final RepoRoomConfig repoRoomConfig;
     private final RepoRoomUnit repoRoomUnit;
     private final RepoHotel repoHotel;
+    private final RepoUser repoUser; 
     private final MapX mapX;
 
     @Autowired
-    public Task(MapperOrder mapperOrder, AccountMapper accountMapper, Initiator initiator, RepoOrder repoOrder, RepoCreditEntry repoCreditEntry, RepoRoomConfig repoRoomConfig, RepoRoomUnit repoRoomUnit, RepoHotel repoHotel, MapX mapX) {
-        this.mapperOrder = mapperOrder;
-        this.accountMapper = accountMapper;
+    public Task(Initiator initiator, RepoOrder repoOrder, RepoCreditEntry repoCreditEntry, RepoRoomConfig repoRoomConfig, RepoRoomUnit repoRoomUnit, RepoHotel repoHotel, RepoUser repoUser, MapX mapX) {
         this.initiator = initiator;
         this.repoOrder = repoOrder;
         this.repoCreditEntry = repoCreditEntry;
         this.repoRoomConfig = repoRoomConfig;
         this.repoRoomUnit = repoRoomUnit;
         this.repoHotel = repoHotel;
+        this.repoUser = repoUser;
         this.mapX = mapX;
     }
 
@@ -62,7 +61,7 @@ public class Task {
 
     @Scheduled(cron = "0 0 0 * * ?")
     public void invalidVip() {
-        accountMapper.vipExpire();
+        repoUser.vipExpire();
         log.info("[task] Expire outdated VIPs");
     }
 
@@ -92,7 +91,6 @@ public class Task {
         freshCommentStat();
         changeOrderState();
         invalidVip();
-        refreshRoomUnit();
 //        logger.setLevel(Level.DEBUG);
     }
 

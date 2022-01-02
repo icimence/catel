@@ -25,8 +25,6 @@ public interface AccountMapper {
             "avatar=#{user.avatar},vip_end=#{user.vipEnd},vip_type=#{user.vipType} where id=#{user.id} ")
     void updateAccount(@Param("user") User user);
 
-    @Update(value = "update hotel.User set vip_type=0 where vip_end<now()")
-    void vipExpire();
 
     @Delete(value = "delete from hotel.Person where user_id=#{id} ")
     void beforeDelete(@Param("id") int id);

@@ -3,6 +3,7 @@ package tech.pinto.catel.util;
 import org.springframework.stereotype.Service;
 import tech.pinto.catel.comment.CommentService;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
+import tech.pinto.catel.coupon.RepoCoupon;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.enums.BizRegion;
 import tech.pinto.catel.enums.HotelStar;
@@ -13,7 +14,6 @@ import tech.pinto.catel.order.dto.DtoReservePersonal;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.user.RepoUser;
 
-import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -25,9 +25,9 @@ public class Initiator {
     private final RepoRoomConfig repoRoomConfig;
     private final RepoRoom repoRoom;
     private final RepoRoomUnit repoRoomUnit;
+    private final RepoCoupon repoCoupon;
     private final OrderService orderService;
     private final CommentService commentService;
-    private final EntityManagerFactory entityManagerFactory;
 
     private final int numOfHotel = 30;
     private final int numOfConfig = 5;
@@ -37,25 +37,27 @@ public class Initiator {
     private final int numberOfResident = 3;
     private final int numberOfOrder = 200;
     private final int numberOfComment = 100;
+    private final int numberOfCoupon = 30;
 
     private final LocalDate today = LocalDate.now();
 
-    public Initiator(RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, OrderService orderService, CommentService commentService, EntityManagerFactory entityManagerFactory) {
+    public Initiator(RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, RepoCoupon repoCoupon, OrderService orderService, CommentService commentService) {
         this.repoHotel = repoHotel;
         this.repoUser = repoUser;
         this.repoRoomConfig = repoRoomConfig;
         this.repoRoom = repoRoom;
         this.repoRoomUnit = repoRoomUnit;
+        this.repoCoupon = repoCoupon;
         this.orderService = orderService;
         this.commentService = commentService;
-        this.entityManagerFactory = entityManagerFactory;
     }
 
     public void init() {
-        initHotelItem();
         initUserItem();
+        initHotelItem();
         initOrderItem();
         initComment();
+        initCoupon();
         System.out.println("[task] database init");
     }
 
@@ -179,6 +181,21 @@ public class Initiator {
                 i--; // Retry
             }
         }
+    }
+
+    private void initCoupon() {
+        var coupons = new ArrayList<CouponBase>();
+        for (int j = 0; j < numberOfCoupon; j++) {
+            coupons.add(CouponMultiple.random());
+        }
+        for (int j = 0; j < numberOfCoupon; j++) {
+            coupons.add(CouponReduction.random());
+        }
+        coupons.forEach(couponBase -> {
+            couponBase.setHotel(repoHotel.getById(1L));
+            couponBase.setOwner(repoUser.getById(1L));
+        });
+        repoCoupon.saveAll(coupons);
     }
 
 }

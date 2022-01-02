@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.BizRegion;
 import tech.pinto.catel.enums.HotelStar;
+import tech.pinto.catel.util.UtilRandom;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Hotel {
     private String description;
     private String phoneNumber;
     private Integer managerId;
-    private String landscape = "https://m.tuniucdn.com/fb2/t1/G2/M00/C7/FD/Cii-TFknV4GIddkeAAFP_vTDaYkAAKaVwM4kNgAAVAW454_w450_h300_c1_t0.jpg";
+    private String landscape = UtilRandom.ofLandscape();
     private String portrait = "https://m.tuniucdn.com/fb2/t1/G6/M00/05/F7/Cii-TF2phVWIGUYVAAXiIljWMXkAAA9-wFu7b8ABeI699.jpeg";
     private int creditBound;
     private String announcement;

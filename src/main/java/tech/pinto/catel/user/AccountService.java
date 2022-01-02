@@ -99,7 +99,7 @@ public class AccountService {
     public void creditPunish(Order order) {
         var user = order.getUser();
         LocalDate today = LocalDate.now();
-        var aheadLimit = user.getVipType().getAnnulLimit();
+        var aheadLimit = user.getVipLevel().getAnnulLimit();
         var tooLate = today.plusDays(aheadLimit).isAfter(order.getCheckInDate());
 
         if (tooLate) {
@@ -124,7 +124,7 @@ public class AccountService {
         if (user.getVipEnd().isAfter(LocalDateTime.now())) {
             user.setVipEnd(user.getVipEnd().plusDays(vipForm.getDay()));
         } else {
-            user.setVipType(vipForm.getVipType());
+            user.setVipLevel(vipForm.getVipLevel());
             user.setVipEnd(LocalDateTime.now().plusDays(vipForm.getDay()));
         }
         accountMapper.updateAccount(user);

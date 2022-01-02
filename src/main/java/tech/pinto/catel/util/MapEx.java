@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
+import tech.pinto.catel.coupon.dto.DtoCouponRelated;
+import tech.pinto.catel.coupon.dto.DtoUsableCoupon;
 import tech.pinto.catel.domain.Comment;
+import tech.pinto.catel.domain.CouponBase;
 import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.hotel.QueryParam;
@@ -92,5 +95,15 @@ public abstract class MapEx extends MapX {
             param.getFilter().setStars(stars);
         }
         return param;
+    }
+
+    @Override
+    public DtoUsableCoupon toUsableCoupon(CouponBase couponBase, DtoCouponRelated related) {
+        var dto = mapX.toUsableCoupon(couponBase, related);
+        var condition = couponBase.condition();
+        var available = couponBase.judge(related);
+        dto.setAvailable(available);
+        dto.setCondition(condition);
+        return dto;
     }
 }

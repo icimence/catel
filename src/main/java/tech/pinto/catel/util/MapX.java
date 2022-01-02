@@ -6,6 +6,8 @@ import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import tech.pinto.catel.comment.dto.DtoComment;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
+import tech.pinto.catel.coupon.dto.DtoCouponRelated;
+import tech.pinto.catel.coupon.dto.DtoUsableCoupon;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.QueryParam;
 import tech.pinto.catel.hotel.RepoHotel;
@@ -55,12 +57,12 @@ public abstract class MapX {
     @Mapping(target = "order", source = "orderId")
     @Mapping(target = "id", ignore = true)
     public abstract Comment toComment(DtoPublishComment src);
-    
+
     @Mapping(target = "number", source = "roomNumber")
     @Mapping(target = "price", source = "defPrice")
     @Mapping(target = "id.roomConfig", source = ".")
     public abstract RoomUnit toUnit(RoomConfig config);
-    
+
     @Mapping(target = "filter.priceLower", source = "filterPriceLower")
     @Mapping(target = "filter.priceUpper", source = "filterPriceUpper")
     @Mapping(target = "filter.rate", source = "filterRate")
@@ -98,6 +100,10 @@ public abstract class MapX {
 
     @Mapping(target = "userId", source = "user.id")
     public abstract DtoComment toDtoComment(Comment src);
+
+    @Mapping(target = "amount", source = "couponBase.discountAmount")
+    @Mapping(target = "outdatedWhen", source = "couponBase.timeOutdated", dateFormat = "MM/dd/yyyy")
+    public abstract DtoUsableCoupon toUsableCoupon(CouponBase couponBase, DtoCouponRelated related);
 
     public Hotel idToHotel(long id) {
         return repoHotel.getById(id);

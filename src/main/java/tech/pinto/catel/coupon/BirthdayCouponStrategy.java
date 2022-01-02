@@ -1,7 +1,7 @@
 package tech.pinto.catel.coupon;
 
 import tech.pinto.catel.user.PersonMapper;
-import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.CouponBase;
 import tech.pinto.catel.domain.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class BirthdayCouponStrategy implements CouponMatchStrategyI {
     }
 
     @Override
-    public boolean isMatch(Order order, Coupon coupon) {
+    public boolean isMatch(Order order, CouponBase coupon) {
         // TODO: disabled temporary
         return false;
 //        if (coupon.getType() != CouponType.Birthday) return false;

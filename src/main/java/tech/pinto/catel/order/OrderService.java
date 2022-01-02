@@ -2,6 +2,9 @@ package tech.pinto.catel.order;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import tech.pinto.catel.coupon.CouponService;
+import tech.pinto.catel.coupon.RepoCoupon;
+import tech.pinto.catel.coupon.dto.DtoCouponRelated;
 import tech.pinto.catel.domain.*;
 import tech.pinto.catel.hotel.HotelService;
 import tech.pinto.catel.order.dto.*;
@@ -22,13 +25,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class OrderService {
 
     private final HotelService hotelService;
     private final AccountService accountService;
+    private final CouponService couponService;
     private final MapperOrder mapperOrder;
     private final AccountMapper accountMapper;
     private final RepoOrder repoOrder;
@@ -37,10 +40,11 @@ public class OrderService {
     private final MapX mapX;
 
     @Autowired
-    public OrderService(MapperOrder mapperOrder, HotelService hotelService, AccountService accountService, AccountMapper accountMapper, RepoOrder repoOrder, RepoRoomUnit repoRoomUnit, MapX mapX, RepoRoomConfig repoRoomConfig) {
+    public OrderService(MapperOrder mapperOrder, HotelService hotelService, AccountService accountService, CouponService couponService, AccountMapper accountMapper, RepoOrder repoOrder, RepoRoomUnit repoRoomUnit, MapX mapX, RepoRoomConfig repoRoomConfig) {
         this.mapperOrder = mapperOrder;
         this.hotelService = hotelService;
         this.accountService = accountService;
+        this.couponService = couponService;
         this.accountMapper = accountMapper;
         this.repoOrder = repoOrder;
         this.repoRoomUnit = repoRoomUnit;
@@ -56,13 +60,24 @@ public class OrderService {
             .orElse(BigDecimal.ZERO);
     }
 
-    public DtoRefPreview refPreview(DtoReservePersonal dtoReservePersonal) {
-        var order = mapX.toPersonOrder(dtoReservePersonal);
-        var configId = dtoReservePersonal.getConfigId();
-        var units = repoRoomUnit.relatedUnits(configId, order.getCheckInDate(), order.getCheckOutDate());
+    public DtoRefPreview refPreview(DtoReservePersonal reserveInfo) throws OopsException {
+        var order = mapX.toPersonOrder(reserveInfo);
+        
+        var units = repoRoomUnit.relatedUnits(
+            reserveInfo.getConfigId(),
+            order.getCheckInDate(),
+            order.getCheckOutDate()
+        );
         var pricePerRoom = pricePerRoom(units);
-        var totalPrice = pricePerRoom.multiply(BigDecimal.valueOf(order.getRoomNum()));
-        return new DtoRefPreview(totalPrice);
+        var roomNum = order.getRoomNum();
+        var totalPrice = pricePerRoom.multiply(BigDecimal.valueOf(roomNum));
+
+        var related = new DtoCouponRelated(order.getUser().getVipLevel(), roomNum, totalPrice);
+        
+        var discountTotal = couponService.checkAndSum(related, reserveInfo.getSelectedCoupons());
+        var coupons = couponService.getUsable(related, reserveInfo.getUserId(), reserveInfo.getHotelId());
+        
+        return new DtoRefPreview(totalPrice, coupons, discountTotal);
     }
 
     public long reserve(DtoReservePersonal dtoReservePersonal) throws OopsException {
@@ -84,15 +99,14 @@ public class OrderService {
         var available = units.stream().map(u -> u.getNumber() >= order.getRoomNum()).reduce((a, b) -> a && b).orElse(true);
         if (!available) throw new OopsException(2);
 
-        var price = refPreview(dtoReservePersonal).getTotalPrice();
+        var price = refPreview(dtoReservePersonal).getActualPrice();
         order.setPrice(price);
 
-        // TODO: Using coupons
         if (price.compareTo(BigDecimal.ZERO) < 0) throw new OopsException(8);
 
-        // Update to create order, update room number, 
         // TODO invalid used coupons
 
+        // Update to create order, update room number, 
         for (long residentId : dtoReservePersonal.getResidents()) {
             OrderRoom orderRoom = new OrderRoom();
             orderRoom.setOrder(order);

@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @PostMapping("/preview")
-    public Response preview(@RequestBody DtoReservePersonal dtoReservePersonal) {
+    public Response preview(@RequestBody DtoReservePersonal dtoReservePersonal) throws OopsException {
         var preview = orderService.refPreview(dtoReservePersonal);
         return Response.buildSuccess(preview);
     }

@@ -1,64 +1,42 @@
 package tech.pinto.catel.coupon;
 
+import tech.pinto.catel.coupon.dto.DtoCouponRelated;
+import tech.pinto.catel.coupon.dto.DtoUsableCoupon;
 import tech.pinto.catel.enums.CouponType;
-import tech.pinto.catel.domain.Coupon;
-import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.domain.CouponBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tech.pinto.catel.util.MapX;
+import tech.pinto.catel.util.OopsException;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponService {
 
-    private static final List<CouponMatchStrategyI> strategyList = new ArrayList<>();
-    private final TargetMoneyCouponStrategy targetMoneyCouponStrategy;
-    private final TimeCouponStrategy timeCouponStrategy;
-    private final BirthdayCouponStrategy birthdayCouponStrategy;
-    private final MultiRoomCouponStrategy multiRoomCouponStrategy;
     private final CouponMapper couponMapper;
+    private final RepoCoupon repoCoupon;
+    private final MapX mapX;
 
     @Autowired
-    public CouponService(TargetMoneyCouponStrategy targetMoneyCouponStrategy,
-                         TimeCouponStrategy timeCouponStrategy,
-                         BirthdayCouponStrategy birthdayCouponStrategy,
-                         MultiRoomCouponStrategy multiRoomCouponStrategy,
-                         CouponMapper couponMapper) {
-        this.birthdayCouponStrategy = birthdayCouponStrategy;
-        this.multiRoomCouponStrategy = multiRoomCouponStrategy;
+    public CouponService(CouponMapper couponMapper, RepoCoupon repoCoupon, MapX mapX) {
         this.couponMapper = couponMapper;
-        this.targetMoneyCouponStrategy = targetMoneyCouponStrategy;
-        this.timeCouponStrategy = timeCouponStrategy;
-        strategyList.add(targetMoneyCouponStrategy);
-        strategyList.add(timeCouponStrategy);
-        strategyList.add(multiRoomCouponStrategy);
-        strategyList.add(birthdayCouponStrategy);
+        this.repoCoupon = repoCoupon;
+        this.mapX = mapX;
     }
 
-    public List<Coupon> getMatchOrderCoupon(Order order) {
-        List<Coupon> hotelCoupons = getByHotel(order.getHotel().getId());
-        hotelCoupons.addAll(couponMapper.getGlobal());
-        List<Coupon> availAbleCoupons = new ArrayList<>();
-        for (Coupon hotelCoupon : hotelCoupons) {
-            for (CouponMatchStrategyI strategy : strategyList) {
-                if (strategy.isMatch(order, hotelCoupon)) {
-                    availAbleCoupons.add(hotelCoupon);
-                }
-            }
-        }
-        return availAbleCoupons;
-    }
-
-    public List<Coupon> getByHotel(long hotelId) {
+    public List<CouponBase> getByHotel(long hotelId) {
         return couponMapper.selectByHotelId(hotelId);
     }
 
-    public void addCoupon(Coupon coupon) {
+    public void addCoupon(CouponBase coupon) {
         couponMapper.insertCoupon(coupon);
     }
 
-    public List<Coupon> getByType(CouponType couponType) {
+    public List<CouponBase> getByType(CouponType couponType) {
         return couponMapper.selectByType(couponType.toString());
     }
 
@@ -66,8 +44,28 @@ public class CouponService {
         couponMapper.remove(id);
     }
 
-    public List<Coupon> getGlobal() {
+    public List<CouponBase> getGlobal() {
         return couponMapper.getGlobal();
     }
 
+    public List<DtoUsableCoupon> getUsable(DtoCouponRelated related, long userId, long hotelId) {
+        System.out.println(related);
+        var coupons = repoCoupon.getUsable(userId, hotelId);
+        System.out.println(coupons);
+        return coupons
+            .stream()
+            .map(coupon -> mapX.toUsableCoupon(coupon, related))
+            .sorted()
+            .collect(Collectors.toList());
+    }
+
+    public BigDecimal checkAndSum(DtoCouponRelated related, List<Long> couponIds) throws OopsException {
+        var coupons = repoCoupon.findAllById(couponIds);
+        var error = false;
+        for (var coupon : coupons) {
+            if (!coupon.judge(related)) error = true;
+        }
+        if (error) throw new OopsException(13);
+        return coupons.stream().map(CouponBase::getDiscountAmount).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+    }
 }

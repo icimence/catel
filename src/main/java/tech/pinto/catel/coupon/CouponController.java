@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import tech.pinto.catel.hotel.MapperHotel;
 import tech.pinto.catel.user.PersonMapper;
-import tech.pinto.catel.domain.Coupon;
+import tech.pinto.catel.domain.CouponBase;
 import tech.pinto.catel.domain.Order;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.coupon.CouponVO;
@@ -37,9 +37,7 @@ public class CouponController {
      */
     @PostMapping("/new")
     public Response addCoupon(@RequestBody CouponVO couponVO) {
-        Coupon coupon = new Coupon();
-        BeanUtil.copyProperties(couponVO, coupon, CopyOptions.create().ignoreNullValue());
-        couponService.addCoupon(coupon);
+        // TODO
         return Response.buildSuccess().setMessage(5);
     }
 
@@ -54,26 +52,13 @@ public class CouponController {
     }
 
     /**
-     * with partial info of an order (without price and some status)
-     * get all available coupons for it
-     * _in partially finished order
-     * _out list of available coupons
-     */
-    @PostMapping("/get-matched")
-    public Response getOrderMatchCoupons(@RequestBody Order order) {
-        order.setHotelName(order.getHotel().getName());
-        List<Coupon> coupons = couponService.getMatchOrderCoupon(order);
-        return Response.buildSuccess(coupons);
-    }
-
-    /**
      * get coupons by hotel id
      * _in hotel id
      * _out list of available coupons in hotel and those global
      */
     @GetMapping("/by-hotel")
     public Response getAllByHotel(@RequestParam Integer hotelId) {
-        List<Coupon> coupons = couponService.getByHotel(hotelId);
+        List<CouponBase> coupons = couponService.getByHotel(hotelId);
         return Response.buildSuccess(coupons);
     }
 

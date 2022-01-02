@@ -9,4 +9,5 @@ import java.util.List;
 public class DtoReservePersonal extends DtoReserve {
     private long configId;
     private List<Long> residents;
+    private List<Long> selectedCoupons = new ArrayList<>();
 }

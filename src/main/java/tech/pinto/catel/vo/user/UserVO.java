@@ -1,7 +1,7 @@
 package tech.pinto.catel.vo.user;
 
 import tech.pinto.catel.enums.UserType;
-import tech.pinto.catel.enums.VipType;
+import tech.pinto.catel.enums.VipLevel;
 import lombok.Data;
 
 @Data
@@ -15,6 +15,6 @@ public class UserVO {
     private UserType userType;
     private String avatar;
     private String vipEnd;
-    private VipType vipType;
+    private VipLevel vipLevel;
 
 }

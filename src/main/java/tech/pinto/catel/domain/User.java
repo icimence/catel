@@ -3,7 +3,7 @@ package tech.pinto.catel.domain;
 import lombok.*;
 import org.hibernate.Hibernate;
 import tech.pinto.catel.enums.UserType;
-import tech.pinto.catel.enums.VipType;
+import tech.pinto.catel.enums.VipLevel;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ public class User {
     private String avatar = null;
     private LocalDateTime vipEnd = LocalDateTime.now();
     private UserType userType = UserType.Client;
-    private VipType vipType = VipType.Nil;
+    private VipLevel vipLevel = VipLevel.Nil;
     
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Resident> residents = new ArrayList<>();
