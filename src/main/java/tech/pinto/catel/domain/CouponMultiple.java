@@ -13,10 +13,10 @@ import javax.persistence.Entity;
 public class CouponMultiple extends CouponBase {
     private int numberTarget;
 
-    public static CouponMultiple random() {
+    public static CouponMultiple random(int lower, int upper) {
         var r = new CouponMultiple();
-        r.numberTarget = UtilRandom.ofInt(2, 8);
-        r.randomize();
+        r.numberTarget = UtilRandom.ofInt(2, 6);
+        r.randomize(lower, upper);
         return r;
     }
 

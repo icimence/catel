@@ -25,7 +25,7 @@ abstract public class CouponBase {
     private Hotel hotel;
     @ManyToOne
     private User owner;
-    
+
     private CouponStatus status = CouponStatus.Available;
     private String name = "默认优惠券";
     private String description = "默认描述";
@@ -33,16 +33,16 @@ abstract public class CouponBase {
     private LocalDate timeEnabled;
     private LocalDate timeOutdated;
 
-    protected void randomize() {
+    protected void randomize(int lower, int upper) {
         timeEnabled = UtilRandom.ofDate(1990);
-        timeOutdated = UtilRandom.ofDate(2015);
-        discountAmount = new BigDecimal(UtilRandom.ofInt(100, 200));
+        timeOutdated = UtilRandom.ofDate(2025);
+        discountAmount = new BigDecimal(UtilRandom.ofInt(lower, upper));
     }
 
     public abstract String condition();
 
     public abstract boolean judge(DtoCouponRelated related);
-    
+
     public abstract String name();
 
 }

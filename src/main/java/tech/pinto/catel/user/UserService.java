@@ -90,7 +90,7 @@ public class UserService {
         repoUser.save(user);
     }
 
-    public void creditPunish(Order order) {
+    public double creditPunish(Order order) {
         var user = order.getUser();
         LocalDate today = LocalDate.now();
         var aheadLimit = user.getVipLevel().getAnnulLimit();
@@ -103,7 +103,10 @@ public class UserService {
             var delta = -1.5 * order.getPrice().doubleValue();
             entry.setDelta(delta);
             repoCreditEntry.save(entry);
+            return delta;
         }
+        
+        return 0;
     }
 
     public List<DtoCreditEntry> creditHistory(DtoGetCreditHistory dtoGetCreditHistory) {

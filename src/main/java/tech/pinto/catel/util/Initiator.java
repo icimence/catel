@@ -39,10 +39,10 @@ public class Initiator {
     private final int numOfRoomBase = 15;
     private final int numOfDay = 15;
     private final int numOfUser = 10;
-    private final int numberOfResident = 3;
+    private final int numberOfResident = 5;
     private final int numberOfOrder = 200;
     private final int numberOfComment = 100;
-    private final int numberOfCoupon = 30;
+    private final int numberOfCoupon = 10;
 
     private final HashMap<Long, Integer> numOfConfig = new HashMap<>();
 
@@ -217,17 +217,32 @@ public class Initiator {
 
     private void initCoupon() {
         var coupons = new ArrayList<CouponBase>();
-        for (int j = 0; j < numberOfCoupon; j++) {
-            coupons.add(CouponMultiple.random());
-        }
-        for (int j = 0; j < numberOfCoupon; j++) {
-            coupons.add(CouponReduction.random());
+        for (int i = 0; i < numberOfCoupon; i++) {
+            coupons.add(CouponMultiple.random(100, 200));
+            coupons.add(CouponReduction.random(100, 200, 100));
         }
         coupons.forEach(couponBase -> {
             couponBase.setHotel(repoHotel.getById(1L));
             couponBase.setOwner(repoUser.getById(1L));
         });
+
+        var smallCoupons = new ArrayList<CouponBase>();
+
+        for (long i = 0; i < numOfHotel; i++) {
+            var couponA = CouponMultiple.random(10, 20);
+            couponA.setHotel(repoHotel.getById(i + 1));
+            couponA.setOwner(repoUser.getById(1L));
+
+            var couponB = CouponReduction.random(10, 20, 10);
+            couponB.setHotel(repoHotel.getById(i + 1));
+            couponB.setOwner(repoUser.getById(1L));
+
+            smallCoupons.add(couponA);
+            smallCoupons.add(couponB);
+        }
+
         repoCoupon.saveAll(coupons);
+        repoCoupon.saveAll(smallCoupons);
     }
 
 }

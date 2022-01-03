@@ -74,6 +74,7 @@ public class OrderService {
         
         var discountTotal = couponService.checkAndSum(related, reserveInfo.getSelectedCoupons());
         var coupons = couponService.getUsable(related, reserveInfo.getUserId(), reserveInfo.getHotelId());
+        coupons.forEach(System.out::println);
         
         return new DtoRefPreview(totalPrice, coupons, discountTotal);
     }
@@ -134,8 +135,9 @@ public class OrderService {
     public void annulOrder(DtoAnnulOrder dtoAnnulOrder) {
         var order = repoOrder.getById(dtoAnnulOrder.getOrderId());
         order.setOrderState(OrderState.Canceled);
+        var delta = userService.creditPunish(order);
+        order.setCreditDelta(delta);
         var config = order.getRooms().get(0).getRoomConfig();
-        userService.creditPunish(order);
         repoRoomUnit.restoreCanceledRoom(config, order.getRoomNum(), order.getCheckInDate(), order.getCheckOutDate());
         repoOrder.save(order);
     }

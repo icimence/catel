@@ -14,10 +14,10 @@ import java.math.BigDecimal;
 public class CouponReduction extends CouponBase {
     private BigDecimal priceTarget;
 
-    public static CouponReduction random() {
+    public static CouponReduction random(int lower, int upper, int scale) {
         var r = new CouponReduction();
-        r.priceTarget = new BigDecimal(UtilRandom.ofInt(5, 15) * 100);
-        r.randomize();
+        r.priceTarget = new BigDecimal(scale * (7 + UtilRandom.ofInt(-3, 4)));
+        r.randomize(lower, upper);
         return r;
     }
 
