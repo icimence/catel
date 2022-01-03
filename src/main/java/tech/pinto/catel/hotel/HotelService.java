@@ -168,6 +168,10 @@ public class HotelService {
             query = query.where(rc.defPrice.lt(filter.getPriceUpper()));
         }
 
+        if (filter.getName() != null) {
+            query = query.where(h.name.like("%" + filter.getName() + "%"));
+        }
+
         if (filter.getStars() != null) {
             var pred = h.id.ne(h.id);
             for (var s : filter.getStars()) {

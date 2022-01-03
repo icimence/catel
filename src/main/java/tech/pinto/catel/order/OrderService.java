@@ -74,7 +74,6 @@ public class OrderService {
         
         var discountTotal = couponService.checkAndSum(related, reserveInfo.getSelectedCoupons());
         var coupons = couponService.getUsable(related, reserveInfo.getUserId(), reserveInfo.getHotelId());
-        coupons.forEach(System.out::println);
         
         return new DtoRefPreview(totalPrice, coupons, discountTotal);
     }

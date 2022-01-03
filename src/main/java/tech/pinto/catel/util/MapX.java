@@ -67,7 +67,6 @@ public abstract class MapX {
     @Mapping(target = "filter.priceLower", source = "filterPriceLower")
     @Mapping(target = "filter.priceUpper", source = "filterPriceUpper")
     @Mapping(target = "filter.rate", source = "filterRate")
-    @Mapping(target = "filter.region", source = "filterLocation")
     @Mapping(target = "filter.inDate", source = "filterInDate", dateFormat = "MM/dd/yyyy")
     @Mapping(target = "filter.outDate", source = "filterOutDate", dateFormat = "MM/dd/yyyy")
     public abstract QueryParam toQueryParam(DtoHotelQuery src);

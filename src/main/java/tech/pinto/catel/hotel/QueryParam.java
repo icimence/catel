@@ -15,6 +15,7 @@ public class QueryParam {
         private Double priceLower;
         private Double priceUpper;
         private Double rate;
+        private String name;
         private BizRegion region;
         private LocalDate inDate;
         private LocalDate outDate;

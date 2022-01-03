@@ -10,12 +10,14 @@ import tech.pinto.catel.domain.Comment;
 import tech.pinto.catel.domain.CouponBase;
 import tech.pinto.catel.domain.Hotel;
 import tech.pinto.catel.domain.Order;
+import tech.pinto.catel.hotel.BizRegion;
 import tech.pinto.catel.hotel.QueryParam;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.order.dto.DtoReserve;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
+import tech.pinto.catel.util.error.EnumOutRange;
 
 public abstract class MapEx extends MapX {
     @Autowired
@@ -85,15 +87,27 @@ public abstract class MapEx extends MapX {
     @Override
     public QueryParam toQueryParam(DtoHotelQuery src) {
         var param = mapX.toQueryParam(src);
+        var filter = param.getFilter();
+
         var starStr = src.getFilterStars();
+
         if (starStr != null) {
             var n = starStr.length();
             var stars = new int[n];
             for (int i = 0; i < n; i++) {
                 stars[i] = Character.digit(starStr.charAt(i), 10);
             }
-            param.getFilter().setStars(stars);
+            filter.setStars(stars);
         }
+
+        try {
+            var bizRegion = BizRegion.from(src.getFilterLocation());
+            filter.setRegion(bizRegion);
+        } catch (EnumOutRange e) {
+            filter.setRegion(null);
+            filter.setName(src.getFilterLocation());
+        }
+
         return param;
     }
 
