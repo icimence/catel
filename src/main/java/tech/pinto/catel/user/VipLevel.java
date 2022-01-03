@@ -1,12 +1,12 @@
-package tech.pinto.catel.enums;
+package tech.pinto.catel.user;
 
 import lombok.Getter;
 
 @Getter
 public enum VipLevel {
-    Nil(2),
+    Nil(8),
     Small(4),
-    Big(8);
+    Big(2);
 
     private final int annulLimit;
 

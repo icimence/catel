@@ -1,7 +1,7 @@
 package tech.pinto.catel.admin;
 
 import tech.pinto.catel.user.AccountMapper;
-import tech.pinto.catel.user.AccountService;
+import tech.pinto.catel.user.UserService;
 import tech.pinto.catel.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +12,13 @@ import java.util.List;
 public class AdminService  {
 
     final AdminMapper adminMapper;
-    final AccountService accountService;
+    final UserService userService;
     final AccountMapper accountMapper;
 
     @Autowired
-    public AdminService(AdminMapper adminMapper, AccountService accountService, AccountMapper accountMapper) {
+    public AdminService(AdminMapper adminMapper, UserService userService, AccountMapper accountMapper) {
         this.adminMapper = adminMapper;
-        this.accountService = accountService;
+        this.userService = userService;
         this.accountMapper = accountMapper;
     }
 

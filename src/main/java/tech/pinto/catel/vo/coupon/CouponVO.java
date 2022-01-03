@@ -3,8 +3,8 @@ package tech.pinto.catel.vo.coupon;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
-import tech.pinto.catel.enums.CouponStatus;
-import tech.pinto.catel.enums.CouponType;
+import tech.pinto.catel.coupon.CouponStatus;
+import tech.pinto.catel.coupon.CouponType;
 
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)

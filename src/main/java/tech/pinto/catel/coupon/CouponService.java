@@ -2,7 +2,6 @@ package tech.pinto.catel.coupon;
 
 import tech.pinto.catel.coupon.dto.DtoCouponRelated;
 import tech.pinto.catel.coupon.dto.DtoUsableCoupon;
-import tech.pinto.catel.enums.CouponType;
 import tech.pinto.catel.domain.CouponBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

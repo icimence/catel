@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import tech.pinto.catel.domain.*;
-import tech.pinto.catel.enums.HotelStar;
 import tech.pinto.catel.hotel.dto.DtoHotelDetail;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.order.MapperOrder;

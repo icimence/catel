@@ -1,4 +1,4 @@
-package tech.pinto.catel.enums;
+package tech.pinto.catel.user;
 
 public enum UserType {
     Client,

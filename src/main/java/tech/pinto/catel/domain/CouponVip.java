@@ -3,7 +3,7 @@ package tech.pinto.catel.domain;
 import lombok.Getter;
 import lombok.Setter;
 import tech.pinto.catel.coupon.dto.DtoCouponRelated;
-import tech.pinto.catel.enums.VipLevel;
+import tech.pinto.catel.user.VipLevel;
 
 import javax.persistence.Entity;
 

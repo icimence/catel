@@ -1,12 +1,9 @@
 package tech.pinto.catel.comment;
 
 import tech.pinto.catel.comment.dto.DtoPublishComment;
-import tech.pinto.catel.vo.CommentVO;
 import tech.pinto.catel.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/comment")

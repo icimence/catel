@@ -10,12 +10,10 @@ import tech.pinto.catel.order.dto.*;
 import tech.pinto.catel.room.*;
 import tech.pinto.catel.room.dto.DtoRoomEntry;
 import tech.pinto.catel.user.AccountMapper;
-import tech.pinto.catel.enums.OrderState;
-import tech.pinto.catel.user.AccountService;
+import tech.pinto.catel.user.UserService;
 import tech.pinto.catel.util.MapX;
 import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.vo.CreditTransVO;
-import tech.pinto.catel.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,7 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final HotelService hotelService;
-    private final AccountService accountService;
+    private final UserService userService;
     private final CouponService couponService;
     private final MapperOrder mapperOrder;
     private final AccountMapper accountMapper;
@@ -39,10 +37,10 @@ public class OrderService {
     private final MapX mapX;
 
     @Autowired
-    public OrderService(MapperOrder mapperOrder, HotelService hotelService, AccountService accountService, CouponService couponService, AccountMapper accountMapper, RepoOrder repoOrder, RepoRoomUnit repoRoomUnit, MapX mapX, RepoRoomConfig repoRoomConfig) {
+    public OrderService(MapperOrder mapperOrder, HotelService hotelService, UserService userService, CouponService couponService, AccountMapper accountMapper, RepoOrder repoOrder, RepoRoomUnit repoRoomUnit, MapX mapX, RepoRoomConfig repoRoomConfig) {
         this.mapperOrder = mapperOrder;
         this.hotelService = hotelService;
-        this.accountService = accountService;
+        this.userService = userService;
         this.couponService = couponService;
         this.accountMapper = accountMapper;
         this.repoOrder = repoOrder;
@@ -125,20 +123,6 @@ public class OrderService {
     public void reserveForGroup(DtoReserveGroup dtoReserveGroup) {
     }
 
-    private OrderVO convert(Order order) {
-        OrderVO orderVO = new OrderVO();
-        BeanUtil.copyProperties(order, orderVO, CopyOptions.create().ignoreNullValue());
-        var hotel = order.getHotel();
-        orderVO.setHotelName(hotel.getName());
-        orderVO.setHotelAddress(hotel.getAddress());
-        return orderVO;
-    }
-
-    public List<OrderVO> getAllOrders() {
-        List<Order> orders = mapperOrder.getAllOrders();
-        return orders.stream().map(this::convert).collect(Collectors.toList());
-    }
-
     public List<DtoOrderBrief> getUserOrders(int userId) {
         return repoOrder
             .findByUserId(userId)
@@ -151,7 +135,7 @@ public class OrderService {
         var order = repoOrder.getById(dtoAnnulOrder.getOrderId());
         order.setOrderState(OrderState.Canceled);
         var config = order.getRooms().get(0).getRoomConfig();
-        accountService.creditPunish(order);
+        userService.creditPunish(order);
         repoRoomUnit.restoreCanceledRoom(config, order.getRoomNum(), order.getCheckInDate(), order.getCheckOutDate());
         repoOrder.save(order);
     }

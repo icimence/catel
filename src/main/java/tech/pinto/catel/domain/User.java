@@ -2,8 +2,8 @@ package tech.pinto.catel.domain;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import tech.pinto.catel.enums.UserType;
-import tech.pinto.catel.enums.VipLevel;
+import tech.pinto.catel.user.UserType;
+import tech.pinto.catel.user.VipLevel;
 import tech.pinto.catel.util.UtilRandom;
 
 import javax.persistence.*;

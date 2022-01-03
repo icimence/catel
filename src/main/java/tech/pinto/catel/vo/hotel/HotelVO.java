@@ -1,7 +1,7 @@
 package tech.pinto.catel.vo.hotel;
 
-import tech.pinto.catel.enums.BizRegion;
-import tech.pinto.catel.enums.HotelStar;
+import tech.pinto.catel.hotel.BizRegion;
+import tech.pinto.catel.hotel.HotelStar;
 import lombok.Data;
 
 import java.util.List;

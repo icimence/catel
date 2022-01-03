@@ -1,7 +1,6 @@
 package tech.pinto.catel.hotel;
 
 import lombok.Data;
-import tech.pinto.catel.enums.BizRegion;
 
 import java.time.LocalDate;
 

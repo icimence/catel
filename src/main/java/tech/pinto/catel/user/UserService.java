@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountService {
+public class UserService {
 
     private final AccountMapper accountMapper;
     private final OssService ossService;
@@ -31,7 +31,7 @@ public class AccountService {
     private final MapX mapX;
 
     @Autowired
-    public AccountService(AccountMapper accountMapper, OssService ossService, RepoUser repoUser, RepoCreditEntry repoCreditEntry, MapX mapX) {
+    public UserService(AccountMapper accountMapper, OssService ossService, RepoUser repoUser, RepoCreditEntry repoCreditEntry, MapX mapX) {
         this.accountMapper = accountMapper;
         this.ossService = ossService;
         this.repoUser = repoUser;
@@ -111,6 +111,7 @@ public class AccountService {
         return r
             .stream()
             .map(mapX::toDtoEntry)
+            .sorted()
             .collect(Collectors.toList());
     }
 

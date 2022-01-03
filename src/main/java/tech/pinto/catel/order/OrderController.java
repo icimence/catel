@@ -73,16 +73,6 @@ public class OrderController {
     }
 
     /**
-     * get all orders
-     * DEPRECATED
-     */
-    @GetMapping("/")
-    @Deprecated
-    public Response retrieveAllOrders() {
-        return Response.buildSuccess(orderService.getAllOrders());
-    }
-
-    /**
      * get all orders of certain user
      * _in user id
      * _out orders

@@ -1,7 +1,7 @@
 package tech.pinto.catel.coupon.dto;
 
 import lombok.Data;
-import tech.pinto.catel.enums.VipLevel;
+import tech.pinto.catel.user.VipLevel;
 
 import java.math.BigDecimal;
 

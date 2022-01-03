@@ -2,7 +2,7 @@ package tech.pinto.catel.domain;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import tech.pinto.catel.enums.RoomType;
+import tech.pinto.catel.room.RoomType;
 
 import javax.persistence.*;
 

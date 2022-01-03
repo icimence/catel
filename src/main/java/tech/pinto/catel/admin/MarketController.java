@@ -1,6 +1,6 @@
 package tech.pinto.catel.admin;
 
-import tech.pinto.catel.user.AccountService;
+import tech.pinto.catel.user.UserService;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.user.dto.DtoLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/market")
 public class MarketController {
 
-    private final AccountService accountService;
+    private final UserService userService;
 
     @Autowired
-    public MarketController(AccountService accountService) {
-        this.accountService = accountService;
+    public MarketController(UserService userService) {
+        this.userService = userService;
     }
 
     /**

@@ -25,12 +25,12 @@ import java.io.IOException;
 public class UserController {
 
     private final Producer kaptchaProducer;
-    private final AccountService accountService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(Producer kaptchaProducer, AccountService accountService) {
+    public UserController(Producer kaptchaProducer, UserService userService) {
         this.kaptchaProducer = kaptchaProducer;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
     /**
@@ -41,7 +41,7 @@ public class UserController {
     @PostMapping("/login")
     public Response login(@RequestBody DtoLogin dtoLogin) {
         try {
-            var info = accountService.login(dtoLogin);
+            var info = userService.login(dtoLogin);
             return Response.buildSuccess(info).setMessage(15);
         } catch (OopsException e) {
             e.printStackTrace();
@@ -56,13 +56,13 @@ public class UserController {
      */
     @PostMapping("/")
     public Response registerAccount(@RequestBody DtoRegister dtoRegister) throws OopsException {
-        accountService.registerAccount(dtoRegister);
+        userService.registerAccount(dtoRegister);
         return Response.buildSuccess().setMessage(16);
     }
 
     @PostMapping("/pwd")
     public Response changePassword(@RequestBody DtoChangePwd dtoChangePwd) throws OopsException {
-        accountService.changePassword(dtoChangePwd);
+        userService.changePassword(dtoChangePwd);
         return Response.buildSuccess();
     }
 
@@ -72,7 +72,7 @@ public class UserController {
      */
     @PostMapping("/vip")
     public Response vip(@RequestBody DtoUserVip dtoUserVip) {
-        accountService.vip(dtoUserVip);
+        userService.vip(dtoUserVip);
         return Response.buildSuccess().setMessage(17);
     }
 
@@ -82,7 +82,7 @@ public class UserController {
      */
     @PutMapping("/")
     public Response updateInfo(@RequestBody DtoUserUpdate dtoUserUpdate) throws OopsException {
-        accountService.updateInfo(dtoUserUpdate);
+        userService.updateInfo(dtoUserUpdate);
         return Response.buildSuccess().setMessage(18);
 
     }
@@ -94,7 +94,7 @@ public class UserController {
      */
     @GetMapping("/")
     public Response getInfo(@RequestParam long id) throws CustomException {
-        var r = accountService.info(id);
+        var r = userService.info(id);
         System.out.println(r);
         return Response.buildSuccess(r);
     }
@@ -123,7 +123,7 @@ public class UserController {
     @PostMapping("/credit-up")
     public Response creditUp(@RequestBody CreditUpVO creditUpVO) {
         try {
-            accountService.creditUp(creditUpVO);
+            userService.creditUp(creditUpVO);
         } catch (OopsException e) {
             e.printStackTrace();
             return Response.buildFailure(e.getMessage());
@@ -133,7 +133,7 @@ public class UserController {
 
     @GetMapping("/credit-history")
     public Response creditHistory(DtoGetCreditHistory dtoGetCreditHistory) {
-        var r = accountService.creditHistory(dtoGetCreditHistory);
+        var r = userService.creditHistory(dtoGetCreditHistory);
         return Response.buildSuccess(r);
     }
 }

@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
-import tech.pinto.catel.enums.BizRegion;
-import tech.pinto.catel.enums.HotelStar;
+import tech.pinto.catel.hotel.BizRegion;
+import tech.pinto.catel.hotel.HotelStar;
 import tech.pinto.catel.util.UtilRandom;
 
 import java.math.BigDecimal;

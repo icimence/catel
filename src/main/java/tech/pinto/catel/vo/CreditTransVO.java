@@ -1,6 +1,6 @@
 package tech.pinto.catel.vo;
 
-import tech.pinto.catel.enums.OrderState;
+import tech.pinto.catel.order.OrderState;
 import lombok.Data;
 
 @Data

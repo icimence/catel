@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import org.hibernate.Hibernate;
-import tech.pinto.catel.enums.OrderState;
+import tech.pinto.catel.order.OrderState;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

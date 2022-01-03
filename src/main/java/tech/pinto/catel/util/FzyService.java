@@ -1,7 +1,7 @@
 package tech.pinto.catel.util;
 
 import tech.pinto.catel.domain.Hotel;
-import tech.pinto.catel.enums.HotelStar;
+import tech.pinto.catel.hotel.HotelStar;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

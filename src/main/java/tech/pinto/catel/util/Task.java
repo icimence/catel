@@ -2,13 +2,11 @@ package tech.pinto.catel.util;
 
 import ch.qos.logback.classic.Level;
 import org.slf4j.LoggerFactory;
-import tech.pinto.catel.enums.OrderState;
+import tech.pinto.catel.order.OrderState;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.RepoOrder;
 import tech.pinto.catel.room.RepoRoomConfig;
 import tech.pinto.catel.room.RepoRoomUnit;
-import tech.pinto.catel.user.AccountMapper;
-import tech.pinto.catel.order.MapperOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -72,7 +70,7 @@ public class Task {
         log.info("[task] Calculate rate for room");
     }
 
-    @Scheduled(cron = "0 0 14 * * ?")
+    @Scheduled(cron = "59 59 23 * * ?")
     public void refreshRoomUnit() {
         repoRoomUnit.dailyUpdateRemove();
         var units = repoRoomConfig.findAll().stream().map(mapX::toUnit).collect(Collectors.toList());
@@ -83,7 +81,7 @@ public class Task {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         var loggerName = "org.hibernate.SQL";
         var logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(loggerName);
         logger.setLevel(Level.OFF);
@@ -91,7 +89,6 @@ public class Task {
         freshCommentStat();
         changeOrderState();
         invalidVip();
-//        logger.setLevel(Level.DEBUG);
     }
 
 }

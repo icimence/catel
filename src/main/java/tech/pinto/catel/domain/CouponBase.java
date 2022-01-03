@@ -4,8 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tech.pinto.catel.coupon.dto.DtoCouponRelated;
-import tech.pinto.catel.enums.CouponStatus;
-import tech.pinto.catel.enums.CouponType;
+import tech.pinto.catel.coupon.CouponStatus;
 import tech.pinto.catel.util.UtilRandom;
 
 import javax.persistence.*;

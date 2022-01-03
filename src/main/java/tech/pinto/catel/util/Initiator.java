@@ -1,13 +1,15 @@
 package tech.pinto.catel.util;
 
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import tech.pinto.catel.comment.CommentService;
 import tech.pinto.catel.comment.dto.DtoPublishComment;
 import tech.pinto.catel.coupon.RepoCoupon;
 import tech.pinto.catel.domain.*;
-import tech.pinto.catel.enums.BizRegion;
-import tech.pinto.catel.enums.HotelStar;
-import tech.pinto.catel.enums.RoomType;
+import tech.pinto.catel.hotel.BizRegion;
+import tech.pinto.catel.hotel.HotelStar;
+import tech.pinto.catel.room.RoomType;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.OrderService;
 import tech.pinto.catel.order.dto.DtoReservePersonal;
@@ -15,6 +17,7 @@ import tech.pinto.catel.room.*;
 import tech.pinto.catel.user.RepoUser;
 import tech.pinto.catel.util.error.OopsException;
 
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -30,8 +33,9 @@ public class Initiator {
     private final OrderService orderService;
     private final CommentService commentService;
 
-    private final int numOfHotel = 30;
-    private final int numOfConfig = 5;
+    private final String hotelCsvPath = "/csv/人机酒店信息.csv";
+    private final String roomConfigCsvPath = "/csv/人机酒店房间信息.csv";
+    private int numOfHotel;
     private final int numOfRoomBase = 15;
     private final int numOfDay = 15;
     private final int numOfUser = 10;
@@ -39,6 +43,8 @@ public class Initiator {
     private final int numberOfOrder = 200;
     private final int numberOfComment = 100;
     private final int numberOfCoupon = 30;
+
+    private final HashMap<Long, Integer> numOfConfig = new HashMap<>();
 
     private final LocalDate today = LocalDate.now();
 
@@ -53,75 +59,13 @@ public class Initiator {
         this.commentService = commentService;
     }
 
-    public void init() {
+    public void init() throws Exception {
         initUserItem();
         initHotelItem();
         initOrderItem();
         initComment();
         initCoupon();
         System.out.println("[task] database init");
-    }
-
-    private void initComment() {
-
-        for (int i = 0; i < numberOfComment; i++) {
-            var dto = new DtoPublishComment();
-            dto.setScore(UtilRandom.ofInt(1, 6));
-            dto.setContent("随机的评论内容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容！");
-            dto.setTitle("随机的标题！");
-            dto.setOrderId(Math.floorDiv(numberOfOrder, numberOfComment) * i + 1);
-            commentService.comment(dto);
-        }
-    }
-
-    private void initHotelItem() {
-
-        var hotels = new ArrayList<Hotel>();
-        var roomConfigs = new ArrayList<RoomConfig>();
-        var rooms = new ArrayList<Room>();
-        var units = new ArrayList<RoomUnit>();
-
-        for (int i = 0; i < numOfHotel; i++) {
-            var name = i + "号酒店";
-            var address = name + "的地址";
-            var bizRegion = UtilRandom.ofEnum(BizRegion.class);
-            var star = UtilRandom.ofEnum(HotelStar.class);
-            var desc = name + "的描述";
-            var announcement = name + "的通知";
-            var phone = UtilRandom.ofPhoneNumber();
-            var hotel = new Hotel(name, address, bizRegion, star, desc, phone, 0, announcement);
-            hotels.add(hotel);
-
-            for (int j = 0; j < numOfConfig; j++) {
-                var configName = j + "类房间";
-                var type = UtilRandom.ofEnum(RoomType.class);
-                var price = BigDecimal.valueOf(UtilRandom.ofInt(150, 300));
-                var peopleLimit = UtilRandom.ofInt(1, 6);
-                var breakfast = UtilRandom.ofBool();
-                var roomNumOffset = UtilRandom.ofInt(-5, 6);
-                var numOfRoom = numOfRoomBase + roomNumOffset;
-                var roomConfig = new RoomConfig(hotel, configName, peopleLimit, breakfast, type, price, numOfRoom);
-                roomConfigs.add(roomConfig);
-
-                for (int k = 0; k < numOfRoom; k++) {
-                    var roomNo = "#0" + j + k;
-                    var room = new Room(roomNo, hotel, roomConfig);
-                    rooms.add(room);
-                }
-
-                for (int k = 0; k < numOfDay; k++) {
-                    var unit = new RoomUnit(roomConfig, today.plusDays(k), price, numOfRoom);
-                    units.add(unit);
-                }
-
-            }
-        }
-
-        repoHotel.saveAll(hotels);
-        repoRoomConfig.saveAll(roomConfigs);
-        repoRoom.saveAll(rooms);
-        repoRoomUnit.saveAll(units);
-        repoHotel.refreshMinPrice();
     }
 
     private void initUserItem() {
@@ -146,6 +90,80 @@ public class Initiator {
         repoUser.saveAll(users);
     }
 
+    private void initHotelItem() throws Exception {
+
+        var hotels = new ArrayList<Hotel>();
+        var roomConfigs = new ArrayList<RoomConfig>();
+        var rooms = new ArrayList<Room>();
+        var units = new ArrayList<RoomUnit>();
+
+        List<CsvHotel> csvHotels;
+        var is = new ClassPathResource(hotelCsvPath).getInputStream();
+        try (var reader = new InputStreamReader(is)) {
+            csvHotels = new CsvToBeanBuilder<CsvHotel>(reader).withType(CsvHotel.class).build().parse();
+        }
+        numOfHotel = csvHotels.size();
+        csvHotels.forEach(System.out::println);
+
+        List<CsvRoomConfig> csvRoomConfigs;
+        is = new ClassPathResource(roomConfigCsvPath).getInputStream();
+        try (var reader = new InputStreamReader(is)) {
+            csvRoomConfigs = new CsvToBeanBuilder<CsvRoomConfig>(reader).withType(CsvRoomConfig.class).build().parse();
+        }
+
+        var name2hotel = new HashMap<String, Hotel>();
+
+        for (var csvHotel : csvHotels) {
+            var name = csvHotel.getName();
+            var address = csvHotel.getAddress();
+            var bizRegion = UtilRandom.ofEnum(BizRegion.class);
+            var star = UtilRandom.ofEnum(HotelStar.class);
+            var desc = csvHotel.getDesc();
+            var announcement = "有优惠券可用，欢迎入住！";
+            var phone = UtilRandom.ofPhoneNumber();
+            var hotel = new Hotel(name, address, bizRegion, star, desc, phone, 0, announcement);
+            hotels.add(hotel);
+            name2hotel.put(name, hotel);
+        }
+
+        repoHotel.saveAll(hotels);
+
+        for (var csvRoomConfig : csvRoomConfigs) {
+            var hotel = name2hotel.get(csvRoomConfig.getHotelName());
+            if (hotel == null) {
+                System.err.println(csvRoomConfig.getHotelName());
+            }
+            numOfConfig.put(hotel.getId(),
+                            numOfConfig.getOrDefault(hotel.getId(), 0) + 1);
+
+            var configName = csvRoomConfig.getConfigName();
+            var peopleLimit = csvRoomConfig.getPeopleLimit();
+            var type = RoomType.fromName(configName);
+            var price = BigDecimal.valueOf(csvRoomConfig.getPrice());
+            var breakfast = csvRoomConfig.getBreakfast().equals("有早餐");
+            var roomNumOffset = UtilRandom.ofInt(-5, 6);
+            var numOfRoom = numOfRoomBase + roomNumOffset;
+            var roomConfig = new RoomConfig(hotel, configName, peopleLimit, breakfast, type, price, numOfRoom);
+            roomConfigs.add(roomConfig);
+
+            for (int k = 0; k < numOfRoom; k++) {
+                var roomNo = configName + "#0" + k;
+                var room = new Room(roomNo, hotel, roomConfig);
+                rooms.add(room);
+            }
+
+            for (int k = 0; k < numOfDay; k++) {
+                var unit = new RoomUnit(roomConfig, today.plusDays(k), price, numOfRoom);
+                units.add(unit);
+            }
+        }
+
+        repoRoomConfig.saveAll(roomConfigs);
+        repoRoom.saveAll(rooms);
+        repoRoomUnit.saveAll(units);
+        repoHotel.refreshMinPrice();
+    }
+
     protected void initOrderItem() {
         for (int i = 0; i < numberOfOrder; i++) {
 
@@ -165,8 +183,9 @@ public class Initiator {
             dto.setCheckInDate(inDate.format(UtilDate.formatter));
             dto.setCheckOutDate(outDate.format(UtilDate.formatter));
 
-            var configIdx = UtilRandom.ofInt(0, numOfConfig);
+            var configIdx = UtilRandom.ofInt(0, numOfConfig.get(hotelId));
             var config = hotel.getConfigs().get(configIdx);
+
             dto.setConfigId(config.getId());
 
             var residentsId = new HashSet<Long>();
@@ -182,6 +201,18 @@ public class Initiator {
             } catch (OopsException e) {
                 i--; // Retry
             }
+        }
+    }
+
+    private void initComment() {
+
+        for (int i = 0; i < numberOfComment; i++) {
+            var dto = new DtoPublishComment();
+            dto.setScore(UtilRandom.ofInt(1, 6));
+            dto.setContent("随机的评论内容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容容！");
+            dto.setTitle("随机的标题！");
+            dto.setOrderId(Math.floorDiv(numberOfOrder, numberOfComment) * i + 1);
+            commentService.comment(dto);
         }
     }
 

@@ -1,6 +1,6 @@
 package tech.pinto.catel.admin;
 
-import tech.pinto.catel.user.AccountService;
+import tech.pinto.catel.user.UserService;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.user.dto.DtoLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
-    private final AccountService accountService;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(AdminService adminService, AccountService accountService) {
+    public AdminController(AdminService adminService, UserService userService) {
         this.adminService = adminService;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
     /**
