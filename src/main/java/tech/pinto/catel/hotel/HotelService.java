@@ -10,6 +10,7 @@ import tech.pinto.catel.order.MapperOrder;
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
 import tech.pinto.catel.util.*;
+import tech.pinto.catel.util.error.CustomException;
 import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.vo.hotel.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,7 @@ public class HotelService {
         return mapX.toBrief(hotel.get());
     }
 
-    public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
+    public List<DtoHotelBrief> hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException, CustomException {
         var queryParam = mapX.toQueryParam(dtoHotelQuery);
         var filter = queryParam.getFilter();
 

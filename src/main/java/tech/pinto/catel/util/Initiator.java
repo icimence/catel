@@ -116,8 +116,10 @@ public class Initiator {
         for (var csvHotel : csvHotels) {
             var name = csvHotel.getName();
             var address = csvHotel.getAddress();
-            var bizRegion = UtilRandom.ofEnum(BizRegion.class);
-            var star = UtilRandom.ofEnum(HotelStar.class);
+            var bizStr = csvHotel.getAddress().split("，")[3];
+            bizStr = bizStr.substring(0, bizStr.length() - 1);
+            var bizRegion = BizRegion.from(bizStr);
+            var star = HotelStar.from(csvHotel.getStar());
             var desc = csvHotel.getDesc();
             var announcement = "有优惠券可用，欢迎入住！";
             var phone = UtilRandom.ofPhoneNumber();

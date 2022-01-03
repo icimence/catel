@@ -1,12 +1,20 @@
 package tech.pinto.catel.hotel;
 
-public enum HotelStar {
-    Five,
-    Four,
-    Three;
+import tech.pinto.catel.util.error.EnumOutRange;
 
-    public static HotelStar from(int s) {
+public enum HotelStar {
+    One,
+    Two,
+    Three,
+    Four,
+    Five;
+
+    public static HotelStar from(int s) throws EnumOutRange {
         switch (s) {
+            case 1:
+                return One;
+            case 2:
+                return Two;
             case 3:
                 return Three;
             case 4:
@@ -14,7 +22,7 @@ public enum HotelStar {
             case 5:
                 return Five;
             default:
-                return null;
+                throw new EnumOutRange(HotelStar.class.getName(), String.valueOf(s));
         }
     }
 }

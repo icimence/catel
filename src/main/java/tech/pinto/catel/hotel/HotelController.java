@@ -2,6 +2,7 @@ package tech.pinto.catel.hotel;
 
 import tech.pinto.catel.hotel.dto.DtoHotelBrief;
 import tech.pinto.catel.hotel.dto.DtoHotelQuery;
+import tech.pinto.catel.util.error.CustomException;
 import tech.pinto.catel.util.error.OopsException;
 import tech.pinto.catel.util.Response;
 import tech.pinto.catel.vo.hotel.HotelVO;
@@ -33,7 +34,7 @@ public class HotelController {
     }
 
     @GetMapping("/")
-    public Response hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException {
+    public Response hotelQuery(DtoHotelQuery dtoHotelQuery) throws OopsException, CustomException {
         List<DtoHotelBrief> hotels = hotelService.hotelQuery(dtoHotelQuery);
         return Response.buildSuccess(hotels);
     }

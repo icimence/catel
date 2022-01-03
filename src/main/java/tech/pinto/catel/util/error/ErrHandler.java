@@ -14,7 +14,17 @@ public class ErrHandler {
 
     @ExceptionHandler(EntityNotExists.class)
     public Response errHandler(EntityNotExists e) {
-        return Response.buildFailure("实体( " + e.getEntityName() + " )不存在");
+        String msg = "实体( " + e.getEntityName() + " )不存在";
+        System.err.println(msg);
+        return Response.buildFailure(msg);
     }
+
+    @ExceptionHandler(EnumOutRange.class)
+    public Response errHandler(EnumOutRange e) {
+        String msg = "解析枚举 " + e.enumName + " 失败，输入值为 " + e.input;
+        System.err.println(msg);
+        return Response.buildFailure(msg);
+    }
+
 }
 
