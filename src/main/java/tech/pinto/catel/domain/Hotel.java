@@ -28,6 +28,7 @@ public class Hotel {
     private String address;
     private BizRegion bizRegion;
     private HotelStar hotelStar;
+    @Column(length = 2000)
     private String description;
     private String phoneNumber;
     private Integer managerId;

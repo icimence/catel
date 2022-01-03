@@ -132,9 +132,6 @@ public class Initiator {
 
         for (var csvRoomConfig : csvRoomConfigs) {
             var hotel = name2hotel.get(csvRoomConfig.getHotelName());
-            if (hotel == null) {
-                System.err.println(csvRoomConfig.getHotelName());
-            }
             numOfConfig.put(hotel.getId(),
                             numOfConfig.getOrDefault(hotel.getId(), 0) + 1);
 
