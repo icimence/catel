@@ -101,12 +101,15 @@ public abstract class MapEx extends MapX {
             filter.setStars(stars);
         }
 
-        try {
-            var bizRegion = BizRegion.from(src.getFilterLocation());
-            filter.setRegion(bizRegion);
-        } catch (EnumOutRange e) {
-            filter.setRegion(null);
-            filter.setName(src.getFilterLocation());
+        var loc = src.getFilterLocation();
+        if (loc != null) {
+            try {
+                var bizRegion = BizRegion.from(loc);
+                filter.setRegion(bizRegion);
+            } catch (EnumOutRange e) {
+                filter.setRegion(null);
+                filter.setName(loc);
+            }
         }
 
         return param;
