@@ -2,6 +2,7 @@ package tech.pinto.catel.util;
 
 import ch.qos.logback.classic.Level;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import tech.pinto.catel.order.OrderState;
 import tech.pinto.catel.hotel.RepoHotel;
 import tech.pinto.catel.order.RepoOrder;
@@ -31,8 +32,11 @@ public class Task {
     private final RepoRoomConfig repoRoomConfig;
     private final RepoRoomUnit repoRoomUnit;
     private final RepoHotel repoHotel;
-    private final RepoUser repoUser; 
+    private final RepoUser repoUser;
     private final MapX mapX;
+
+    @Value("${custom.reserve.ahead-limit}")
+    private int aheadLimit;
 
     @Autowired
     public Task(Initiator initiator, RepoOrder repoOrder, RepoCreditEntry repoCreditEntry, RepoRoomConfig repoRoomConfig, RepoRoomUnit repoRoomUnit, RepoHotel repoHotel, RepoUser repoUser, MapX mapX) {
@@ -74,7 +78,7 @@ public class Task {
     public void refreshRoomUnit() {
         repoRoomUnit.dailyUpdateRemove();
         var units = repoRoomConfig.findAll().stream().map(mapX::toUnit).collect(Collectors.toList());
-        var comingDay = LocalDate.now().plusDays(15);
+        var comingDay = LocalDate.now().plusDays(aheadLimit);
         units.forEach(u -> u.getId().setDate(comingDay));
         repoRoomUnit.saveAll(units);
         log.info("[task] update room unit");
@@ -82,6 +86,8 @@ public class Task {
 
     @PostConstruct
     public void init() throws Exception {
+        log.info("[task] init start!");
+        System.out.println(aheadLimit);
         var loggerName = "org.hibernate.SQL";
         var logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(loggerName);
         logger.setLevel(Level.OFF);
@@ -89,6 +95,7 @@ public class Task {
         freshCommentStat();
         changeOrderState();
         invalidVip();
+//        logger.setLevel(Level.DEBUG);
     }
 
 }

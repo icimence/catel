@@ -15,6 +15,7 @@ spring:
         jdbc:
           batch_size: 100
     open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 #    hibernate:
 #      naming:
 #        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy

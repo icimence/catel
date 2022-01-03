@@ -1,6 +1,7 @@
 package tech.pinto.catel.util;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import tech.pinto.catel.comment.CommentService;
@@ -35,18 +36,20 @@ public class Initiator {
 
     private final String hotelCsvPath = "/csv/人机酒店信息.csv";
     private final String roomConfigCsvPath = "/csv/人机酒店房间信息.csv";
-    private int numOfHotel;
+
     private final int numOfRoomBase = 15;
-    private final int numOfDay = 15;
     private final int numOfUser = 10;
     private final int numberOfResident = 5;
-    private final int numberOfOrder = 200;
+    private final int numberOfOrder = 500;
     private final int numberOfComment = 100;
     private final int numberOfCoupon = 10;
+    private final LocalDate today = LocalDate.now();
 
+    @Value("${custom.reserve.ahead-limit}")
+    private int aheadLimit;
+    private int numOfHotel;
     private final HashMap<Long, Integer> numOfConfig = new HashMap<>();
 
-    private final LocalDate today = LocalDate.now();
 
     public Initiator(RepoHotel repoHotel, RepoUser repoUser, RepoRoomConfig repoRoomConfig, RepoRoom repoRoom, RepoRoomUnit repoRoomUnit, RepoCoupon repoCoupon, OrderService orderService, CommentService commentService) {
         this.repoHotel = repoHotel;
@@ -151,7 +154,7 @@ public class Initiator {
                 rooms.add(room);
             }
 
-            for (int k = 0; k < numOfDay; k++) {
+            for (int k = 0; k < aheadLimit; k++) {
                 var unit = new RoomUnit(roomConfig, today.plusDays(k), price, numOfRoom);
                 units.add(unit);
             }
