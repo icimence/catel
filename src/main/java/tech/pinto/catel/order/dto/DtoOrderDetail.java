@@ -13,6 +13,7 @@ public class DtoOrderDetail {
     private int roomNum;
     private double creditDelta;
     private double price;
+    private String hotelAddress;
     private String hotelName;
     private String checkInDate;
     private String checkOutDate;

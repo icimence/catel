@@ -33,7 +33,8 @@ public class Order {
     private int roomNum;
     private double creditDelta;
     private BigDecimal price;
-    private String hotelName = null;
+    private String hotelName;
+    private String hotelAddress;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     @TableField("create_date")

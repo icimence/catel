@@ -22,3 +22,4 @@ user.credit <> order.credit_delta <> COMPUTED by count(credit_entry)
     avoid to re-calculate credit per order check
     when credit_entry update, user's and order's credit need updates
 
+order.hotelAddress <> order.hotel.address

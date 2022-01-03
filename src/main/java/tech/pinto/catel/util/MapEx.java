@@ -27,8 +27,9 @@ public abstract class MapEx extends MapX {
     @Override
     public Order toOrder(DtoReserve src) {
         Order order = mapX.toOrder(src);
-        var name = order.getHotel().getName();
-        order.setHotelName(name);
+        var hotel = order.getHotel();
+        order.setHotelName(hotel.getName());
+        order.setHotelAddress(hotel.getAddress());
         return order;
     }
 
